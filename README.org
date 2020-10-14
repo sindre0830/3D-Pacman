@@ -70,7 +70,7 @@ Your program has to provide the following features:
 
 In order to increase your marks you can add some additional features:
 
-- Advanced lighting/reflection models.
+- Advanced lighting/reflection models
 - Switching between perspectives (e.g., first-person, third-person, 2D).
 - Use of 3D models for multiple character types/walls, or use of advanced models.
 - Write your own object loader.
@@ -81,9 +81,9 @@ In order to increase your marks you can add some additional features:
 Examples on Pacman 3D:
 
 - [[https://www.youtube.com/watch?v=vIrFJK6NhCE][https://www.youtube.com/watch?v=vIrFJK6NhCE]]
-- https://www.youtube.com/watch?v=IujqngIEdb0
+- [[https://www.youtube.com/watch?v=IujqngIEdb0]]
 
 
 * Marking Consideration
 
-Since the assignment leaves you a great amount of freedom of concentration on tasks and features that are of interest to you, we will give you the choice to put more weight on either of the three categories **Architecture/Framework**, **Gameplay/Usability**, **Aesthetics/Quality of Graphics**. Consider this when planning your project.
+Since the assignment leaves you a great amount of freedom of concentration on tasks and features that are of interest to you, we will give you the choice to put more weight on either of the three categories *Architecture/Framework*, *Gameplay/Usability*, *Aesthetics/Quality of Graphics*. Consider this when planning your project.

@@ -70,17 +70,20 @@ Your program has to provide the following features:
 
 In order to increase your marks you can add some additional features:
 
-- Advanced lighting/reflection models
-- Switching between perspectives (e.g., first-person, third-person, 2D)
-- Use of 3D models for multiple character types/walls, or use of advanced models
-- Write your own object loader
-- Make camera movable
-- Introduce multiple levels
-- Any other feature that you think adds an edge to your game (e.g., increases the fun factor, or usability, or aesthetics - see Marking Consideration section below)
+- Advanced lighting/reflection models.
+- Switching between perspectives (e.g., first-person, third-person, 2D).
+- Use of 3D models for multiple character types/walls, or use of advanced models.
+- Write your own object loader.
+- Make camera movable.
+- Introduce multiple levels.
+- Any other feature that you think adds an edge to your game (e.g., increases the fun factor, or usability, or aesthetics (see Marking Consideration section below).
 
-Examples on Pacman 3D: [Example 1](https://www.youtube.com/watch?v=vIrFJK6NhCE),[Example 2](https://www.youtube.com/watch?v=IujqngIEdb0).
+Examples on Pacman 3D:
+
+- [[https://www.youtube.com/watch?v=vIrFJK6NhCE][https://www.youtube.com/watch?v=vIrFJK6NhCE]]
+- https://www.youtube.com/watch?v=IujqngIEdb0
 
 
-# Marking Consideration
+* Marking Consideration
 
 Since the assignment leaves you a great amount of freedom of concentration on tasks and features that are of interest to you, we will give you the choice to put more weight on either of the three categories **Architecture/Framework**, **Gameplay/Usability**, **Aesthetics/Quality of Graphics**. Consider this when planning your project.

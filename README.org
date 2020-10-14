@@ -66,17 +66,17 @@ Your program has to provide the following features:
 - Basic lighting model.
 - You can choose to implement the game from a first-person perspective. In this case you will need to display a separate 2D projection of the grid for navigation purposes. Alternatively, you can implement a third-person perspective, in which case you do not require the 2D grid representation.
 
-### Optional Features
+* Optional Features
 
 In order to increase your marks you can add some additional features:
 
-* Advanced lighting/reflection models
-* Switching between perspectives (e.g., first-person, third-person, 2D)
-* Use of 3D models for multiple character types/walls, or use of advanced models
-* Write your own object loader
-* Make camera movable
-* Introduce multiple levels
-* Any other feature that you think adds an edge to your game (e.g., increases the fun factor, or usability, or aesthetics - see Marking Consideration section below)
+- Advanced lighting/reflection models
+- Switching between perspectives (e.g., first-person, third-person, 2D)
+- Use of 3D models for multiple character types/walls, or use of advanced models
+- Write your own object loader
+- Make camera movable
+- Introduce multiple levels
+- Any other feature that you think adds an edge to your game (e.g., increases the fun factor, or usability, or aesthetics - see Marking Consideration section below)
 
 Examples on Pacman 3D: [Example 1](https://www.youtube.com/watch?v=vIrFJK6NhCE),[Example 2](https://www.youtube.com/watch?v=IujqngIEdb0).
 

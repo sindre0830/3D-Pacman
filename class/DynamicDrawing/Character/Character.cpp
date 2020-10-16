@@ -1,7 +1,8 @@
 /* library */
-#include "header/character.h"
-#include "header/dictionary.h"
-#include "header/levelData.h"
+#include "Character.h"
+#include "CharacterShader.h"
+#include "../../../header/dictionary.h"
+#include "../../../header/levelData.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/matrix_transform_2d.hpp>
@@ -13,14 +14,19 @@ extern LevelData *g_level;
  * 
  */
 Character::~Character() {}
+
+Character::Character() {
+    //compile character shader
+    shaderProgram = compileShader(characterVertexShader, characterFragmentShader);
+}
 /**
  * @brief Draw object by installing the shader program and binding the VAO and texture to the current rendering state
  * 
  */
 void Character::draw() {
-    auto samplerSlotLocation = glGetUniformLocation(shapeShaderProgram, "u_texture");
-	glUseProgram(shapeShaderProgram);
-	glBindVertexArray(shapeVAO);
+    auto samplerSlotLocation = glGetUniformLocation(shaderProgram, "u_texture");
+	glUseProgram(shaderProgram);
+	glBindVertexArray(VAO);
 	glUniform1i(samplerSlotLocation, 0);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
 }
@@ -60,7 +66,7 @@ void Character::translatePos(const float xPos, const float yPos) {
     //Generate matrix to translate
     glm::mat4 translation = glm::translate(glm::mat4(1), glm::vec3(xPos, yPos, 0.f));
     //get uniform to transform
-    GLuint uniform = glGetUniformLocation(shapeShaderProgram, "u_transformationPos");
+    GLuint uniform = glGetUniformLocation(shaderProgram, "u_transformationPos");
     //send data from matrix to the uniform
     glUniformMatrix4fv(uniform, 1, false, glm::value_ptr(translation));
 }
@@ -74,7 +80,7 @@ void Character::translateTex(const float xPos, const float yPos) {
 	//Generate matrix to translate
 	glm::mat3 translation = glm::translate(glm::mat3(1), glm::vec2(xPos, yPos));
     //get uniform to transform
-	GLuint uniform = glGetUniformLocation(shapeShaderProgram, "u_transformationTex");
+	GLuint uniform = glGetUniformLocation(shaderProgram, "u_transformationTex");
 	//Send data from matrix to the uniform
 	glUniformMatrix3fv(uniform, 1, false, glm::value_ptr(translation));
 }

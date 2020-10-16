@@ -1,5 +1,5 @@
-#ifndef __GEOMETRICSHAPE_H
-#define __GEOMETRICSHAPE_H
+#ifndef __STATICDRAWING_H
+#define __STATICDRAWING_H
 /* library */
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -9,11 +9,11 @@
  * @brief Root class
  * 
  */
-class GeometricShape {
+class StaticDrawing {
     protected:
         /* protected data */
-        GLuint shapeShaderProgram;
-        GLuint shapeVAO;
+        GLuint shaderProgram;
+        GLuint VAO;
         /* protected functionality */
         GLuint compileShader(const std::string &vertexShaderSrc, const std::string &fragmentShaderSrc);
         GLuint genObject(const std::vector<GLfloat> arr, const int size);
@@ -22,6 +22,6 @@ class GeometricShape {
         void destroyVAO(GLuint &vao);
     public:
         /* public functionality */
-        ~GeometricShape();
+        ~StaticDrawing();
 };
 #endif

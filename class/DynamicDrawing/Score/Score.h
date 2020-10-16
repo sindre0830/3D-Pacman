@@ -1,12 +1,12 @@
-#ifndef __NUMBER_H
-#define __NUMBER_H
+#ifndef __SCORE_H
+#define __SCORE_H
 /* library */
-#include "header/geometricShape.h"
+#include "../DynamicDrawing.h"
 /**
  * @brief Leaf class
  * 
  */
-class Number : public GeometricShape {
+class Score : public DynamicDrawing {
     private:
         /* private data */
         int lastNumber = 0;
@@ -15,8 +15,8 @@ class Number : public GeometricShape {
         void translateTex(const float xPos);
     public:
         /* public functionality */
-        ~Number();
-        Number(const int col, const int row);
+        ~Score();
+        Score(const int col, const int row);
         void draw();
         void update(const int num);
 };

@@ -1,5 +1,5 @@
-#ifndef __WALLSHADER_H_
-#define __WALLSHADER_H_
+#ifndef __MAZESHADER_H_
+#define __MAZESHADER_H_
 /* library */
 #include <string>
 //vertex shader

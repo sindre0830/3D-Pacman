@@ -13,33 +13,48 @@ add_subdirectory(external/glew-cmake-2.1.0)
 add_subdirectory(external/glm-0.9.9.8)
 
 add_executable(${PROJECT_NAME}
-	header/dictionary.h
+
 	main.cpp
+
+	header/dictionary.h
+
 	header/levelData.h
 	levelData.cpp
+
 	header/function.h
 	function.cpp
-	header/geometricShape.h
-	geometricShape.cpp
-		header/number.h
-		shader/number.h
-		number.cpp
-		header/gameover.h
-		shader/gameover.h
-		gameover.cpp
-		header/wall.h
-		shader/wall.h
-		wall.cpp
-		header/pellet.h
-		shader/pellet.h
-		pellet.cpp
-		header/character.h
-		character.cpp
-			shader/character.h
-			header/pacman.h
-			pacman.cpp
-			header/ghost.h
-			ghost.cpp)
+
+	class/StaticDrawing/StaticDrawing.h
+	class/StaticDrawing/StaticDrawing.cpp
+
+		class/StaticDrawing/Maze/Maze.h
+		class/StaticDrawing/Maze/MazeShader.h
+		class/StaticDrawing/Maze/Maze.cpp
+
+		class/StaticDrawing/Pellet/Pellet.h
+		class/StaticDrawing/Pellet/PelletShader.h
+		class/StaticDrawing/Pellet/Pellet.cpp
+
+		class/StaticDrawing/GameState/GameState.h
+		class/StaticDrawing/GameState/GameStateShader.h
+		class/StaticDrawing/GameState/GameState.cpp
+
+	class/DynamicDrawing/DynamicDrawing.h
+	class/DynamicDrawing/DynamicDrawing.cpp
+
+		class/DynamicDrawing/Character/Character.h
+		class/DynamicDrawing/Character/CharacterShader.h
+		class/DynamicDrawing/Character/Character.cpp
+
+			class/DynamicDrawing/Character/Ghost/Ghost.h
+			class/DynamicDrawing/Character/Ghost/Ghost.cpp
+
+			class/DynamicDrawing/Character/Pacman/Pacman.h
+			class/DynamicDrawing/Character/Pacman/Pacman.cpp
+
+		class/DynamicDrawing/Score/Score.h
+		class/DynamicDrawing/Score/ScoreShader.h
+		class/DynamicDrawing/Score/Score.cpp)
 
 target_include_directories(${PROJECT_NAME}
 	PRIVATE

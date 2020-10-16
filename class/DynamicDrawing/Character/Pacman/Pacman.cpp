@@ -1,8 +1,7 @@
 /* library */
-#include "header/pacman.h"
-#include "shader/character.h"
-#include "header/dictionary.h"
-#include "header/levelData.h"
+#include "pacman.h"
+#include "../../../../header/dictionary.h"
+#include "../../../../header/levelData.h"
 /* global data */
 extern LevelData *g_level;
 /**
@@ -31,11 +30,9 @@ Pacman::Pacman() {
 		yTex = 0.0f;
 		direction = RIGHT;
 	}
-    //compile pacman shader
-    shapeShaderProgram = compileShader(characterVertexShader, characterFragmentShader);
     //create VAO
 	std::vector<GLfloat> arr = genCoordinates(g_level->pacmanRow, g_level->pacmanCol);
-    shapeVAO = genObject(arr, 1);
+    VAO = genObject(arr, 1);
 	//specify the layout of the vertex data
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);

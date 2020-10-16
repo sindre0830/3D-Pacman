@@ -1,5 +1,5 @@
-#ifndef __NUMBERSHADER_H_
-#define __NUMBERSHADER_H_
+#ifndef __SCORESHADER_H_
+#define __SCORESHADER_H_
 /* library */
 #include <string>
 //vertex shader

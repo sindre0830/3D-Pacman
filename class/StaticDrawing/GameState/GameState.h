@@ -1,19 +1,19 @@
-#ifndef __GAMEOVER_H
-#define __GAMEOVER_H
+#ifndef __GAMESTATE_H
+#define __GAMESTATE_H
 /* library */
-#include "header/geometricShape.h"
+#include "../StaticDrawing.h"
 /**
  * @brief Leaf class
  * 
  */
-class Gameover : public GeometricShape {
+class GameState : public StaticDrawing {
     private:
         /* private functionality */
         std::vector<GLfloat> genCoordinates();
     public:
         /* public functionality */
-        ~Gameover();
-        Gameover();
+        ~GameState();
+        GameState();
         void draw();
 };
 #endif

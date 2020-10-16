@@ -1,27 +1,27 @@
 /* library */
-#include "header/wall.h"
-#include "shader/wall.h"
-#include "header/dictionary.h"
-#include "header/levelData.h"
+#include "Maze.h"
+#include "MazeShader.h"
+#include "../../../header/dictionary.h"
+#include "../../../header/levelData.h"
 /* global data */
 extern LevelData *g_level;
 /**
  * @brief Destroy the Wall:: Wall object
  * 
  */
-Wall::~Wall() {
+Maze::~Maze() {
     destroyVAO(cornerVAO);
 }
 /**
  * @brief Construct a new Wall:: Wall object
  * 
  */
-Wall::Wall() {
+Maze::Maze() {
 	//create shader program
-    shapeShaderProgram = compileShader(wallVertexShader, wallFragmentShader);
+    shaderProgram = compileShader(wallVertexShader, wallFragmentShader);
 	//generate wall VAO
 	std::vector<GLfloat> arr = genWallCoordinates();
-    shapeVAO = genObject(arr, wallSize);
+    VAO = genObject(arr, wallSize);
 	//set the vertex attribute
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLuint), (const void*)0);
 	glEnableVertexAttribArray(0);
@@ -35,10 +35,10 @@ Wall::Wall() {
  * @brief Draw object by installing the shader program and binding the VAO to the current rendering state
  * 
  */
-void Wall::draw() {
-	glUseProgram(shapeShaderProgram);
+void Maze::draw() {
+	glUseProgram(shaderProgram);
 	//draw walls
-	glBindVertexArray(shapeVAO);
+	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, (6 * wallSize), GL_UNSIGNED_INT, (const void*)0);
 	//draw corners
 	glBindVertexArray(cornerVAO);
@@ -50,7 +50,7 @@ void Wall::draw() {
  * @param target 
  * @return std::vector<GLfloat> 
  */
-std::vector<GLfloat> Wall::genWallCoordinates() {
+std::vector<GLfloat> Maze::genWallCoordinates() {
 	float
 		xResize = g_level->gridElementWidth / 1.2f,
 		yResize = g_level->gridElementHeight / 1.2f;
@@ -112,7 +112,7 @@ std::vector<GLfloat> Wall::genWallCoordinates() {
  * @param target 
  * @return std::vector<GLfloat> 
  */
-GLuint Wall::genCornerVAO() {
+GLuint Maze::genCornerVAO() {
 	float
 		//resize corner acording to size of wall
 		xResize = (g_level->gridElementWidth / 1.2f) / 5.f,

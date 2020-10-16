@@ -1,8 +1,8 @@
 /* library */
-#include "header/number.h"
-#include "shader/number.h"
-#include "header/dictionary.h"
-#include "header/levelData.h"
+#include "Score.h"
+#include "ScoreShader.h"
+#include "../../../header/dictionary.h"
+#include "../../../header/levelData.h"
 #include <glm/glm.hpp>
 #include <glm/gtx/matrix_transform_2d.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -12,19 +12,19 @@ extern LevelData *g_level;
  * @brief Destroy the Scoreboard:: Scoreboard object
  * 
  */
-Number::~Number() {}
+Score::~Score() {}
 /**
  * @brief Construct a new Scoreboard:: Scoreboard object
  * 
  * @param col 
  * @param row 
  */
-Number::Number(const int col, const int row) {
+Score::Score(const int col, const int row) {
     //compile scoreboard shader
-    shapeShaderProgram = compileShader(numberVertexShader, numberFragmentShader);
+    shaderProgram = compileShader(numberVertexShader, numberFragmentShader);
     //create VAO
 	std::vector<GLfloat> arr = genCoordinates(col, row);
-    shapeVAO = genObject(arr, 1);
+    VAO = genObject(arr, 1);
     //specify the layout of the vertex data
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
@@ -35,10 +35,10 @@ Number::Number(const int col, const int row) {
  * @brief Draw object by installing the shader program and binding the VAO and texture to the current rendering state
  * 
  */
-void Number::draw() {
-    GLint samplerSlotLocation = glGetUniformLocation(shapeShaderProgram, "u_texture");
-    glUseProgram(shapeShaderProgram);
-    glBindVertexArray(shapeVAO);
+void Score::draw() {
+    GLint samplerSlotLocation = glGetUniformLocation(shaderProgram, "u_texture");
+    glUseProgram(shaderProgram);
+    glBindVertexArray(VAO);
     glUniform1i(samplerSlotLocation, 1);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
 }
@@ -49,7 +49,7 @@ void Number::draw() {
  * @param row 
  * @return std::vector<GLfloat> 
  */
-std::vector<GLfloat> Number::genCoordinates(const int col, const int row) {
+std::vector<GLfloat> Score::genCoordinates(const int col, const int row) {
     GLfloat texPos = 0.f;
     float
 		//resize pellet
@@ -76,7 +76,7 @@ std::vector<GLfloat> Number::genCoordinates(const int col, const int row) {
  * 
  * @param num 
  */
-void Number::update(const int num) {
+void Score::update(const int num) {
     //branch if new number is different from the last number and update texture
     if(num != lastNumber) translateTex((float)(num) / 10.f);
     //set new number for next update
@@ -87,11 +87,11 @@ void Number::update(const int num) {
  * 
  * @param xPos 
  */
-void Number::translateTex(const float xPos) {
+void Score::translateTex(const float xPos) {
     //Generate matrix to translate
 	glm::mat3 translation = glm::translate(glm::mat3(1), glm::vec2(xPos, 0.f));
     //get uniform to transform
-	GLuint uniform = glGetUniformLocation(shapeShaderProgram, "u_transformationTex");
+	GLuint uniform = glGetUniformLocation(shaderProgram, "u_transformationTex");
 	//send data from matrix to the uniform
 	glUniformMatrix3fv(uniform, 1, false, glm::value_ptr(translation));
 }

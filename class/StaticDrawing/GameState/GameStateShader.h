@@ -1,5 +1,5 @@
-#ifndef __GAMEOVERSHADER_H
-#define __GAMEOVERSHADER_H
+#ifndef __GAMESTATESHADER_H
+#define __GAMESTATESHADER_H
 /* library */
 #include <string>
 //vertex shader

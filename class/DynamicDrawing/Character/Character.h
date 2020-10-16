@@ -1,12 +1,12 @@
 #ifndef __CHARACTER_H
 #define __CHARACTER_H
 /* library */
-#include "header/geometricShape.h"
+#include "../DynamicDrawing.h"
 /**
  * @brief Internal class
  * 
  */
-class Character : public GeometricShape {
+class Character : public DynamicDrawing {
     protected:
         /* protected data */
         int direction, counter = 0, speed = 20;
@@ -22,6 +22,7 @@ class Character : public GeometricShape {
     public:
         /* public functionality */
         ~Character();
+        Character();
         void draw();
 };
 #endif

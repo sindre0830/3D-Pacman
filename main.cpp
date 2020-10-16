@@ -12,12 +12,12 @@
 #include "header/dictionary.h"
 #include "header/levelData.h"
 #include "header/function.h"
-#include "header/number.h"
-#include "header/gameover.h"
-#include "header/wall.h"
-#include "header/pellet.h"
-#include "header/pacman.h"
-#include "header/ghost.h"
+#include "class/StaticDrawing/GameState/GameState.h"
+#include "class/DynamicDrawing/Score/Score.h"
+#include "class/StaticDrawing/Maze/Maze.h"
+#include "class/StaticDrawing/Pellet/Pellet.h"
+#include "class/DynamicDrawing/Character/Pacman/pacman.h"
+#include "class/DynamicDrawing/Character/Ghost/ghost.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
@@ -67,15 +67,15 @@ int main() {
 	}
 	//eanable capture of debug output
 	enableDebug();
-	//construct wall
-	Wall wall;
+	//construct maze
+	Maze maze;
 	//construct array of scoreboard classes
-	std::vector<Number*> scoreboard(4, nullptr);
+	std::vector<Score*> scoreboard(4, nullptr);
 	for(int i = 0; i < scoreboard.size(); i++) {
-		scoreboard[i] = new Number(0, (g_level->gridWidth - 2) - i);
+		scoreboard[i] = new Score(0, (g_level->gridWidth - 2) - i);
 	}
-	//construct gameover
-	Gameover gameover;
+	//construct gameState
+	GameState gameState;
 	//construct pacman
 	Pacman pacman;
 	//create an array filled with all possible starting positions for ghosts
@@ -129,8 +129,8 @@ int main() {
 		glfwPollEvents();
 		//for every frame reset background color
 		glClear(GL_COLOR_BUFFER_BIT);
-		//draw wall
-		wall.draw();
+		//draw maze
+		maze.draw();
 		//draw scoreboard
 		for(int i = 0; i < scoreboard.size(); i++) {
 			scoreboard[i]->draw();
@@ -171,7 +171,7 @@ int main() {
 			}
 		}
 		//branch if game is over and 1 second has gone since game is over and display "GAME OVER" to the screen
-		if(g_level->gameover && counter > 0) gameover.draw();
+		if(g_level->gameover && counter > 0) gameState.draw();
 		//branch if there has been one second since game loop started
 		if(glfwGetTime() - timer > 1.0f) {
 			timer++;

@@ -1,13 +1,13 @@
 #ifndef __PELLET_H
 #define __PELLET_H
 /* library */
-#include "header/geometricShape.h"
+#include "../StaticDrawing.h"
 #include <map>
 /**
  * @brief Leaf class
  * 
  */
-class Pellet : public GeometricShape {
+class Pellet : public StaticDrawing {
     private:
         /* private data */
         std::map<std::pair<int, int>, int> bufferPos;

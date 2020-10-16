@@ -1,9 +1,8 @@
 /* library */
-#include "header/ghost.h"
-#include "shader/character.h"
-#include "header/dictionary.h"
-#include "header/levelData.h"
-#include "header/function.h"
+#include "Ghost.h"
+#include "../../../../header/dictionary.h"
+#include "../../../../header/levelData.h"
+#include "../../../../header/function.h"
 /* global data */
 extern LevelData *g_level;
 /**
@@ -23,11 +22,9 @@ Ghost::Ghost(const int row, const int col) {
 	colPos = col;
 	//set random direction
 	findRandomPath();
-    //compile ghost shader
-    shapeShaderProgram = compileShader(characterVertexShader, characterFragmentShader);
     //create VAO
 	std::vector<GLfloat> arr = genCoordinates(rowPos, colPos);
-    shapeVAO = genObject(arr, 1);
+    VAO = genObject(arr, 1);
 	//specify the layout of the vertex data
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
@@ -177,7 +174,7 @@ void Ghost::animate() {
  */
 void Ghost::changeColor(const int flag) {
 	//get uniform to transform
-	GLuint color = glGetUniformLocation(shapeShaderProgram, "u_changeColor");
+	GLuint color = glGetUniformLocation(shaderProgram, "u_changeColor");
 	//send data to uniform
 	glUniform1i(color, flag);
 	//update to the new color

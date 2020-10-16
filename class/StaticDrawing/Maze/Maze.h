@@ -1,12 +1,12 @@
-#ifndef __WALL_H
-#define __WALL_H
+#ifndef __MAZE_H
+#define __MAZE_H
 /* library */
-#include "header/geometricShape.h"
+#include "../StaticDrawing.h"
 /**
  * @brief Leaf class
  * 
  */
-class Wall : public GeometricShape {
+class Maze : public StaticDrawing {
     private:
         /* private data */
         GLuint cornerVAO;
@@ -16,8 +16,8 @@ class Wall : public GeometricShape {
         GLuint genCornerVAO();
     public:
         /* public functionality */
-        ~Wall();
-        Wall();
+        ~Maze();
+        Maze();
         void draw();
 };
 #endif

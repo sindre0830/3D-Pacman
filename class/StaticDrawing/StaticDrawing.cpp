@@ -1,13 +1,13 @@
 /* library */
-#include "header/geometricShape.h"
+#include "StaticDrawing.h"
 #include <set>
 /**
  * @brief Destroy the Geometric Shape:: Geometric Shape object
  * 
  */
-GeometricShape::~GeometricShape() {
-	glDeleteProgram(shapeShaderProgram);
-    destroyVAO(shapeVAO);
+StaticDrawing::~StaticDrawing() {
+	glDeleteProgram(shaderProgram);
+    destroyVAO(VAO);
 }
 /**
  * @brief Compile the vertex and fragment shader.
@@ -16,7 +16,7 @@ GeometricShape::~GeometricShape() {
  * @param fragmentShaderSrc 
  * @return GLuint 
  */
-GLuint GeometricShape::compileShader(const std::string &vertexShaderSrc, const std::string &fragmentShaderSrc) {
+GLuint StaticDrawing::compileShader(const std::string &vertexShaderSrc, const std::string &fragmentShaderSrc) {
 
 	auto vertexSrc = vertexShaderSrc.c_str();
 	auto fragmentSrc = fragmentShaderSrc.c_str();
@@ -48,7 +48,7 @@ GLuint GeometricShape::compileShader(const std::string &vertexShaderSrc, const s
  * 
  * @return GLuint 
  */
-GLuint GeometricShape::genObject(const std::vector<GLfloat> arr, const int size) {
+GLuint StaticDrawing::genObject(const std::vector<GLfloat> arr, const int size) {
     std::vector<GLuint> arrIndices = genIndices(size);
     return createVAO(arr, arrIndices);
 }
@@ -59,7 +59,7 @@ GLuint GeometricShape::genObject(const std::vector<GLfloat> arr, const int size)
  * @param arr_indices
  * @return GLuint
  */
-GLuint GeometricShape::createVAO(const std::vector<GLfloat> &arr, const std::vector<GLuint> &arr_indices) {
+GLuint StaticDrawing::createVAO(const std::vector<GLfloat> &arr, const std::vector<GLuint> &arr_indices) {
 	//create and bind the vertex array object
 	GLuint vao;
 	glCreateVertexArrays(1, &vao);
@@ -84,7 +84,7 @@ GLuint GeometricShape::createVAO(const std::vector<GLfloat> &arr, const std::vec
  * @param size 
  * @return std::vector<GLuint> 
  */
-std::vector<GLuint> GeometricShape::genIndices(const int size) {
+std::vector<GLuint> StaticDrawing::genIndices(const int size) {
     std::vector<GLuint> arrIndices;
     for (int i = 0, j = 0; i < size; i++, j += 4) {
 		//row 1
@@ -103,7 +103,7 @@ std::vector<GLuint> GeometricShape::genIndices(const int size) {
  * 
  * @param vao 
  */
-void GeometricShape::destroyVAO(GLuint &vao) {
+void StaticDrawing::destroyVAO(GLuint &vao) {
 	GLint nAttr = 0;
 	std::set<GLuint> vbos;
 

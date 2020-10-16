@@ -1,8 +1,8 @@
 /* library */
-#include "header/pellet.h"
-#include "shader/pellet.h"
-#include "header/dictionary.h"
-#include "header/levelData.h"
+#include "Pellet.h"
+#include "PelletShader.h"
+#include "../../../header/dictionary.h"
+#include "../../../header/levelData.h"
 /* global data */
 extern LevelData *g_level;
 /**
@@ -16,10 +16,10 @@ Pellet::~Pellet() {}
  */
 Pellet::Pellet() {
     //compile pellet shader
-	shapeShaderProgram = compileShader(pelletVertexShader, pelletFragmentShader);
+	shaderProgram = compileShader(pelletVertexShader, pelletFragmentShader);
     //create VAO
 	std::vector<GLfloat> arr = genCoordinates();
-    shapeVAO = genObject(arr, g_level->pelletSize);
+    VAO = genObject(arr, g_level->pelletSize);
 	//set the vertex attribute
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (const void*)0);
@@ -41,8 +41,8 @@ Pellet::Pellet() {
  * 
  */
 void Pellet::draw() {
-	glUseProgram(shapeShaderProgram);
-	glBindVertexArray(shapeVAO);
+	glUseProgram(shaderProgram);
+	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, (6 * g_level->pelletSize), GL_UNSIGNED_INT, (const void*)0);
 }
 /**

@@ -1,6 +1,7 @@
 #ifndef __LEVELDATA_H
 #define __LEVELDATA_H
 /* library */
+#include "dictionary.h"
 #include <vector>
 #include <map>
 #include <string>
@@ -11,7 +12,7 @@
 struct LevelData {
     /* data */
     std::string filePath = "level/";
-    int gridWidth, gridHeight, pelletSize, score, pacmanCol, pacmanRow;
+    int gridWidth, gridHeight, pelletSize, score, pacmanCol, pacmanRow, gamemode = TWO_DIMENSIONAL;
     std::vector<std::vector<int>> grid;
     std::map<std::pair<int, int>, std::vector<std::vector<float>>> gridElement;
     float gridElementWidth, gridElementHeight;

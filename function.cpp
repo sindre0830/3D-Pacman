@@ -15,6 +15,44 @@ extern LevelData *g_level;
  * @param row 
  * @param col 
  */
+void gameloop2D(GLFWwindow *window, Maze *maze, Pellet *pellet, Pacman *pacman, std::vector<Ghost*> ghostArr, const double deltaTime, int &counter) {
+	//draw maze
+	maze->draw();
+	//draw pellets
+	pellet->draw();
+	//draw pacman
+	pacman->draw();
+	//branch if game isn't over
+	if (!g_level->gameover && deltaTime >= 1.0){
+		//translate pacman
+		pacman->mov(*pellet);
+		//check for user input and change direction accordingly
+		pacman->inputDirection(window);
+	}
+	//draw ghosts
+	bool noActiveGhosts = true;
+	for(int i = 0; i < ghostArr.size(); i++) {
+		//branch if ghost isn't dead
+		if(!ghostArr[i]->dead) {
+			noActiveGhosts = false;
+			ghostArr[i]->draw();
+			//branch if game isn't over and translate the ghost
+			if (!g_level->gameover && deltaTime >= 1.0) ghostArr[i]->mov();
+		}
+	}
+	//branch if there are no more ghosts on the level and end the game
+	if(noActiveGhosts) g_level->gameover = true;
+}
+
+void gameloop3D(GLFWwindow *window, Maze *maze, Pellet *pellet, Pacman *pacman, std::vector<Ghost*> ghostArr, const double deltaTime, int &counter) {
+	if(g_level->gamemode == FIRST_PERSON) {
+		/* Camera function showing a FPP perspective */
+	} else {
+		/* Camera function showing a Third-Person perspective */
+	}
+	/* Draw 3D objects */
+}
+
 void getGhostPos(std::vector<std::vector<int>> &arr, int &row, int &col) {
 	//get random index
 	int index = randomIndex(0, arr.size() - 1);

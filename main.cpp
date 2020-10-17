@@ -49,7 +49,7 @@ int main() {
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	//create window
-	GLFWwindow *window = glfwCreateWindow(g_level->gridWidth * 30, g_level->gridHeight * 30, "Pac-Man", nullptr, nullptr);
+	GLFWwindow *window = glfwCreateWindow(g_level->windowWidth, g_level->windowHeight, "Pac-Man", nullptr, nullptr);
 	//setting the OpenGL context to the window
 	glfwMakeContextCurrent(window);
 	//branch if window isn't created and kill the application
@@ -182,6 +182,32 @@ int main() {
 		if (!g_level->gameover && deltaTime >= 1.0) deltaTime -= 1.0;
 		//go to next buffer
 		glfwSwapBuffers(window);
+		//dynamic resizing
+		glfwSetWindowSizeCallback(window, [](GLFWwindow* window, int width, int height) {
+			int widthDifference = width - g_level->windowWidth;
+			int heightDifference = height - g_level->windowHeight;
+			if(widthDifference > 0 && heightDifference > 0) {
+				glViewport((widthDifference / 2) - (heightDifference / 2), 0, (width - widthDifference) + heightDifference, height);
+			} else if(widthDifference < 0 && heightDifference < 0) {
+				glViewport(-(heightDifference / 2), -(widthDifference / 2), (width + heightDifference), (height + widthDifference)); //wrong
+			} else if(widthDifference > 0 && heightDifference < 0) {
+				glViewport((widthDifference / 2) - (heightDifference / 2), 0, (width - widthDifference) + heightDifference, height);
+			} else if(widthDifference < 0 && heightDifference > 0) {
+				glViewport(0, -(widthDifference / 2) + (heightDifference / 2), width, (height + widthDifference) - heightDifference);
+			} else {
+				if(widthDifference > 0) {
+					glViewport((widthDifference / 2), 0, (width - widthDifference), height);
+				} else if(widthDifference < 0) {
+					glViewport(0, -(widthDifference / 2), width, (height + widthDifference));
+				}
+				if(heightDifference > 0) {
+					glViewport(0, (heightDifference / 2), width, (height - heightDifference));
+				} else if(heightDifference < 0) {
+					glViewport(-(heightDifference / 2), 0, (width + heightDifference), height);
+				}
+			}
+			
+		});
 		//break loop if 'ESC' key is pressed
 		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) break;
 	}

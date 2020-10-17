@@ -126,6 +126,9 @@ bool LevelData::inputData() {
 				gridElement[std::make_pair(i, j)].push_back({x + gridElementWidth, y + gridElementHeight});
 			}
 		}
+		//set window size
+		windowHeight = gridHeight * 30;
+		windowWidth = gridWidth * 30;
 		return true;
 	} else return false;
 }

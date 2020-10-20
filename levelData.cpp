@@ -3,6 +3,7 @@
 #include "header/dictionary.h"
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 /**
  * @brief Construct a new Level Data:: Level Data object
  * 

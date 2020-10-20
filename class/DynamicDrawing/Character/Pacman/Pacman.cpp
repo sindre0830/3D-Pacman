@@ -1,5 +1,5 @@
 /* library */
-#include "pacman.h"
+#include "Pacman.h"
 #include "../../../../header/dictionary.h"
 #include "../../../../header/levelData.h"
 /* global data */

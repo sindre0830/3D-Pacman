@@ -1,7 +1,7 @@
 #ifndef __GHOST_H
 #define __GHOST_H
 /* library */
-#include "../character.h"
+#include "../Character.h"
 /**
  * @brief Leaf class
  * 

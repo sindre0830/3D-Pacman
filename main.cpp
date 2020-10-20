@@ -16,8 +16,8 @@
 #include "class/DynamicDrawing/Score/Score.h"
 #include "class/StaticDrawing/Maze/Maze.h"
 #include "class/StaticDrawing/Pellet/Pellet.h"
-#include "class/DynamicDrawing/Character/Pacman/pacman.h"
-#include "class/DynamicDrawing/Character/Ghost/ghost.h"
+#include "class/DynamicDrawing/Character/Pacman/Pacman.h"
+#include "class/DynamicDrawing/Character/Ghost/Ghost.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>

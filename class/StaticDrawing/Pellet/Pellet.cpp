@@ -104,6 +104,7 @@ std::vector<GLfloat> Pellet::genCoordinates() {
  * @brief Loads the pellet model
  *
  */
+/*
 GLuint Pellet::loadPellet(const std::string path, int& size)     {
 	//Some variables that we are going to use to store data from tinyObj
 	tinyobj::attrib_t attrib;
@@ -152,3 +153,4 @@ GLuint Pellet::loadPellet(const std::string path, int& size)     {
 		}
 	}
 }
+*/

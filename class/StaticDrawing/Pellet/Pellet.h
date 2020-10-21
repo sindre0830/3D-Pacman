@@ -24,6 +24,6 @@ class Pellet : public StaticDrawing {
         Pellet();
         void draw();
         void hidePellet(const int col, const int row);
-        GLuint loadPellet(const std::string, int& size);
+//        GLuint loadPellet(const std::string, int& size);
 };
 #endif

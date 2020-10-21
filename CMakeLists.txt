@@ -16,6 +16,8 @@ add_executable(${PROJECT_NAME}
 
 	main.cpp
 
+	header/tiny_obj_loader.h
+
 	header/dictionary.h
 
 	header/levelData.h
@@ -54,7 +56,8 @@ add_executable(${PROJECT_NAME}
 
 		class/DynamicDrawing/Score/Score.h
 		class/DynamicDrawing/Score/ScoreShader.h
-		class/DynamicDrawing/Score/Score.cpp)
+		class/DynamicDrawing/Score/Score.cpp
+	)
 
 target_include_directories(${PROJECT_NAME}
 	PRIVATE

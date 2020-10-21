@@ -3,6 +3,8 @@
 #include "PelletShader.h"
 #include "../../../header/dictionary.h"
 #include "../../../header/levelData.h"
+#include "../../../header/tiny_obj_loader.h"
+
 /* global data */
 extern LevelData *g_level;
 /**
@@ -97,4 +99,56 @@ std::vector<GLfloat> Pellet::genCoordinates() {
 		}
 	}
 	return arr;
+}
+/**
+ * @brief Loads the pellet model
+ *
+ */
+GLuint Pellet::loadPellet(const std::string path, int& size)     {
+	//Some variables that we are going to use to store data from tinyObj
+	tinyobj::attrib_t attrib;
+	std::vector<tinyobj::shape_t> shapes;
+	std::vector<tinyobj::material_t> materials; //This one goes unused for now, seeing as we don't need materials for this model.
+
+	//Some variables incase there is something wrong with our obj file
+	std::string warn;
+	std::string err;
+
+	//We use tinobj to load our models. Feel free to find other .obj files and see if you can load them.
+	tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, (path + "../../../models/pellet/pellet.obj").c_str(), path.c_str());
+
+	if (!warn.empty()) {
+		std::cout << warn << std::endl;
+	}
+
+	if (!err.empty()) {
+		std::cerr << err << std::endl;
+	}
+
+	//For each shape defined in the obj file
+	for (auto shape : shapes)
+	{
+		//We find each mesh
+		for (auto meshIndex : shape.mesh.indices)
+		{
+			//And store the data for each vertice, including normals
+			glm::vec3 vertice = {
+				attrib.vertices[meshIndex.vertex_index * 3],
+				attrib.vertices[(meshIndex.vertex_index * 3) + 1],
+				attrib.vertices[(meshIndex.vertex_index * 3) + 2]
+			};
+			glm::vec3 normal = {
+				attrib.normals[meshIndex.normal_index * 3],
+				attrib.normals[(meshIndex.normal_index * 3) + 1],
+				attrib.normals[(meshIndex.normal_index * 3) + 2]
+			};
+			glm::vec2 textureCoordinate = {                         //These go unnused, but if you want textures, you will need them.
+				attrib.texcoords[meshIndex.texcoord_index * 2],
+				attrib.texcoords[(meshIndex.texcoord_index * 2) + 1]
+			};
+
+			arrIndices.push_back({ vertice, normal, textureCoordinate }); //We add our new vertice struct to our vector
+
+		}
+	}
 }

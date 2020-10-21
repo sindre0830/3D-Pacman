@@ -6,7 +6,7 @@
  * @author Casper Melhus
  * @author Brage Heimly N�ss
  * 
- * @date 2020/10/13
+ * @date 2020/10/21
  */
 /* library */
 #include "header/dictionary.h"

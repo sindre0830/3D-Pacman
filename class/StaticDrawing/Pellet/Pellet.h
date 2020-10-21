@@ -3,6 +3,10 @@
 /* library */
 #include "../StaticDrawing.h"
 #include <map>
+#include <iostream>
+#include <glm/gtc/matrix_transform.hpp>"
+#include <glm/gtc/type_ptr.hpp>"
+#include <glm/glm.hpp>"
 /**
  * @brief Leaf class
  * 
@@ -20,5 +24,6 @@ class Pellet : public StaticDrawing {
         Pellet();
         void draw();
         void hidePellet(const int col, const int row);
+        GLuint loadPellet(const std::string, int& size);
 };
 #endif

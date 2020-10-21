@@ -53,6 +53,14 @@ void gameloop3D(GLFWwindow *window, Maze *maze, Pellet *pellet, Pacman *pacman, 
 	/* Draw 3D objects */
 }
 
+void camera() {
+
+}
+
+void mouseMov() {
+
+}
+
 void getGhostPos(std::vector<std::vector<int>> &arr, int &row, int &col) {
 	//get random index
 	int index = randomIndex(0, arr.size() - 1);

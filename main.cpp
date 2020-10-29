@@ -113,6 +113,7 @@ int main() {
 	GLuint characterTex = loadTexture("sprite/pacman.png", 0);
     GLuint numberTex = loadTexture("sprite/number.png", 1);
     GLuint gameoverTex = loadTexture("sprite/gameover.png", 2);
+	GLuint wallTex = loadTexture("sprite/wall.png", 3);
 	//set background color black
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	//setup timer
@@ -130,10 +131,12 @@ int main() {
 		glfwPollEvents();
 		//for every frame reset background color
 		glClear(GL_COLOR_BUFFER_BIT);
+		//draw maze
+		maze.draw(g_level->gamemode);
 		//branch if gamemode is 2D, else if gamemode is 3D, and call their respected game loops
 		if(g_level->gamemode == TWO_DIMENSIONAL) {
-			gameloop2D(window, &maze, &pellet, &pacman, ghostArr, deltaTime, counter);
-		} else gameloop3D(window, &maze, &pellet, &pacman, ghostArr, deltaTime, counter);
+			gameloop2D(window, &pellet, &pacman, ghostArr, deltaTime, counter);
+		} else gameloop3D(window, &pellet, &pacman, ghostArr, deltaTime, counter);
 		//draw scoreboard
 		for(int i = 0; i < scoreboard.size(); i++) {
 			scoreboard[i]->draw();

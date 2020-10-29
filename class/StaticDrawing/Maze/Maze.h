@@ -18,6 +18,6 @@ class Maze : public StaticDrawing {
         /* public functionality */
         ~Maze();
         Maze();
-        void draw();
+        void draw(int dimension);
 };
 #endif

@@ -35,14 +35,18 @@ Maze::Maze() {
  * @brief Draw object by installing the shader program and binding the VAO to the current rendering state
  * 
  */
-void Maze::draw() {
+void Maze::draw(int dimension) {
 	glUseProgram(shaderProgram);
-	//draw walls
-	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, (6 * wallSize), GL_UNSIGNED_INT, (const void*)0);
-	//draw corners
-	glBindVertexArray(cornerVAO);
-	glDrawArrays(GL_TRIANGLES, 0, (3 * cornerSize));
+	if(g_level->gamemode == TWO_DIMENSIONAL) {
+		//draw walls
+		glBindVertexArray(VAO);
+		glDrawElements(GL_TRIANGLES, (6 * wallSize), GL_UNSIGNED_INT, (const void*)0);
+		//draw corners
+		glBindVertexArray(cornerVAO);
+		glDrawArrays(GL_TRIANGLES, 0, (3 * cornerSize));
+	} else {
+		
+	}
 }
 /**
  * @brief Generate buffer array (x, y) * 4

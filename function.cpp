@@ -15,9 +15,7 @@ extern LevelData *g_level;
  * @param row 
  * @param col 
  */
-void gameloop2D(GLFWwindow *window, Maze *maze, Pellet *pellet, Pacman *pacman, std::vector<Ghost*> ghostArr, const double deltaTime, int &counter) {
-	//draw maze
-	maze->draw();
+void gameloop2D(GLFWwindow *window, Pellet *pellet, Pacman *pacman, std::vector<Ghost*> ghostArr, const double deltaTime, int &counter) {
 	//draw pellets
 	pellet->draw();
 	//draw pacman
@@ -44,7 +42,7 @@ void gameloop2D(GLFWwindow *window, Maze *maze, Pellet *pellet, Pacman *pacman, 
 	if(noActiveGhosts) g_level->gameover = true;
 }
 
-void gameloop3D(GLFWwindow *window, Maze *maze, Pellet *pellet, Pacman *pacman, std::vector<Ghost*> ghostArr, const double deltaTime, int &counter) {
+void gameloop3D(GLFWwindow *window, Pellet *pellet, Pacman *pacman, std::vector<Ghost*> ghostArr, const double deltaTime, int &counter) {
 	if(g_level->gamemode == FIRST_PERSON) {
 		/* Camera function showing a FPP perspective */
 	} else {

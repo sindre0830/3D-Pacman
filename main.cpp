@@ -227,6 +227,7 @@ int main() {
     glDeleteTextures(1, &characterTex);
     glDeleteTextures(1, &numberTex);
     glDeleteTextures(1, &gameoverTex);
+	glDeleteTextures(1, &wallTex);
 	glfwTerminate();
 	return EXIT_SUCCESS;
 }

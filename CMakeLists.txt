@@ -75,31 +75,13 @@ target_link_libraries(${PROJECT_NAME}
 	OpenGL::GL)
 
 add_custom_command(
-	TARGET ${PROJECT_NAME} POST_BUILD
-	COMMAND ${CMAKE_COMMAND} -E copy
-	${CMAKE_SOURCE_DIR}/sprite/pacman.png
-	${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/sprite/pacman.png)
+	TARGET ${PROJECT_NAME} PRE_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_directory
+	${CMAKE_SOURCE_DIR}/sprite
+	${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/sprite)
 
 add_custom_command(
-	TARGET ${PROJECT_NAME} POST_BUILD
-	COMMAND ${CMAKE_COMMAND} -E copy
-	${CMAKE_SOURCE_DIR}/sprite/number.png
-	${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/sprite/number.png)
-
-add_custom_command(
-	TARGET ${PROJECT_NAME} POST_BUILD
-	COMMAND ${CMAKE_COMMAND} -E copy
-	${CMAKE_SOURCE_DIR}/sprite/gameover.png
-	${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/sprite/gameover.png)
-
-add_custom_command(
-	TARGET ${PROJECT_NAME} POST_BUILD
-	COMMAND ${CMAKE_COMMAND} -E copy
-	${CMAKE_SOURCE_DIR}/level/level0
-	${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/level/level0)
-
-add_custom_command(
-	TARGET ${PROJECT_NAME} POST_BUILD
-	COMMAND ${CMAKE_COMMAND} -E copy
-	${CMAKE_SOURCE_DIR}/level/level1
-	${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/level/level1)
+	TARGET ${PROJECT_NAME} PRE_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_directory
+	${CMAKE_SOURCE_DIR}/level
+	${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/level)

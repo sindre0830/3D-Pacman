@@ -131,6 +131,8 @@ int main() {
 	}
 	//construct pellets
 	Pellet pellet;
+	//enable depth
+	glEnable(GL_DEPTH_TEST);
 	//enable MSAA
 	glEnable(GL_MULTISAMPLE);
 	//enable transparency on texture
@@ -158,8 +160,8 @@ int main() {
         lastTime = nowTime;
 		//processes all pending events
 		glfwPollEvents();
-		//for every frame reset background color
-		glClear(GL_COLOR_BUFFER_BIT);
+		//for every frame reset background color buffer and depth buffer
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//set modelmatrix
 		modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, 0.f, 0.f));
 		modelMatrix = glm::rotate(modelMatrix, glm::radians(0.f), glm::vec3(1.f, 0.f, 0.f));

@@ -28,7 +28,7 @@ void main() {
 static const std::string wallVertexShader3D = R"(
 #version 430 core
 //input
-layout(location = 0) in vec2 a_Position;
+layout(location = 0) in vec3 a_Position;
 layout(location = 1) in vec2 texPos;
 //output
 out vec2 vs_texPos;
@@ -36,8 +36,8 @@ out vec2 vs_texPos;
 uniform mat4 u_projectionMatrix = mat4(1.f);
 
 void main() {
+	gl_Position = u_projectionMatrix * vec4(a_Position, 1.f);
 	vs_texPos = texPos;
-	gl_Position = u_projectionMatrix * vec4(a_Position, 0.f, 1.f);
 }
 )";
 //3D fragment shader

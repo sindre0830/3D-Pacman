@@ -41,6 +41,8 @@ int main() {
 		std::cin.get();
 		return EXIT_FAILURE;
 	}
+	//create framebuffer size variables
+	int framebufferWidth = 0, framebufferHeight = 0;
 	//set window hints
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
@@ -50,6 +52,9 @@ int main() {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	//create window
 	GLFWwindow *window = glfwCreateWindow(g_level->windowWidth, g_level->windowHeight, "Pac-Man", nullptr, nullptr);
+	//set the framebuffer size variables
+	glfwGetFramebufferSize(window, &framebufferWidth, &framebufferHeight);
+	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	//setting the OpenGL context to the window
 	glfwMakeContextCurrent(window);
 	//branch if window isn't created and kill the application
@@ -68,8 +73,29 @@ int main() {
 	}
 	//eanable capture of debug output
 	enableDebug();
+
+	//setup rotate
+	glm::mat4 modelMatrix(1.f);
+	modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, 0.f, 0.f));
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(0.f), glm::vec3(1.f, 0.f, 0.f));
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(0.f), glm::vec3(0.f, 1.f, 0.f));
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(0.f), glm::vec3(0.f, 0.f, 1.f));
+	modelMatrix = glm::scale(modelMatrix, glm::vec3(1.f));
+	//setup camera
+	glm::vec3 camPos(0.f, 0.f, 1.5f);
+	glm::vec3 worldUp(0.f, 1.f, 0.f);
+	glm::vec3 camFront(0.f, 0.f, -1.f);
+	glm::mat4 viewMatrix(1.f);
+	viewMatrix = glm::lookAt(camPos, camPos + camFront, worldUp);
+	float fov = 90.f;
+	float nearPlane = 0.1f;
+	float farPlane = 1000.f;
+	glm::mat4 projectionMatrix(1.f);
+	projectionMatrix = glm::perspective(glm::radians(fov), static_cast<float>(framebufferWidth) / framebufferHeight, nearPlane, farPlane);
+	projectionMatrix = projectionMatrix * viewMatrix * modelMatrix;
+	
 	//construct maze
-	Maze maze;
+	Maze maze(projectionMatrix);
 	//construct array of scoreboard classes
 	std::vector<Score*> scoreboard(4, nullptr);
 	for(int i = 0; i < scoreboard.size(); i++) {
@@ -121,6 +147,8 @@ int main() {
     double lastTime = glfwGetTime(), nowTime = 0, timer = lastTime;
     double deltaTime = 0;
 	int counter = 0;
+
+	g_level->gamemode = FIRST_PERSON;
 	//loop until user closes window
 	while(!glfwWindowShouldClose(window)) {
 		//delta time managment
@@ -131,8 +159,19 @@ int main() {
 		glfwPollEvents();
 		//for every frame reset background color
 		glClear(GL_COLOR_BUFFER_BIT);
+		//set modelmatrix
+		modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, 0.f, 0.f));
+		modelMatrix = glm::rotate(modelMatrix, glm::radians(0.f), glm::vec3(1.f, 0.f, 0.f));
+		modelMatrix = glm::rotate(modelMatrix, glm::radians(0.25f), glm::vec3(0.f, 1.f, 0.f));
+		modelMatrix = glm::rotate(modelMatrix, glm::radians(0.f), glm::vec3(0.f, 0.f, 1.f));
+		modelMatrix = glm::scale(modelMatrix, glm::vec3(1.f));
+		//update framebuffer size
+		glfwGetFramebufferSize(window, &framebufferWidth, &framebufferHeight);
+		projectionMatrix = glm::mat4(1.f);
+		projectionMatrix = glm::perspective(glm::radians(fov), static_cast<float>(framebufferWidth) / framebufferHeight, nearPlane, farPlane);
+		projectionMatrix = projectionMatrix * viewMatrix * modelMatrix;
 		//draw maze
-		maze.draw(g_level->gamemode);
+		maze.draw(projectionMatrix);
 		//branch if gamemode is 2D, else if gamemode is 3D, and call their respected game loops
 		if(g_level->gamemode == TWO_DIMENSIONAL) {
 			gameloop2D(window, &pellet, &pacman, ghostArr, deltaTime, counter);

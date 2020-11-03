@@ -8,6 +8,10 @@
 #include <random>
 /* global data */
 extern LevelData *g_level;
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+	
+}
 /**
  * @brief Generate random index and set position
  * 

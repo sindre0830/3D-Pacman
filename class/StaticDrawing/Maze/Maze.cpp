@@ -11,12 +11,14 @@ extern LevelData *g_level;
  */
 Maze::~Maze() {
     destroyVAO(cornerVAO);
+	glDeleteProgram(shaderProgram3D);
+	destroyVAO(vao3D);
 }
 /**
  * @brief Construct a new Wall:: Wall object
  * 
  */
-Maze::Maze() {
+Maze::Maze(glm::mat4 projectionMatrix) {
 	//create shader program
     shaderProgram = compileShader(wallVertexShader, wallFragmentShader);
 	//generate wall VAO
@@ -30,14 +32,27 @@ Maze::Maze() {
 	//set the vertex attribute
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLuint), (const void*)0);
 	glEnableVertexAttribArray(0);
+	//create 3D shader program
+	shaderProgram3D = compileShader(wallVertexShader3D, wallFragmentShader3D);
+
+	//generate 3D wall
+	arr = genWallCoordinates3D();
+	vao3D = genObject(arr, wallSize);
+    //specify the layout of the vertex data
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
+
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_projectionMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
 }
 /**
  * @brief Draw object by installing the shader program and binding the VAO to the current rendering state
  * 
  */
-void Maze::draw(int dimension) {
-	glUseProgram(shaderProgram);
+void Maze::draw(glm::mat4 projectionMatrix) {
 	if(g_level->gamemode == TWO_DIMENSIONAL) {
+		glUseProgram(shaderProgram);
 		//draw walls
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, (6 * wallSize), GL_UNSIGNED_INT, (const void*)0);
@@ -45,7 +60,12 @@ void Maze::draw(int dimension) {
 		glBindVertexArray(cornerVAO);
 		glDrawArrays(GL_TRIANGLES, 0, (3 * cornerSize));
 	} else {
-		
+		auto samplerSlotLocation = glGetUniformLocation(shaderProgram3D, "u_texture");
+		glUseProgram(shaderProgram3D);
+		glBindVertexArray(vao3D);
+		glUniform1i(samplerSlotLocation, 3);
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_projectionMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+		glDrawElements(GL_TRIANGLES, (6 * wallSize), GL_UNSIGNED_INT, (const void*)0);
 	}
 }
 /**
@@ -190,4 +210,66 @@ GLuint Maze::genCornerVAO() {
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, arr.size() * sizeof(GLfloat), arr.data(), GL_STATIC_DRAW);
 	return vao;
+}
+/**
+ * @brief Generate buffer array (x, y) * 4
+ * 
+ * @param target 
+ * @return std::vector<GLfloat> 
+ */
+std::vector<GLfloat> Maze::genWallCoordinates3D() {
+	float
+		xResize = g_level->gridElementWidth / 1.2f,
+		yResize = g_level->gridElementHeight / 1.2f;
+	//buffer array
+	std::vector<GLfloat> arr;
+	//fills in array with coordinates
+	for (int i = 0; i < g_level->gridHeight; i++) {
+		for (int j = 0; j < g_level->gridWidth; j++) {
+			//branch if target is a wall
+			if (g_level->grid[i][j] == WALL) {
+				//branch if there can be a wall above the target
+				if(i + 1 < g_level->gridHeight && g_level->grid[i + 1][j] != WALL) {
+					wallSize++;
+					arr.insert(arr.end(), {
+						g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][X], g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][Y], 0.f, 1.f,
+						g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][Y], 0.f, 0.f,
+						g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][Y], 1.f, 0.f,
+						g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][Y], 1.f, 1.f
+					});
+				}
+				//branch if there can be a wall under the target
+				if(i - 1 >= 0 && g_level->grid[i - 1][j] != WALL) {
+					wallSize++;
+					arr.insert(arr.end(), {
+						g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][X], g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][Y], 0.f, 1.f,
+						g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][Y], 0.f, 0.f,
+						g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][Y], 1.f, 0.f,
+						g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][Y], 1.f, 1.f
+					});
+				}
+				//branch if there can be a wall left of the target
+				if(j - 1 >= 0 && g_level->grid[i][j - 1] != WALL) {
+					wallSize++;
+					arr.insert(arr.end(), {
+						g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][X], g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][Y], 0.f, 1.f,
+						g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][Y], 0.f, 0.f,
+						g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][Y], 1.f, 0.f,
+						g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][Y], 1.f, 1.f
+					});
+				}
+				//branch if there can be a wall right of the target
+				if(j + 1 < g_level->gridWidth && g_level->grid[i][j + 1] != WALL) {
+					wallSize++;
+					arr.insert(arr.end(), {
+						g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][X], g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][Y], 0.f, 1.f,
+						g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][Y], 0.f, 0.f,
+						g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][Y], 1.f, 0.f,
+						g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][Y], 1.f, 1.f
+					});
+				}
+			}
+		}
+	}
+	return arr;
 }

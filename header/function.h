@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 /* functionality */
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void gameloop2D(GLFWwindow *window, Pellet *pellet, Pacman *pacman, std::vector<Ghost*> ghostArr, const double deltaTime, int &counter);
 void gameloop3D(GLFWwindow *window, Pellet *pellet, Pacman *pacman, std::vector<Ghost*> ghostArr, const double deltaTime, int &counter);
 void getGhostPos(std::vector<std::vector<int>> &arr, int &row, int &col);

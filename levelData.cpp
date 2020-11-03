@@ -12,7 +12,7 @@ LevelData::LevelData() {
     int index = 0;
     bool flag = true;
     //array with all possible levels
-    std::vector<std::string> possibleLevelsArr = {"level0", "level1"};
+    std::vector<std::string> possibleLevelsArr = {"level0"/*, "level1"*/};
     //branch if there is only 1 level in the array
     if(possibleLevelsArr.size() > 1) {
         //print out all possible levels to the terminal

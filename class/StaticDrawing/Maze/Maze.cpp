@@ -37,17 +37,7 @@ Maze::Maze(glm::mat4 projectionMatrix) {
 
 	//generate 3D wall
 	arr = genWallCoordinates3D();
-	//vao3D = genObject(arr, wallSize);
-	GLuint vao;
-	glCreateVertexArrays(1, &vao);
-	glBindVertexArray(vao);
-	//create the vertex buffer object
-	GLuint vbo;
-	glGenBuffers(1, &vbo);
-	//set vbo to arr data
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, arr.size() * sizeof(GLfloat), arr.data(), GL_STATIC_DRAW);
-	vao3D = vao;
+	vao3D = genObject(arr, 2);
     //specify the layout of the vertex data
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), 0);
@@ -75,8 +65,7 @@ void Maze::draw(glm::mat4 projectionMatrix) {
 		glBindVertexArray(vao3D);
 		glUniform1i(samplerSlotLocation, 3);
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_projectionMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
-		//glDrawElements(GL_TRIANGLES, (6 * wallSize), GL_UNSIGNED_INT, (const void*)0);
-		glDrawArrays(GL_TRIANGLES, 0, 12);
+		glDrawElements(GL_TRIANGLES, (6 * 2), GL_UNSIGNED_INT, (const void*)0);
 	}
 }
 /**
@@ -313,18 +302,14 @@ std::vector<GLfloat> Maze::genWallCoordinates3D() {
          0.5f,  0.5f,  0.5f,  1.0f, 0.0f,*/
 
         -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
         -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
 
         -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
         -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f
     };
 
 	return arr;

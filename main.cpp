@@ -77,7 +77,7 @@ int main() {
 	//setup rotate
 	glm::mat4 modelMatrix(1.f);
 	modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, 0.f, 0.f));
-	modelMatrix = glm::rotate(modelMatrix, glm::radians(0.f), glm::vec3(1.f, 0.f, 0.f));
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(-55.f), glm::vec3(1.f, 0.f, 0.f));
 	modelMatrix = glm::rotate(modelMatrix, glm::radians(0.f), glm::vec3(0.f, 1.f, 0.f));
 	modelMatrix = glm::rotate(modelMatrix, glm::radians(0.f), glm::vec3(0.f, 0.f, 1.f));
 	modelMatrix = glm::scale(modelMatrix, glm::vec3(1.f));
@@ -86,10 +86,11 @@ int main() {
 	glm::vec3 worldUp(0.f, 1.f, 0.f);
 	glm::vec3 camFront(0.f, 0.f, -1.f);
 	glm::mat4 viewMatrix(1.f);
-	viewMatrix = glm::lookAt(camPos, camPos + camFront, worldUp);
-	float fov = 90.f;
+	//viewMatrix = glm::lookAt(camPos, camPos + camFront, worldUp);
+	viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -3.0f)); 
+	float fov = 45.f;
 	float nearPlane = 0.1f;
-	float farPlane = 1000.f;
+	float farPlane = 100.f;
 	glm::mat4 projectionMatrix(1.f);
 	projectionMatrix = glm::perspective(glm::radians(fov), static_cast<float>(framebufferWidth) / framebufferHeight, nearPlane, farPlane);
 	projectionMatrix = projectionMatrix * viewMatrix * modelMatrix;
@@ -162,8 +163,8 @@ int main() {
 		//set modelmatrix
 		modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, 0.f, 0.f));
 		modelMatrix = glm::rotate(modelMatrix, glm::radians(0.f), glm::vec3(1.f, 0.f, 0.f));
-		modelMatrix = glm::rotate(modelMatrix, glm::radians(0.25f), glm::vec3(0.f, 1.f, 0.f));
-		modelMatrix = glm::rotate(modelMatrix, glm::radians(0.f), glm::vec3(0.f, 0.f, 1.f));
+		modelMatrix = glm::rotate(modelMatrix, glm::radians(0.f), glm::vec3(0.f, 1.f, 0.f));
+		modelMatrix = glm::rotate(modelMatrix, glm::radians(0.2f), glm::vec3(0.f, 0.f, 1.f));
 		modelMatrix = glm::scale(modelMatrix, glm::vec3(1.f));
 		//update framebuffer size
 		glfwGetFramebufferSize(window, &framebufferWidth, &framebufferHeight);

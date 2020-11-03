@@ -77,18 +77,18 @@ int main() {
 	//setup rotate
 	glm::mat4 modelMatrix(1.f);
 	modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, 0.f, 0.f));
-	modelMatrix = glm::rotate(modelMatrix, glm::radians(-55.f), glm::vec3(1.f, 0.f, 0.f));
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(-40.f), glm::vec3(1.f, 0.f, 0.f));
 	modelMatrix = glm::rotate(modelMatrix, glm::radians(0.f), glm::vec3(0.f, 1.f, 0.f));
 	modelMatrix = glm::rotate(modelMatrix, glm::radians(0.f), glm::vec3(0.f, 0.f, 1.f));
 	modelMatrix = glm::scale(modelMatrix, glm::vec3(1.f));
 	//setup camera
-	glm::vec3 camPos(0.f, 0.f, 1.5f);
+	glm::vec3 camPos(0.f, 0.f, 2.f);
 	glm::vec3 worldUp(0.f, 1.f, 0.f);
 	glm::vec3 camFront(0.f, 0.f, -1.f);
 	glm::mat4 viewMatrix(1.f);
-	//viewMatrix = glm::lookAt(camPos, camPos + camFront, worldUp);
-	viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -3.0f)); 
-	float fov = 45.f;
+	viewMatrix = glm::lookAt(camPos, camPos + camFront, worldUp);
+	//viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -3.0f)); 
+	float fov = 80.f;
 	float nearPlane = 0.1f;
 	float farPlane = 100.f;
 	glm::mat4 projectionMatrix(1.f);

@@ -12,12 +12,18 @@ extern LevelData *g_level;
 extern Camera *g_camera;
 
 void changeDimension(GLFWwindow* window) {
-	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
-        g_level->gamemode = FIRST_PERSON;
-    if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
-        g_level->gamemode = TWO_DIMENSIONAL;
-    if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
-        g_level->gamemode = THIRD_PERSON;
+	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
+		g_level->gamemode = FIRST_PERSON;
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	}
+    if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
+		g_level->gamemode = TWO_DIMENSIONAL;
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	}
+    if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS) {
+		g_level->gamemode = THIRD_PERSON;
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	}
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
@@ -26,6 +32,29 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
+
+	int widthDifference = width - g_level->windowWidth;
+	int heightDifference = height - g_level->windowHeight;
+	if(widthDifference > 0 && heightDifference > 0) {
+		glViewport((widthDifference / 2) - (heightDifference / 2), 0, (width - widthDifference) + heightDifference, height);
+	} else if(widthDifference < 0 && heightDifference < 0) {
+		glViewport(-(heightDifference / 2), -(widthDifference / 2), (width + heightDifference), (height + widthDifference)); //wrong
+	} else if(widthDifference > 0 && heightDifference < 0) {
+		glViewport((widthDifference / 2) - (heightDifference / 2), 0, (width - widthDifference) + heightDifference, height);
+	} else if(widthDifference < 0 && heightDifference > 0) {
+		glViewport(0, -(widthDifference / 2) + (heightDifference / 2), width, (height + widthDifference) - heightDifference);
+	} else {
+		if(widthDifference > 0) {
+			glViewport((widthDifference / 2), 0, (width - widthDifference), height);
+		} else if(widthDifference < 0) {
+			glViewport(0, -(widthDifference / 2), width, (height + widthDifference));
+		}
+		if(heightDifference > 0) {
+			glViewport(0, (heightDifference / 2), width, (height - heightDifference));
+		} else if(heightDifference < 0) {
+			glViewport(-(heightDifference / 2), 0, (width + heightDifference), height);
+		}
+	}
 }
 /**
  * @brief Generate random index and set position

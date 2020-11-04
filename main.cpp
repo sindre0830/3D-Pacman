@@ -150,6 +150,8 @@ int main() {
     double lastTime = glfwGetTime(), nowTime = 0, timer = lastTime;
     double deltaTime = 0;
 	int counter = 0;
+	//reset cursor
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	//loop until user closes window
 	while(!glfwWindowShouldClose(window)) {
 		//delta time managment
@@ -163,7 +165,7 @@ int main() {
 		//check if user wants to change gamemode
 		changeDimension(window);
 		//update view matrix
-		g_camera->updateViewMatrix(window, deltaTime);
+		if(g_level->gamemode != TWO_DIMENSIONAL) g_camera->updateViewMatrix(window, deltaTime);
 		//update framebuffer size
 		glfwGetFramebufferSize(window, &framebufferWidth, &framebufferHeight);
 		//update projection matrix

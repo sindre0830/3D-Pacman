@@ -130,6 +130,9 @@ bool LevelData::inputData() {
 		//set window size
 		windowHeight = gridHeight * 30;
 		windowWidth = gridWidth * 30;
+
+		windowHeight = 1080;
+		windowWidth = 1920;
 		return true;
 	} else return false;
 }

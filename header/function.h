@@ -11,6 +11,8 @@
 #include <string>
 #include <vector>
 /* functionality */
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void processInput(GLFWwindow *window, float deltaTime, glm::vec3 &camPos, glm::vec3 camFront, float &camSpeed, glm::vec3 camUp);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void gameloop2D(GLFWwindow *window, Pellet *pellet, Pacman *pacman, std::vector<Ghost*> ghostArr, const double deltaTime, int &counter);
 void gameloop3D(GLFWwindow *window, Pellet *pellet, Pacman *pacman, std::vector<Ghost*> ghostArr, const double deltaTime, int &counter);

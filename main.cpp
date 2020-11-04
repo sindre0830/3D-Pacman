@@ -23,6 +23,9 @@
 #include <iostream>
 /* global data */
 LevelData *g_level;
+float yaw, pitch, lastX, lastY;
+bool firstMouse;
+glm::vec3 camFront;
 /**
  * Main program.
  */
@@ -57,6 +60,8 @@ int main() {
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	//setting the OpenGL context to the window
 	glfwMakeContextCurrent(window);
+	//allow capture of cursor and focus it on the middle while hiding the icon
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	//branch if window isn't created and kill the application
 	if (window == nullptr) {
 		std::cerr << "GLFW failed on window creation.\n";
@@ -77,18 +82,31 @@ int main() {
 	//setup rotate
 	glm::mat4 modelMatrix(1.f);
 	modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, 0.f, 0.f));
-	modelMatrix = glm::rotate(modelMatrix, glm::radians(-40.f), glm::vec3(1.f, 0.f, 0.f));
-	modelMatrix = glm::rotate(modelMatrix, glm::radians(0.f), glm::vec3(0.f, 1.f, 0.f));
-	modelMatrix = glm::rotate(modelMatrix, glm::radians(0.f), glm::vec3(0.f, 0.f, 1.f));
-	modelMatrix = glm::scale(modelMatrix, glm::vec3(1.f));
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(-90.f), glm::vec3(1.f, 0.f, 0.f));
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(90.f), glm::vec3(0.f, 0.f, 1.f));
+	/*modelMatrix = glm::rotate(modelMatrix, glm::radians(0.f), glm::vec3(0.f, 0.f, 1.f));
+	modelMatrix = glm::scale(modelMatrix, glm::vec3(1.f));*/
 	//setup camera
-	glm::vec3 camPos(0.f, 0.f, 2.f);
-	glm::vec3 worldUp(0.f, 1.f, 0.f);
-	glm::vec3 camFront(0.f, 0.f, -1.f);
+	glm::vec3 camPos(0.f, 0.f, 3.f);
+	camFront = glm::vec3(0.f, 0.f, -1.f);
+	glm::vec3 camUp(0.f, 1.f, 0.f);
+
 	glm::mat4 viewMatrix(1.f);
-	viewMatrix = glm::lookAt(camPos, camPos + camFront, worldUp);
-	//viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -3.0f)); 
-	float fov = 80.f;
+	viewMatrix = glm::lookAt(camPos, camPos + camFront, camUp);
+
+	float camSpeed = 0.05f;
+
+	yaw = -90.0f,
+	pitch = 0.f;
+	
+	lastX = g_level->windowWidth / 2.f;
+	lastY = g_level->windowHeight / 2.f;
+
+	firstMouse = true;
+
+	glfwSetCursorPosCallback(window, mouse_callback);
+
+	float fov = 45.f;
 	float nearPlane = 0.1f;
 	float farPlane = 100.f;
 	glm::mat4 projectionMatrix(1.f);
@@ -163,11 +181,21 @@ int main() {
 		//for every frame reset background color buffer and depth buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//set modelmatrix
-		modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, 0.f, 0.f));
-		modelMatrix = glm::rotate(modelMatrix, glm::radians(0.f), glm::vec3(1.f, 0.f, 0.f));
-		modelMatrix = glm::rotate(modelMatrix, glm::radians(0.f), glm::vec3(0.f, 1.f, 0.f));
-		modelMatrix = glm::rotate(modelMatrix, glm::radians(0.2f), glm::vec3(0.f, 0.f, 1.f));
-		modelMatrix = glm::scale(modelMatrix, glm::vec3(1.f));
+		//modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, 0.f, 0.f));
+		//modelMatrix = glm::rotate(modelMatrix, glm::radians(0.f), glm::vec3(1.f, 1.f, 1.f));
+		//modelMatrix = glm::scale(modelMatrix, glm::vec3(1.f));
+		
+		processInput(window, deltaTime, camPos, camFront, camSpeed, camUp);
+		viewMatrix = glm::mat4(1.f);
+		viewMatrix = glm::lookAt(camPos, camPos + camFront, camUp);
+		/*camX = sin(glfwGetTime()) * radius;
+		camZ = cos(glfwGetTime()) * radius;
+		glm::mat4 viewMatrix(1.f);
+		viewMatrix = glm::lookAt(
+			glm::vec3(camX, 0.0, camZ), 
+			glm::vec3(0.0, 0.0, 0.0), 
+			glm::vec3(0.0, 1.0, 0.0)
+		);*/
 		//update framebuffer size
 		glfwGetFramebufferSize(window, &framebufferWidth, &framebufferHeight);
 		projectionMatrix = glm::mat4(1.f);

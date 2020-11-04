@@ -266,6 +266,14 @@ std::vector<GLfloat> Maze::genWallCoordinates3D() {
 						g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][Y], -Z, 1.f, 1.f
 					});
 				}
+			} else if(g_level->grid[i][j] == WALL) {
+				wallSize++;
+					arr.insert(arr.end(), {
+						g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][X], g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][Y], Z, 0.f, 1.f,
+						g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][Y], Z, 0.f, 0.f,
+						g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][Y], Z, 1.f, 0.f,
+						g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][Y], Z, 1.f, 1.f
+					});
 			}
 		}
 	}

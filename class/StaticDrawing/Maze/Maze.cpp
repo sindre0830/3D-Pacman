@@ -18,7 +18,7 @@ Maze::~Maze() {
  * @brief Construct a new Wall:: Wall object
  * 
  */
-Maze::Maze(glm::mat4 projectionMatrix) {
+Maze::Maze(glm::mat4 collectionMatrix) {
 	//create shader program
     shaderProgram = compileShader(wallVertexShader, wallFragmentShader);
 	//generate wall VAO
@@ -44,13 +44,13 @@ Maze::Maze(glm::mat4 projectionMatrix) {
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
 
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_projectionMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(collectionMatrix));
 }
 /**
  * @brief Draw object by installing the shader program and binding the VAO to the current rendering state
  * 
  */
-void Maze::draw(glm::mat4 projectionMatrix) {
+void Maze::draw(glm::mat4 collectionMatrix) {
 	if(g_level->gamemode == TWO_DIMENSIONAL) {
 		glUseProgram(shaderProgram);
 		//draw walls
@@ -64,7 +64,7 @@ void Maze::draw(glm::mat4 projectionMatrix) {
 		glUseProgram(shaderProgram3D);
 		glBindVertexArray(vao3D);
 		glUniform1i(samplerSlotLocation, 3);
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_projectionMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(collectionMatrix));
 		glDrawElements(GL_TRIANGLES, (6 * wallSize), GL_UNSIGNED_INT, (const void*)0);
 	}
 }
@@ -218,7 +218,7 @@ GLuint Maze::genCornerVAO() {
  * @return std::vector<GLfloat> 
  */
 std::vector<GLfloat> Maze::genWallCoordinates3D() {
-	float Z = (g_level->gridElementWidth + g_level->gridElementHeight) / 2.f;
+	float Z = 0.02f;
 	//buffer array
 	std::vector<GLfloat> arr;
 	//fills in array with coordinates

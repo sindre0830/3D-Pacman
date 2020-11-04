@@ -93,8 +93,7 @@ int main() {
 	float farPlane = 100.f;
 	glm::mat4 projectionMatrix(1.f);
 	projectionMatrix = glm::perspective(glm::radians(fov), static_cast<float>(framebufferWidth) / framebufferHeight, nearPlane, farPlane);
-	projectionMatrix = projectionMatrix * g_camera->viewMatrix * modelMatrix;
-	
+	glm::mat4 collectionMatrix = projectionMatrix * g_camera->viewMatrix * modelMatrix;
 	//construct maze
 	Maze maze(projectionMatrix);
 	//construct array of scoreboard classes
@@ -132,7 +131,7 @@ int main() {
 	//construct pellets
 	Pellet pellet;
 	//enable depth
-	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_DEPTH_TEST); //doing it in the loop now
 	//enable MSAA
 	glEnable(GL_MULTISAMPLE);
 	//enable transparency on texture
@@ -166,15 +165,14 @@ int main() {
 		changeDimension(window);
 		//update view matrix
 		if(g_level->gamemode != TWO_DIMENSIONAL) g_camera->updateViewMatrix(window, deltaTime);
-		//update framebuffer size
-		glfwGetFramebufferSize(window, &framebufferWidth, &framebufferHeight);
-		//update projection matrix
-		projectionMatrix = glm::mat4(1.f);
-		projectionMatrix = glm::perspective(glm::radians(fov), static_cast<float>(framebufferWidth) / framebufferHeight, nearPlane, farPlane);
 		//do calculations before sending it to the vertex shader
-		projectionMatrix = projectionMatrix * g_camera->viewMatrix * modelMatrix;
+		collectionMatrix = projectionMatrix * g_camera->viewMatrix * modelMatrix;
+		//enable depth value (Z)
+		if(g_level->gamemode != TWO_DIMENSIONAL) glEnable(GL_DEPTH_TEST);
 		//draw maze
-		maze.draw(projectionMatrix);
+		maze.draw(collectionMatrix);
+		//disable depth value (Z)
+		if(g_level->gamemode != TWO_DIMENSIONAL) glDisable(GL_DEPTH_TEST);
 		//draw scoreboard
 		for(int i = 0; i < scoreboard.size(); i++) {
 			scoreboard[i]->draw();
@@ -183,8 +181,21 @@ int main() {
 		}
 		//branch if scoreboard has been updated and reset it
 		if(g_level->scoreChanged) g_level->scoreChanged = false;
+		//enable depth value (Z)
+		if(g_level->gamemode != TWO_DIMENSIONAL) glEnable(GL_DEPTH_TEST);
 		//draw pellets
 		pellet.draw();
+		//disable depth value (Z)
+		if(g_level->gamemode != TWO_DIMENSIONAL) glDisable(GL_DEPTH_TEST);
+		//draw pacman
+		pacman.draw();
+		//branch if game isn't over
+		if (!g_level->gameover && deltaTime >= 1.0){
+			//translate pacman
+			pacman.mov(pellet);
+			//check for user input and change direction accordingly
+			pacman.inputDirection(window);
+		}
 		//draw ghosts
 		bool noActiveGhosts = true;
 		for(int i = 0; i < ghostArr.size(); i++) {
@@ -204,15 +215,6 @@ int main() {
 				//branch if ghost isn't dead and change the color
 				if(!ghostArr[i]->dead) ghostArr[i]->changeColor(1);
 			}
-		}
-		//draw pacman
-		pacman.draw();
-		//branch if game isn't over
-		if (!g_level->gameover && deltaTime >= 1.0){
-			//translate pacman
-			pacman.mov(pellet);
-			//check for user input and change direction accordingly
-			pacman.inputDirection(window);
 		}
 		//branch if game is over and 1 second has gone since game is over and display "GAME OVER" to the screen
 		if(g_level->gameover && counter > 0) gameState.draw();

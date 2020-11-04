@@ -33,10 +33,10 @@ layout(location = 1) in vec2 texPos;
 //output
 out vec2 vs_texPos;
 //uniform
-uniform mat4 u_projectionMatrix = mat4(1.f);
+uniform mat4 u_collectionMatrix = mat4(1.f);
 
 void main() {
-	gl_Position = u_projectionMatrix * vec4(a_Position, 1.f);
+	gl_Position = u_collectionMatrix * vec4(a_Position, 1.f);
 	vs_texPos = texPos;
 }
 )";

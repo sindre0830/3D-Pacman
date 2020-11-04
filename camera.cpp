@@ -60,7 +60,7 @@ void Camera::updateDirection(double xpos, double ypos) {
 	if(pitch > 89.0f) pitch =  89.0f;
 	if(pitch < -89.0f) pitch = -89.0f;
 
-	//restrict y movement (good for first-person)
+	//restrict y movement (0 = first-person, -89 = third-person)
 	pitch = 0.f;
 
 	glm::vec3 direction;

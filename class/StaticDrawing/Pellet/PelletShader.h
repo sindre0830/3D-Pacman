@@ -13,7 +13,7 @@ out float vs_display;
 
 void main() {
     vs_display = display;
-	gl_Position = vec4(gridPos, 0.f, 1.f);
+	gl_Position = vec4(gridPos, display, 1.f);
 }
 )";
 //fragment shader
@@ -25,9 +25,9 @@ in float vs_display;
 out vec4 color;
 
 void main() {
-    if(vs_display == 1.f) {
+    if(vs_display == -0.4f) {
         //set color white
-        color = vec4(1.f, 1.f, 1.f, 1.f); 
+        color = vec4(1.f, 1.f, 1.f, 1.f);
     } else {
         //set color black
         color = vec4(0.f, 0.f, 0.f, 1.f); 

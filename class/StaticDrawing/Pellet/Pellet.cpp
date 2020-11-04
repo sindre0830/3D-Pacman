@@ -54,7 +54,7 @@ void Pellet::draw() {
  * @param x 
  */
 void Pellet::hidePellet(const int col, const int row) {
-	GLfloat display = 0.f;
+	GLfloat display = 1.f;
 	for(int i = 8; i < pelletByteSize; i += 12) {
 		glBufferSubData(GL_ARRAY_BUFFER, bufferPos[std::make_pair(col, row)] + i, sizeof(GLfloat), &display);
 	}
@@ -68,7 +68,7 @@ void Pellet::hidePellet(const int col, const int row) {
 std::vector<GLfloat> Pellet::genCoordinates() {
 	float
 		//display pellet
-		display = 1.f,
+		display = -0.4f,
 		//resize pellet
 		xResize = g_level->gridElementWidth / 2.8f,
 		yResize = g_level->gridElementHeight / 2.8f,

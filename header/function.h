@@ -11,10 +11,9 @@
 #include <string>
 #include <vector>
 /* functionality */
+void changeDimension(GLFWwindow* window);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void gameloop2D(GLFWwindow *window, Pellet *pellet, Pacman *pacman, std::vector<Ghost*> ghostArr, const double deltaTime, int &counter);
-void gameloop3D(GLFWwindow *window, Pellet *pellet, Pacman *pacman, std::vector<Ghost*> ghostArr, const double deltaTime, int &counter);
 void getGhostPos(std::vector<std::vector<int>> &arr, int &row, int &col);
 int randomIndex(const int min, const int max);
 GLuint loadTexture(const std::string &filepath, const GLuint slot);

@@ -19,7 +19,7 @@ void main() {
 	vec3 newTexPos = u_transformationTex * vec3(texPos, 1.0f);
 	vs_texPos = vec2(newTexPos);
 	//transform grid coordinates
-	gl_Position = u_transformationPos * vec4(gridPos, 0.0f, 1.0f);
+	gl_Position = u_transformationPos * vec4(gridPos, -0.5f, 1.0f);
 }
 )";
 //fragment shader

@@ -12,7 +12,7 @@ LevelData::LevelData() {
     int index = 0;
     bool flag = true;
     //array with all possible levels
-    std::vector<std::string> possibleLevelsArr = {"level0"/*, "level1"*/};
+    std::vector<std::string> possibleLevelsArr = {"level1"/*, "level1"*/};
     //branch if there is only 1 level in the array
     if(possibleLevelsArr.size() > 1) {
         //print out all possible levels to the terminal
@@ -73,6 +73,9 @@ bool LevelData::inputData() {
         //input grid height from file
 		file >> gridHeight;
 		file.ignore();
+
+		std::cout << gridWidth << ", " << gridHeight << "\n";
+
 		for (int i = 0; i < gridHeight; i++) {
 			std::vector<int> arrRow;
 			for (int j = 0; j < gridWidth; j++) {
@@ -130,9 +133,6 @@ bool LevelData::inputData() {
 		//set window size
 		windowHeight = gridHeight * 30;
 		windowWidth = gridWidth * 30;
-
-		windowHeight = 1080;
-		windowWidth = 1920;
 		return true;
 	} else return false;
 }

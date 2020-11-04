@@ -13,7 +13,7 @@ out vec2 vs_texPos;
 
 void main() {
 	vs_texPos = texPos;
-	gl_Position = vec4(gridPos, 0.0f, 1.0f);
+	gl_Position = vec4(gridPos, -1.0f, 1.0f);
 }
 )";
 //fragment shader

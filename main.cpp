@@ -45,8 +45,6 @@ int main() {
 		std::cin.get();
 		return EXIT_FAILURE;
 	}
-	//declare framebuffer size variables
-	int framebufferWidth = 0, framebufferHeight = 0;
 	//set window hints
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
@@ -56,8 +54,10 @@ int main() {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	//create window
 	GLFWwindow *window = glfwCreateWindow(g_level->windowWidth, g_level->windowHeight, "Pac-Man", nullptr, nullptr);
-	//set the framebuffer size variables
+	//set framebuffer size data
+	int framebufferWidth = 0, framebufferHeight = 0;
 	glfwGetFramebufferSize(window, &framebufferWidth, &framebufferHeight);
+	//declare framebuffer size callback
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	//setting the OpenGL context to the window
 	glfwMakeContextCurrent(window);
@@ -150,8 +150,6 @@ int main() {
     double lastTime = glfwGetTime(), nowTime = 0, timer = lastTime;
     double deltaTime = 0;
 	int counter = 0;
-
-	g_level->gamemode = FIRST_PERSON;
 	//loop until user closes window
 	while(!glfwWindowShouldClose(window)) {
 		//delta time managment
@@ -162,19 +160,19 @@ int main() {
 		glfwPollEvents();
 		//for every frame reset background color buffer and depth buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//check if user wants to change gamemode
+		changeDimension(window);
 		//update view matrix
 		g_camera->updateViewMatrix(window, deltaTime);
 		//update framebuffer size
 		glfwGetFramebufferSize(window, &framebufferWidth, &framebufferHeight);
+		//update projection matrix
 		projectionMatrix = glm::mat4(1.f);
 		projectionMatrix = glm::perspective(glm::radians(fov), static_cast<float>(framebufferWidth) / framebufferHeight, nearPlane, farPlane);
+		//do calculations before sending it to the vertex shader
 		projectionMatrix = projectionMatrix * g_camera->viewMatrix * modelMatrix;
 		//draw maze
 		maze.draw(projectionMatrix);
-		//branch if gamemode is 2D, else if gamemode is 3D, and call their respected game loops
-		if(g_level->gamemode == TWO_DIMENSIONAL) {
-			gameloop2D(window, &pellet, &pacman, ghostArr, deltaTime, counter);
-		} else gameloop3D(window, &pellet, &pacman, ghostArr, deltaTime, counter);
 		//draw scoreboard
 		for(int i = 0; i < scoreboard.size(); i++) {
 			scoreboard[i]->draw();
@@ -183,12 +181,36 @@ int main() {
 		}
 		//branch if scoreboard has been updated and reset it
 		if(g_level->scoreChanged) g_level->scoreChanged = false;
+		//draw pellets
+		pellet.draw();
+		//draw ghosts
+		bool noActiveGhosts = true;
+		for(int i = 0; i < ghostArr.size(); i++) {
+			//branch if ghost isn't dead
+			if(!ghostArr[i]->dead) {
+				noActiveGhosts = false;
+				ghostArr[i]->draw();
+				//branch if game isn't over and translate the ghost
+				if (!g_level->gameover && deltaTime >= 1.0) ghostArr[i]->mov();
+			}
+		}
+		//branch if there are no more ghosts on the level and end the game
+		if(noActiveGhosts) g_level->gameover = true;
 		//branch if the magic effect just started
 		if(counter == 0 && g_level->magicEffect) {
 			for(int i = 0; i < ghostArr.size(); i++) {
 				//branch if ghost isn't dead and change the color
 				if(!ghostArr[i]->dead) ghostArr[i]->changeColor(1);
 			}
+		}
+		//draw pacman
+		pacman.draw();
+		//branch if game isn't over
+		if (!g_level->gameover && deltaTime >= 1.0){
+			//translate pacman
+			pacman.mov(pellet);
+			//check for user input and change direction accordingly
+			pacman.inputDirection(window);
 		}
 		//branch if game is over and 1 second has gone since game is over and display "GAME OVER" to the screen
 		if(g_level->gameover && counter > 0) gameState.draw();
@@ -220,7 +242,7 @@ int main() {
 			}
 		}
 		//reset delta time 
-		if (!g_level->gameover && deltaTime >= 1.0) deltaTime -= 1.0;
+		if (deltaTime >= 1.0) deltaTime -= 1.0;
 		//go to next buffer
 		glfwSwapBuffers(window);
 		//dynamic resizing

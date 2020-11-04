@@ -11,6 +11,7 @@
 /* library */
 #include "header/dictionary.h"
 #include "header/levelData.h"
+#include "header/Camera.h"
 #include "header/function.h"
 #include "class/StaticDrawing/GameState/GameState.h"
 #include "class/DynamicDrawing/Score/Score.h"
@@ -23,15 +24,15 @@
 #include <iostream>
 /* global data */
 LevelData *g_level;
-float yaw, pitch, lastX, lastY;
-bool firstMouse;
-glm::vec3 camFront;
+Camera *g_camera;
 /**
  * Main program.
  */
 int main() {
 	static LevelData level;
+	static Camera camera;
 	g_level = &level;
+	g_camera = &camera;
 	//branch if file isn't initialized and kill the application
 	if (!g_level->inputData()) {
 		std::cerr << "File initialization failed.\n";
@@ -44,7 +45,7 @@ int main() {
 		std::cin.get();
 		return EXIT_FAILURE;
 	}
-	//create framebuffer size variables
+	//declare framebuffer size variables
 	int framebufferWidth = 0, framebufferHeight = 0;
 	//set window hints
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
@@ -60,7 +61,7 @@ int main() {
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	//setting the OpenGL context to the window
 	glfwMakeContextCurrent(window);
-	//allow capture of cursor and focus it on the middle while hiding the icon
+	//enable capture of cursor and focus it on the middle while hiding the icon
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	//branch if window isn't created and kill the application
 	if (window == nullptr) {
@@ -78,40 +79,21 @@ int main() {
 	}
 	//eanable capture of debug output
 	enableDebug();
-
+	//get initial cursor position
+	glfwSetCursorPosCallback(window, mouse_callback);
 	//setup rotate
 	glm::mat4 modelMatrix(1.f);
 	modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, 0.f, 0.f));
 	modelMatrix = glm::rotate(modelMatrix, glm::radians(-90.f), glm::vec3(1.f, 0.f, 0.f));
 	modelMatrix = glm::rotate(modelMatrix, glm::radians(90.f), glm::vec3(0.f, 0.f, 1.f));
-	/*modelMatrix = glm::rotate(modelMatrix, glm::radians(0.f), glm::vec3(0.f, 0.f, 1.f));
-	modelMatrix = glm::scale(modelMatrix, glm::vec3(1.f));*/
-	//setup camera
-	glm::vec3 camPos(0.f, 0.f, 3.f);
-	camFront = glm::vec3(0.f, 0.f, -1.f);
-	glm::vec3 camUp(0.f, 1.f, 0.f);
-
-	glm::mat4 viewMatrix(1.f);
-	viewMatrix = glm::lookAt(camPos, camPos + camFront, camUp);
-
-	float camSpeed = 0.05f;
-
-	yaw = -90.0f,
-	pitch = 0.f;
+	modelMatrix = glm::scale(modelMatrix, glm::vec3(2.f));
 	
-	lastX = g_level->windowWidth / 2.f;
-	lastY = g_level->windowHeight / 2.f;
-
-	firstMouse = true;
-
-	glfwSetCursorPosCallback(window, mouse_callback);
-
 	float fov = 45.f;
 	float nearPlane = 0.1f;
 	float farPlane = 100.f;
 	glm::mat4 projectionMatrix(1.f);
 	projectionMatrix = glm::perspective(glm::radians(fov), static_cast<float>(framebufferWidth) / framebufferHeight, nearPlane, farPlane);
-	projectionMatrix = projectionMatrix * viewMatrix * modelMatrix;
+	projectionMatrix = projectionMatrix * g_camera->viewMatrix * modelMatrix;
 	
 	//construct maze
 	Maze maze(projectionMatrix);
@@ -180,27 +162,13 @@ int main() {
 		glfwPollEvents();
 		//for every frame reset background color buffer and depth buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		//set modelmatrix
-		//modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, 0.f, 0.f));
-		//modelMatrix = glm::rotate(modelMatrix, glm::radians(0.f), glm::vec3(1.f, 1.f, 1.f));
-		//modelMatrix = glm::scale(modelMatrix, glm::vec3(1.f));
-		
-		processInput(window, deltaTime, camPos, camFront, camSpeed, camUp);
-		viewMatrix = glm::mat4(1.f);
-		viewMatrix = glm::lookAt(camPos, camPos + camFront, camUp);
-		/*camX = sin(glfwGetTime()) * radius;
-		camZ = cos(glfwGetTime()) * radius;
-		glm::mat4 viewMatrix(1.f);
-		viewMatrix = glm::lookAt(
-			glm::vec3(camX, 0.0, camZ), 
-			glm::vec3(0.0, 0.0, 0.0), 
-			glm::vec3(0.0, 1.0, 0.0)
-		);*/
+		//update view matrix
+		g_camera->updateViewMatrix(window, deltaTime);
 		//update framebuffer size
 		glfwGetFramebufferSize(window, &framebufferWidth, &framebufferHeight);
 		projectionMatrix = glm::mat4(1.f);
 		projectionMatrix = glm::perspective(glm::radians(fov), static_cast<float>(framebufferWidth) / framebufferHeight, nearPlane, farPlane);
-		projectionMatrix = projectionMatrix * viewMatrix * modelMatrix;
+		projectionMatrix = projectionMatrix * g_camera->viewMatrix * modelMatrix;
 		//draw maze
 		maze.draw(projectionMatrix);
 		//branch if gamemode is 2D, else if gamemode is 3D, and call their respected game loops
@@ -256,7 +224,7 @@ int main() {
 		//go to next buffer
 		glfwSwapBuffers(window);
 		//dynamic resizing
-		glfwSetWindowSizeCallback(window, [](GLFWwindow* window, int width, int height) {
+		/*glfwSetWindowSizeCallback(window, [](GLFWwindow* window, int width, int height) {
 			int widthDifference = width - g_level->windowWidth;
 			int heightDifference = height - g_level->windowHeight;
 			if(widthDifference > 0 && heightDifference > 0) {
@@ -280,7 +248,7 @@ int main() {
 				}
 			}
 			
-		});
+		});*/
 		//break loop if 'ESC' key is pressed
 		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) break;
 	}

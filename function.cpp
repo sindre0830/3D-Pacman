@@ -1,6 +1,7 @@
 /* library */
 #include "header/function.h"
 #include "header/levelData.h"
+#include "header/Camera.h"
 #include <stb_image.h>
 #include <fstream>
 #include <iostream>
@@ -8,53 +9,14 @@
 #include <random>
 /* global data */
 extern LevelData *g_level;
-extern float yaw, pitch, lastX, lastY;
-extern bool firstMouse;
-extern glm::vec3 camFront;
+extern Camera *g_camera;
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
-	if (firstMouse) {
-        lastX = xpos;
-        lastY = ypos;
-        firstMouse = false;
-    }
-
-	float xoffset = xpos - lastX;
-	float yoffset = lastY - ypos;
-	lastX = xpos;
-	lastY = ypos;
-
-	const float sensitivity = 0.05f;
-	xoffset *= sensitivity;
-	yoffset *= sensitivity;
-
-	yaw   += xoffset;
-	pitch += yoffset;
-
-	if(pitch > 89.0f) pitch =  89.0f;
-	if(pitch < -89.0f) pitch = -89.0f;
-
-	glm::vec3 direction;
-    direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-    direction.y = sin(glm::radians(pitch));
-    direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-    camFront = glm::normalize(direction);
-}
-
-void processInput(GLFWwindow *window, float deltaTime, glm::vec3 &camPos, glm::vec3 camFront, float &camSpeed, glm::vec3 camUp) {
-    camSpeed = 0.01f * deltaTime;
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camPos += camSpeed * camFront;
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        camPos -= camSpeed * camFront;
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        camPos -= glm::normalize(glm::cross(camFront, camUp)) * camSpeed;
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camPos += glm::normalize(glm::cross(camFront, camUp)) * camSpeed;
+	g_camera->updateDirection(xpos, ypos);
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-	
+	glViewport(0, 0, width, height);
 }
 /**
  * @brief Generate random index and set position

@@ -4,35 +4,30 @@
 #include <string>
 //vertex shader
 static const std::string pelletVertexShader = R"(
-#version 430 core
-//input
-layout(location = 0) in vec2 gridPos;
-layout(location = 1) in float display;
-//output
-out float vs_display;
+    #version 430 core
+    //input
+    layout(location = 0) in vec3 gridPos;
+    layout(location = 1) in vec3 normals;
+    //uniform
+    layout(location=0) uniform mat4 u_modelMatrix = mat4(1);
+    layout(location=1) uniform mat4 u_viewMatrix = mat4(1);
+    layout(location=2) uniform mat4 u_projectionMatrix = mat4(1);
 
-void main() {
-    vs_display = display;
-	gl_Position = vec4(gridPos, display, 1.f);
-}
+    void main() {
+        mat3 normalMatrix = transpose(inverse(mat3(u_viewMatrix * u_modelMatrix)));
+
+        gl_Position = u_projectionMatrix * u_viewMatrix * u_modelMatrix * vec4(gridPos, 1.f);
+    }
 )";
 //fragment shader
 static const std::string pelletFragmentShader = R"(
-#version 430 core
-//input
-in float vs_display;
-//output
-out vec4 color;
+    #version 430 core
+    //output
+    out vec4 color;
 
-void main() {
-    if(vs_display == -0.4f) {
-        //set color white
+    void main() {
         color = vec4(1.f, 1.f, 1.f, 1.f);
-    } else {
-        //set color black
-        color = vec4(0.f, 0.f, 0.f, 1.f); 
-    }   
-}
+    }
 )";
 
 #endif

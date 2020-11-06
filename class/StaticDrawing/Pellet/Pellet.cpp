@@ -2,21 +2,30 @@
 #include "Pellet.h"
 #include "PelletShader.h"
 #include "../../../header/dictionary.h"
+#include "../../../header/function.h"
 #include "../../../header/levelData.h"
+#include "../../../header/Camera.h"
 #include "../../../header/tiny_obj_loader.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/matrix_transform_2d.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 /* global data */
 extern LevelData *g_level;
+extern Camera *g_camera;
 /**
  * @brief Destroy the Pellet:: Pellet object
  * 
  */
-Pellet::~Pellet() {}
+Pellet::~Pellet() {
+	destroyVAO(modelVAO);
+}
 /**
  * @brief Construct a new Pellet:: Pellet object
  * 
  */
-Pellet::Pellet() {
+Pellet::Pellet(glm::mat4 modelMatrix, glm::mat4 projectionMatrix) {
     //compile pellet shader
 	shaderProgram = compileShader(pelletVertexShader, pelletFragmentShader);
     //create VAO
@@ -24,9 +33,7 @@ Pellet::Pellet() {
     VAO = genObject(arr, g_level->pelletSize);
 	//set the vertex attribute
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (const void*)0);
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (const void*)(2 * sizeof(GLfloat)));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (const void*)0);
 	//set buffer position in refrence to position in level
 	for(int i = 0, n = 0; i < g_level->gridHeight; i++) {
 		for(int j = 0; j < g_level->gridWidth; j++) {
@@ -37,15 +44,37 @@ Pellet::Pellet() {
 			}
 		}
 	}
+	/* Pellet Model Construction */
+	modelSize = 0;
+	modelVAO = LoadModel("models/pellet/", "pellet.obj", modelSize);
+	//send in initial uniform data
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_viewMatrix"), 1, GL_FALSE, glm::value_ptr(g_camera->viewMatrix));
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_projectionMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
 }
 /**
  * @brief Draw object by installing the shader program and binding the VAO to the current rendering state
  * 
  */
-void Pellet::draw() {
+void Pellet::draw(glm::mat4 modelMatrix, glm::mat4 projectionMatrix) {
 	glUseProgram(shaderProgram);
-	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, (6 * g_level->pelletSize), GL_UNSIGNED_INT, (const void*)0);
+	if(g_level->gamemode == TWO_DIMENSIONAL) {
+		glBindVertexArray(VAO);
+		glDrawElements(GL_TRIANGLES, (6 * g_level->pelletSize), GL_UNSIGNED_INT, (const void*)0);
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_modelMatrix"), 1, GL_FALSE, glm::value_ptr(glm::mat4(1.f)));
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_viewMatrix"), 1, GL_FALSE, glm::value_ptr(glm::mat4(1.f)));
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_projectionMatrix"), 1, GL_FALSE, glm::value_ptr(glm::mat4(1.f)));
+	} else {
+		glBindVertexArray(modelVAO);
+        glDrawArrays(GL_TRIANGLES, 6, modelSize);
+		//send in initial uniform data
+		glm::mat4 modelMatrixPellet(1.f);
+		modelMatrixPellet = glm::translate(modelMatrixPellet, glm::vec3(0.f, -0.008f, 0.f));
+		modelMatrixPellet = glm::scale(modelMatrixPellet, glm::vec3(0.008f));
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrixPellet));
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_viewMatrix"), 1, GL_FALSE, glm::value_ptr(g_camera->viewMatrix));
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_projectionMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+	}
 }
 /**
  * @brief Hide pellet by modifying the buffer array
@@ -54,9 +83,9 @@ void Pellet::draw() {
  * @param x 
  */
 void Pellet::hidePellet(const int col, const int row) {
-	GLfloat display = 1.f;
+	GLfloat Z = 1.f;
 	for(int i = 8; i < pelletByteSize; i += 12) {
-		glBufferSubData(GL_ARRAY_BUFFER, bufferPos[std::make_pair(col, row)] + i, sizeof(GLfloat), &display);
+		//glBufferSubData(GL_ARRAY_BUFFER, bufferPos[std::make_pair(col, row)] + i, sizeof(GLfloat), &Z);
 	}
 }
 /**
@@ -68,7 +97,7 @@ void Pellet::hidePellet(const int col, const int row) {
 std::vector<GLfloat> Pellet::genCoordinates() {
 	float
 		//display pellet
-		display = -0.4f,
+		Z = -0.4f,
 		//resize pellet
 		xResize = g_level->gridElementWidth / 2.8f,
 		yResize = g_level->gridElementHeight / 2.8f,
@@ -83,74 +112,20 @@ std::vector<GLfloat> Pellet::genCoordinates() {
 			//branch if target is pellet and insert data or if target is a magic pellet and make it twice as big
 			if (g_level->grid[i][j] == PELLET) {
 				arr.insert(arr.end(), {
-					g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][X] + xResize, g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][Y] - yRotate, display,
-					g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][X] + xRotate, g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][Y] + yResize, display,
-					g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][X] - xResize, g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][Y] + yRotate, display,
-					g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][X] - xRotate, g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][Y] - yResize, display
+					g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][X] + xResize, g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][Y] - yRotate, Z,
+					g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][X] + xRotate, g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][Y] + yResize, Z,
+					g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][X] - xResize, g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][Y] + yRotate, Z,
+					g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][X] - xRotate, g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][Y] - yResize, Z
 				});
 			} else if (g_level->grid[i][j] == MAGICPELLET) {
 				arr.insert(arr.end(), {
-					g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][X] + (xResize * 2.3f), g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][Y] - yRotate, display,
-					g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][X] + xRotate, g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][Y] + (yResize * 2.3f), display,
-					g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][X] - (xResize * 2.3f), g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][Y] + yRotate, display,
-					g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][X] - xRotate, g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][Y] - (yResize * 2.3f), display
+					g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][X] + (xResize * 2.3f), g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][Y] - yRotate, Z,
+					g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][X] + xRotate, g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][Y] + (yResize * 2.3f), Z,
+					g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][X] - (xResize * 2.3f), g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][Y] + yRotate, Z,
+					g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][X] - xRotate, g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][Y] - (yResize * 2.3f), Z
 				});
 			}
 		}
 	}
 	return arr;
 }
-/**
- * @brief Loads the pellet model
- *
- */
-/*
-GLuint Pellet::loadPellet(const std::string path, int& size)     {
-	//Some variables that we are going to use to store data from tinyObj
-	tinyobj::attrib_t attrib;
-	std::vector<tinyobj::shape_t> shapes;
-	std::vector<tinyobj::material_t> materials; //This one goes unused for now, seeing as we don't need materials for this model.
-
-	//Some variables incase there is something wrong with our obj file
-	std::string warn;
-	std::string err;
-
-	//We use tinobj to load our models. Feel free to find other .obj files and see if you can load them.
-	tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, (path + "../../../models/pellet/pellet.obj").c_str(), path.c_str());
-
-	if (!warn.empty()) {
-		std::cout << warn << std::endl;
-	}
-
-	if (!err.empty()) {
-		std::cerr << err << std::endl;
-	}
-
-	//For each shape defined in the obj file
-	for (auto shape : shapes)
-	{
-		//We find each mesh
-		for (auto meshIndex : shape.mesh.indices)
-		{
-			//And store the data for each vertice, including normals
-			glm::vec3 vertice = {
-				attrib.vertices[meshIndex.vertex_index * 3],
-				attrib.vertices[(meshIndex.vertex_index * 3) + 1],
-				attrib.vertices[(meshIndex.vertex_index * 3) + 2]
-			};
-			glm::vec3 normal = {
-				attrib.normals[meshIndex.normal_index * 3],
-				attrib.normals[(meshIndex.normal_index * 3) + 1],
-				attrib.normals[(meshIndex.normal_index * 3) + 2]
-			};
-			glm::vec2 textureCoordinate = {                         //These go unnused, but if you want textures, you will need them.
-				attrib.texcoords[meshIndex.texcoord_index * 2],
-				attrib.texcoords[(meshIndex.texcoord_index * 2) + 1]
-			};
-
-			arrIndices.push_back({ vertice, normal, textureCoordinate }); //We add our new vertice struct to our vector
-
-		}
-	}
-}
-*/

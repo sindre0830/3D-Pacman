@@ -1,4 +1,6 @@
 /* library */
+#define TINYOBJLOADER_IMPLEMENTATION
+#include "header/tiny_obj_loader.h"
 #include "header/function.h"
 #include "header/levelData.h"
 #include "header/Camera.h"
@@ -10,6 +12,87 @@
 /* global data */
 extern LevelData *g_level;
 extern Camera *g_camera;
+
+/**
+ * @brief 
+ * 
+ * @param path 
+ * @param size 
+ * @return GLuint 
+ */
+GLuint LoadModel(const std::string path, const std::string file, int &size) {
+	struct Vertex {
+		glm::vec3 location;
+		glm::vec3 normals;
+	};
+    //We create a vector of Vertex structs. OpenGL can understand these, and so will accept them as input.
+    std::vector<Vertex> vertices;
+
+    //Some variables that we are going to use to store data from tinyObj
+    tinyobj::attrib_t attrib;
+    std::vector<tinyobj::shape_t> shapes;
+    std::vector<tinyobj::material_t> materials; //This one goes unused for now, seeing as we don't need materials for this model.
+    
+    //Some variables incase there is something wrong with our obj file
+    std::string warn;
+    std::string err;
+
+    //We use tinobj to load our models. Feel free to find other .obj files and see if you can load them.
+    tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, (path + file).c_str(), path.c_str());
+
+    if (!warn.empty()) {
+        std::cout << warn << std::endl;
+    }
+
+    if (!err.empty()) {
+        std::cerr << err << std::endl;
+    }
+
+    //For each shape defined in the obj file
+    for (auto shape : shapes)
+    {
+        //We find each mesh
+        for (auto meshIndex : shape.mesh.indices)
+        {
+            //And store the data for each vertice, including normals
+            glm::vec3 vertice = {
+                attrib.vertices[meshIndex.vertex_index * 3],
+                attrib.vertices[(meshIndex.vertex_index * 3) + 1],
+                attrib.vertices[(meshIndex.vertex_index * 3) + 2]
+            };
+            glm::vec3 normal = {
+                attrib.normals[meshIndex.normal_index * 3],
+                attrib.normals[(meshIndex.normal_index * 3) + 1],
+                attrib.normals[(meshIndex.normal_index * 3) + 2]
+            };
+
+            vertices.push_back({ vertice, normal }); //We add our new vertice struct to our vector
+
+        }
+    }
+
+    GLuint VAO;
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
+
+    GLuint VBO;
+    glGenBuffers(1, &VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+    //As you can see, OpenGL will accept a vector of structs as a valid input here
+    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (const void*)0);
+
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (const void*)3);
+    
+    //This will be needed later to specify how much we need to draw. Look at the main loop to find this variable again.
+    size = vertices.size();
+
+    return VAO;
+}
 
 void changeDimension(GLFWwindow* window) {
 	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {

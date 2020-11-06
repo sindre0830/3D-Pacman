@@ -16,14 +16,15 @@ class Pellet : public StaticDrawing {
         /* private data */
         std::map<std::pair<int, int>, int> bufferPos;
         const int pelletByteSize = 3 * 4 * sizeof(GLfloat);
+        int modelSize;
+        GLuint modelVAO;
         /* private functionality */
         std::vector<GLfloat> genCoordinates();
     public:
         /* public functionality */
         ~Pellet();
-        Pellet();
-        void draw();
+        Pellet(glm::mat4 modelMatrix, glm::mat4 projectionMatrix);
+        void draw(glm::mat4 modelMatrix, glm::mat4 projectionMatrix);
         void hidePellet(const int col, const int row);
-//        GLuint loadPellet(const std::string, int& size);
 };
 #endif

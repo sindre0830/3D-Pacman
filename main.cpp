@@ -86,7 +86,7 @@ int main() {
 	modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, 0.f, 0.f));
 	modelMatrix = glm::rotate(modelMatrix, glm::radians(-90.f), glm::vec3(1.f, 0.f, 0.f));
 	modelMatrix = glm::rotate(modelMatrix, glm::radians(90.f), glm::vec3(0.f, 0.f, 1.f));
-	modelMatrix = glm::scale(modelMatrix, glm::vec3(2.f));
+	modelMatrix = glm::scale(modelMatrix, glm::vec3(1.f));
 	
 	float fov = 45.f;
 	float nearPlane = 0.1f;
@@ -129,9 +129,9 @@ int main() {
 		ghostArr[i] = new Ghost(ghostStartRow, ghostStartCol);
 	}
 	//construct pellets
-	Pellet pellet;
+	Pellet pellet(modelMatrix, projectionMatrix);
 	//enable depth
-	//glEnable(GL_DEPTH_TEST); //doing it in the loop now
+	glEnable(GL_DEPTH_TEST);
 	//enable MSAA
 	glEnable(GL_MULTISAMPLE);
 	//enable transparency on texture
@@ -151,6 +151,7 @@ int main() {
 	int counter = 0;
 	//reset cursor
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	//g_level->gamemode = FIRST_PERSON;
 	//loop until user closes window
 	while(!glfwWindowShouldClose(window)) {
 		//delta time managment
@@ -167,12 +168,8 @@ int main() {
 		if(g_level->gamemode != TWO_DIMENSIONAL) g_camera->updateViewMatrix(window, deltaTime);
 		//do calculations before sending it to the vertex shader
 		collectionMatrix = projectionMatrix * g_camera->viewMatrix * modelMatrix;
-		//enable depth value (Z)
-		if(g_level->gamemode != TWO_DIMENSIONAL) glEnable(GL_DEPTH_TEST);
 		//draw maze
 		maze.draw(collectionMatrix);
-		//disable depth value (Z)
-		if(g_level->gamemode != TWO_DIMENSIONAL) glDisable(GL_DEPTH_TEST);
 		//draw scoreboard
 		for(int i = 0; i < scoreboard.size(); i++) {
 			scoreboard[i]->draw();
@@ -181,12 +178,8 @@ int main() {
 		}
 		//branch if scoreboard has been updated and reset it
 		if(g_level->scoreChanged) g_level->scoreChanged = false;
-		//enable depth value (Z)
-		if(g_level->gamemode != TWO_DIMENSIONAL) glEnable(GL_DEPTH_TEST);
 		//draw pellets
-		pellet.draw();
-		//disable depth value (Z)
-		if(g_level->gamemode != TWO_DIMENSIONAL) glDisable(GL_DEPTH_TEST);
+		pellet.draw(modelMatrix, projectionMatrix);
 		//draw pacman
 		pacman.draw();
 		//branch if game isn't over

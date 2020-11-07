@@ -83,16 +83,15 @@ int main() {
 	glfwSetCursorPosCallback(window, mouse_callback);
 	//setup rotate
 	glm::mat4 modelMatrix(1.f);
-	modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, 0.f, 0.f));
 	modelMatrix = glm::rotate(modelMatrix, glm::radians(-90.f), glm::vec3(1.f, 0.f, 0.f));
 	modelMatrix = glm::rotate(modelMatrix, glm::radians(90.f), glm::vec3(0.f, 0.f, 1.f));
-	modelMatrix = glm::scale(modelMatrix, glm::vec3(2.f));
-	
+	//setup projection matrix
 	float fov = 45.f;
 	float nearPlane = 0.1f;
 	float farPlane = 100.f;
 	glm::mat4 projectionMatrix(1.f);
 	projectionMatrix = glm::perspective(glm::radians(fov), static_cast<float>(framebufferWidth) / framebufferHeight, nearPlane, farPlane);
+	//do calculations before sending it to the vertex shader
 	glm::mat4 collectionMatrix = projectionMatrix * g_camera->viewMatrix * modelMatrix;
 	//construct maze
 	Maze maze(projectionMatrix);
@@ -131,7 +130,7 @@ int main() {
 	//construct pellets
 	Pellet pellet;
 	//enable depth
-	//glEnable(GL_DEPTH_TEST); //doing it in the loop now
+	glEnable(GL_DEPTH_TEST); //doing it in the loop now
 	//enable MSAA
 	glEnable(GL_MULTISAMPLE);
 	//enable transparency on texture
@@ -165,14 +164,15 @@ int main() {
 		changeDimension(window);
 		//update view matrix
 		if(g_level->gamemode != TWO_DIMENSIONAL) g_camera->updateViewMatrix(window, deltaTime);
+		//
+		modelMatrix = glm::mat4(1.f);
+		modelMatrix = glm::rotate(modelMatrix, glm::radians(-90.f), glm::vec3(1.f, 0.f, 0.f));
+		modelMatrix = glm::rotate(modelMatrix, glm::radians(90.f), glm::vec3(0.f, 0.f, 1.f));
+		modelMatrix = glm::scale(modelMatrix, glm::vec3(2.f));
 		//do calculations before sending it to the vertex shader
 		collectionMatrix = projectionMatrix * g_camera->viewMatrix * modelMatrix;
-		//enable depth value (Z)
-		if(g_level->gamemode != TWO_DIMENSIONAL) glEnable(GL_DEPTH_TEST);
 		//draw maze
 		maze.draw(collectionMatrix);
-		//disable depth value (Z)
-		if(g_level->gamemode != TWO_DIMENSIONAL) glDisable(GL_DEPTH_TEST);
 		//draw scoreboard
 		for(int i = 0; i < scoreboard.size(); i++) {
 			scoreboard[i]->draw();
@@ -181,12 +181,16 @@ int main() {
 		}
 		//branch if scoreboard has been updated and reset it
 		if(g_level->scoreChanged) g_level->scoreChanged = false;
-		//enable depth value (Z)
-		if(g_level->gamemode != TWO_DIMENSIONAL) glEnable(GL_DEPTH_TEST);
+		//
+		modelMatrix = glm::mat4(1.f);
+		modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, -0.04f, 0.f));
+		modelMatrix = glm::rotate(modelMatrix, glm::radians(-90.f), glm::vec3(1.f, 0.f, 0.f));
+		modelMatrix = glm::rotate(modelMatrix, glm::radians(90.f), glm::vec3(0.f, 0.f, 1.f));
+		modelMatrix = glm::scale(modelMatrix, glm::vec3(2.f, 2.f, 1.f));
+		//do calculations before sending it to the vertex shader
+		collectionMatrix = projectionMatrix * g_camera->viewMatrix * modelMatrix;
 		//draw pellets
-		pellet.draw();
-		//disable depth value (Z)
-		if(g_level->gamemode != TWO_DIMENSIONAL) glDisable(GL_DEPTH_TEST);
+		pellet.draw(collectionMatrix);
 		//draw pacman
 		pacman.draw();
 		//branch if game isn't over

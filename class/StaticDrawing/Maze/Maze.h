@@ -14,7 +14,7 @@ class Maze : public StaticDrawing {
     private:
         /* private data */
         GLuint cornerVAO, shaderProgram3D, vao3D;
-        int wallSize = 0, cornerSize = 0;
+        int wallSize = 0, cornerSize = 0, wallSize3D = 0;
         /* private functionality */
         std::vector<GLfloat> genWallCoordinates();
         GLuint genCornerVAO();

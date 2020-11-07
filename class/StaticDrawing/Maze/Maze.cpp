@@ -37,7 +37,7 @@ Maze::Maze(glm::mat4 collectionMatrix) {
 
 	//generate 3D wall
 	arr = genWallCoordinates3D();
-	vao3D = genObject(arr, wallSize);
+	vao3D = genObject(arr, wallSize3D);
     //specify the layout of the vertex data
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), 0);
@@ -65,7 +65,7 @@ void Maze::draw(glm::mat4 collectionMatrix) {
 		glBindVertexArray(vao3D);
 		glUniform1i(samplerSlotLocation, 3);
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(collectionMatrix));
-		glDrawElements(GL_TRIANGLES, (6 * wallSize), GL_UNSIGNED_INT, (const void*)0);
+		glDrawElements(GL_TRIANGLES, (6 * wallSize3D), GL_UNSIGNED_INT, (const void*)0);
 	}
 }
 /**
@@ -228,7 +228,7 @@ std::vector<GLfloat> Maze::genWallCoordinates3D() {
 			if (g_level->grid[i][j] != WALL) {
 				//branch if there can be a wall above the target
 				if(i + 1 < g_level->gridHeight && g_level->grid[i + 1][j] == WALL) {
-					wallSize++;
+					wallSize3D++;
 					arr.insert(arr.end(), {
 						g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][X], g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][Y], -Z, 0.f, 1.f,
 						g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][X], g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][Y], Z, 0.f, 0.f,
@@ -238,7 +238,7 @@ std::vector<GLfloat> Maze::genWallCoordinates3D() {
 				}
 				//branch if there can be a wall under the target
 				if(i - 1 >= 0 && g_level->grid[i - 1][j] == WALL) {
-					wallSize++;
+					wallSize3D++;
 					arr.insert(arr.end(), {
 						g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][Y], -Z, 0.f, 1.f,
 						g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][Y], Z, 0.f, 0.f,
@@ -248,7 +248,7 @@ std::vector<GLfloat> Maze::genWallCoordinates3D() {
 				}
 				//branch if there can be a wall left of the target
 				if(j - 1 >= 0 && g_level->grid[i][j - 1] == WALL) {
-					wallSize++;
+					wallSize3D++;
 					arr.insert(arr.end(), {
 						g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][Y], -Z, 0.f, 1.f,
 						g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][Y], Z, 0.f, 0.f,
@@ -258,7 +258,7 @@ std::vector<GLfloat> Maze::genWallCoordinates3D() {
 				}
 				//branch if there can be a wall right of the target
 				if(j + 1 < g_level->gridWidth && g_level->grid[i][j + 1] == WALL) {
-					wallSize++;
+					wallSize3D++;
 					arr.insert(arr.end(), {
 						g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][Y], -Z, 0.f, 1.f,
 						g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][Y], Z, 0.f, 0.f,
@@ -267,13 +267,13 @@ std::vector<GLfloat> Maze::genWallCoordinates3D() {
 					});
 				}
 			} else if(g_level->grid[i][j] == WALL) {
-				wallSize++;
-					arr.insert(arr.end(), {
-						g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][X], g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][Y], Z, 0.f, 1.f,
-						g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][Y], Z, 0.f, 0.f,
-						g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][Y], Z, 1.f, 0.f,
-						g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][Y], Z, 1.f, 1.f
-					});
+				wallSize3D++;
+				arr.insert(arr.end(), {
+					g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][X], g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][Y], Z, 0.f, 1.f,
+					g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][Y], Z, 0.f, 0.f,
+					g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][Y], Z, 1.f, 0.f,
+					g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][Y], Z, 1.f, 1.f
+				});
 			}
 		}
 	}

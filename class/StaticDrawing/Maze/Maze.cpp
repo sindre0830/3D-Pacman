@@ -218,7 +218,7 @@ GLuint Maze::genCornerVAO() {
  * @return std::vector<GLfloat> 
  */
 std::vector<GLfloat> Maze::genWallCoordinates3D() {
-	float Z = 0.02f;
+	float Z = g_level->gridElementHeight / 2.f;
 	//buffer array
 	std::vector<GLfloat> arr;
 	//fills in array with coordinates

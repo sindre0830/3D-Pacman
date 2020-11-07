@@ -9,14 +9,14 @@ Camera::~Camera() {}
 
 Camera::Camera() {
     //setup camera
-	camPos = glm::vec3(0.f, 0.f, 3.f);
+	camPos = glm::vec3(0.f, 0.f, 0.f);
 	camFront = glm::vec3(0.f, 0.f, -1.f);
 	camUp = glm::vec3(0.f, 1.f, 0.f);
-
+	
 	viewMatrix = glm::mat4(1.f);
 	viewMatrix = glm::lookAt(camPos, camPos + camFront, camUp);
 
-	camSpeed = 0.05f;
+	camSpeed = 0.01f;
 
 	yaw = -90.0f,
 	pitch = 0.f;

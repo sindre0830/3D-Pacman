@@ -24,15 +24,11 @@ Character::Character() {
  * 
  */
 void Character::draw() {
-    if(g_level->gamemode == TWO_DIMENSIONAL) {
-        auto samplerSlotLocation = glGetUniformLocation(shaderProgram, "u_texture");
-        glUseProgram(shaderProgram);
-        glBindVertexArray(VAO);
-        glUniform1i(samplerSlotLocation, 0);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
-    } else {
-        
-    }
+    auto samplerSlotLocation = glGetUniformLocation(shaderProgram, "u_texture");
+    glUseProgram(shaderProgram);
+    glBindVertexArray(VAO);
+    glUniform1i(samplerSlotLocation, 0);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
 }
 /**
  * @brief Generate array of grid positions and texture coordinates

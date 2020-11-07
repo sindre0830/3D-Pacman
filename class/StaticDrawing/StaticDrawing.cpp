@@ -1,7 +1,6 @@
 /* library */
 #include "StaticDrawing.h"
 #include <set>
-#include <iostream>
 /**
  * @brief Destroy the Geometric Shape:: Geometric Shape object
  * 
@@ -43,68 +42,6 @@ GLuint StaticDrawing::compileShader(const std::string &vertexShaderSrc, const st
 	glDeleteShader(fragmentShader);
 
 	return shaderProgram;
-}
-/**
- * @brief 
- * 
- * @param vertexShaderSrc 
- * @param fragmentShaderSrc 
- * @return GLuint 
- */
-GLuint StaticDrawing::CompileModelShader(const std::string& vertexShaderSrc, const std::string& fragmentShaderSrc) {
-
-    auto vertexSrc = vertexShaderSrc.c_str();
-    auto fragmentSrc = fragmentShaderSrc.c_str();
-
-    auto vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexSrc, nullptr);
-    glCompileShader(vertexShader);
-    GLint isCompiled = 0;
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &isCompiled);
-    if (!isCompiled) {
-        GLint maxLength = 0;
-        glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &maxLength);
-
-        // The maxLength includes the NULL character
-        std::vector<GLchar> errorLog(maxLength);
-        glGetShaderInfoLog(vertexShader, maxLength, &maxLength, &errorLog[0]);
-
-        // Provide the infolog in whatever manor you deem best.
-        std::cout << errorLog.data() << std::endl;
-        std::cin.get();
-    }
-    auto fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentSrc, nullptr);
-    glCompileShader(fragmentShader);
-
-    //I spent like 3 hours trying to find shader errors. Here you go. Now this will print any error you get trying to compile a shader.
-    //Don't suffer like I did.
-
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &isCompiled);
-    if (!isCompiled) {
-        GLint maxLength = 0;
-        glGetShaderiv(fragmentShader, GL_INFO_LOG_LENGTH, &maxLength);
-
-        // The maxLength includes the NULL character
-        std::vector<GLchar> errorLog(maxLength);
-        glGetShaderInfoLog(fragmentShader, maxLength, &maxLength, &errorLog[0]);
-
-        // Provide the infolog in whatever manor you deem best.
-        std::cout << errorLog.data() << std::endl;
-        std::cin.get();
-    }
-
-    auto shaderProgram = glCreateProgram();
-
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-
-    glLinkProgram(shaderProgram);
-
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-
-    return shaderProgram;
 }
 /**
  * @brief Generate VAO (rectangle shape)

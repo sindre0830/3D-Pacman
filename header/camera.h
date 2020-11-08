@@ -22,7 +22,9 @@ class Camera {
         /* public functionality */
         ~Camera();
         Camera();
-        void updateViewMatrix(GLFWwindow *window, const float deltaTime);
+        void changePosition(const float x, const float y, const float z);
+        void changeDirection(const int pacmanDirection);
+        void updateViewMatrix(GLFWwindow *window, const float deltaTime, const int pacmanDirection);
         void updateDirection(double xpos, double ypos);
         void processInput(GLFWwindow *window, float deltaTime, glm::vec3 &camPos, glm::vec3 camFront, float &camSpeed, glm::vec3 camUp);
 

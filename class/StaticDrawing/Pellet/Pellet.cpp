@@ -61,7 +61,7 @@ void Pellet::draw(glm::mat4 collectionMatrix) {
  * @param x 
  */
 void Pellet::hidePellet(const int col, const int row) {
-	GLfloat z = 2.f;
+	GLfloat z = 10.f;
 	for(int i = 8, n = 0; n < (4 * 5); i += 24, n++) {
 		glBufferSubData(GL_ARRAY_BUFFER, bufferPos[std::make_pair(col, row)] + i, sizeof(GLfloat), &z);
 	}

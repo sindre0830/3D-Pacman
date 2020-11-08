@@ -83,11 +83,9 @@ int main() {
 	glfwSetCursorPosCallback(window, mouse_callback);
 	//setup rotate
 	glm::mat4 modelMatrix(1.f);
-	modelMatrix = glm::rotate(modelMatrix, glm::radians(-90.f), glm::vec3(1.f, 0.f, 0.f));
-	modelMatrix = glm::rotate(modelMatrix, glm::radians(90.f), glm::vec3(0.f, 0.f, 1.f));
 	//setup projection matrix
-	float fov = 45.f;
-	float nearPlane = 0.1f;
+	float fov = 120.f;
+	float nearPlane = 0.01f;
 	float farPlane = 100.f;
 	glm::mat4 projectionMatrix(1.f);
 	projectionMatrix = glm::perspective(glm::radians(fov), static_cast<float>(framebufferWidth) / framebufferHeight, nearPlane, farPlane);
@@ -149,7 +147,8 @@ int main() {
     double deltaTime = 0;
 	int counter = 0;
 	//reset cursor
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	g_level->gamemode = FIRST_PERSON;
 	//loop until user closes window
 	while(!glfwWindowShouldClose(window)) {
 		//delta time managment
@@ -163,12 +162,12 @@ int main() {
 		//check if user wants to change gamemode
 		changeDimension(window);
 		//update view matrix
-		if(g_level->gamemode != TWO_DIMENSIONAL) g_camera->updateViewMatrix(window, deltaTime);
+		if(g_level->gamemode != TWO_DIMENSIONAL) g_camera->updateViewMatrix(window, deltaTime, pacman.direction);
 		//
 		modelMatrix = glm::mat4(1.f);
-		modelMatrix = glm::rotate(modelMatrix, glm::radians(-90.f), glm::vec3(1.f, 0.f, 0.f));
-		modelMatrix = glm::rotate(modelMatrix, glm::radians(90.f), glm::vec3(0.f, 0.f, 1.f));
-		modelMatrix = glm::scale(modelMatrix, glm::vec3(2.f));
+		//modelMatrix = glm::rotate(modelMatrix, glm::radians(-90.f), glm::vec3(1.f, 0.f, 0.f));
+		//rotateWorld(modelMatrix, pacman.direction);
+		//modelMatrix = glm::scale(modelMatrix, glm::vec3(2.f));
 		//do calculations before sending it to the vertex shader
 		collectionMatrix = projectionMatrix * g_camera->viewMatrix * modelMatrix;
 		//draw maze
@@ -183,10 +182,10 @@ int main() {
 		if(g_level->scoreChanged) g_level->scoreChanged = false;
 		//
 		modelMatrix = glm::mat4(1.f);
-		modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, -0.04f, 0.f));
-		modelMatrix = glm::rotate(modelMatrix, glm::radians(-90.f), glm::vec3(1.f, 0.f, 0.f));
-		modelMatrix = glm::rotate(modelMatrix, glm::radians(90.f), glm::vec3(0.f, 0.f, 1.f));
-		modelMatrix = glm::scale(modelMatrix, glm::vec3(2.f, 2.f, 1.f));
+		modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, 0.f, -0.02f));
+		//modelMatrix = glm::rotate(modelMatrix, glm::radians(-90.f), glm::vec3(1.f, 0.f, 0.f));
+		//rotateWorld(modelMatrix, pacman.direction);
+		//modelMatrix = glm::scale(modelMatrix, glm::vec3(2.f, 2.f, 1.f));
 		//do calculations before sending it to the vertex shader
 		collectionMatrix = projectionMatrix * g_camera->viewMatrix * modelMatrix;
 		//draw pellets
@@ -208,7 +207,7 @@ int main() {
 				noActiveGhosts = false;
 				ghostArr[i]->draw();
 				//branch if game isn't over and translate the ghost
-				if (!g_level->gameover && deltaTime >= 1.0) ghostArr[i]->mov();
+				//if (!g_level->gameover && deltaTime >= 1.0) ghostArr[i]->mov();
 			}
 		}
 		//branch if there are no more ghosts on the level and end the game

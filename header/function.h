@@ -15,6 +15,7 @@
 #include <glm/gtx/matrix_transform_2d.hpp>
 #include <glm/gtc/type_ptr.hpp>
 /* functionality */
+void rotateWorld(glm::mat4 &modelMatrix, const int direction);
 GLuint LoadModel(const std::string path, const std::string file, int &size);
 void changeDimension(GLFWwindow* window);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);

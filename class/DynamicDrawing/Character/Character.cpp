@@ -3,12 +3,14 @@
 #include "CharacterShader.h"
 #include "../../../header/dictionary.h"
 #include "../../../header/levelData.h"
+#include "../../../header/Camera.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/matrix_transform_2d.hpp>
 #include <glm/gtc/type_ptr.hpp>
 /* global data */
 extern LevelData *g_level;
+extern Camera *g_camera;
 /**
  * @brief Destroy the Character:: Character object
  * 
@@ -24,11 +26,13 @@ Character::Character() {
  * 
  */
 void Character::draw() {
-    auto samplerSlotLocation = glGetUniformLocation(shaderProgram, "u_texture");
-    glUseProgram(shaderProgram);
-    glBindVertexArray(VAO);
-    glUniform1i(samplerSlotLocation, 0);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
+    //if(g_level->gamemode == TWO_DIMENSIONAL) {
+        auto samplerSlotLocation = glGetUniformLocation(shaderProgram, "u_texture");
+        glUseProgram(shaderProgram);
+        glBindVertexArray(VAO);
+        glUniform1i(samplerSlotLocation, 0);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
+    //}
 }
 /**
  * @brief Generate array of grid positions and texture coordinates

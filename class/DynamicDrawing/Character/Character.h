@@ -9,8 +9,9 @@
 class Character : public DynamicDrawing {
     protected:
         /* protected data */
-        int direction, counter = 0, speed = 20;
+        int counter = 0, speed = 20;
         float xPos = 0.f, yPos = 0.f, yTex = 0.f;
+        float camX, camY;
         /* protected functionality */
         std::vector<GLfloat> genCoordinates(const int row, const int col);
         void translatePos(const float xPos, const float yPos);
@@ -20,6 +21,8 @@ class Character : public DynamicDrawing {
         bool movDown(int &row, int &col);
         bool movRight(int &row, int &col);
     public:
+        /* public data */
+        int direction;
         /* public functionality */
         ~Character();
         Character();

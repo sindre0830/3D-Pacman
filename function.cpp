@@ -13,6 +13,32 @@
 extern LevelData *g_level;
 extern Camera *g_camera;
 
+void rotateWorld(glm::mat4 &modelMatrix, const int direction) {
+    /*if(direction == UP) {
+        //rotates world so pacman moves away from screen (birds-eye view)
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(0.f), glm::vec3(0.f, 0.f, 1.f));
+        //rotates world so we are in first person
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(-90.f), glm::vec3(1.f, 0.f, 0.f));
+    }
+    if(direction == RIGHT) {
+        //rotates world so pacman moves away from screen (birds-eye view)
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(90.f), glm::vec3(0.f, 0.f, 1.f));
+        //rotates world so we are in first person
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(90.f), glm::vec3(0.f, 1.f, 0.f));
+    }
+    if(direction == DOWN) {
+        //rotates world so pacman moves away from screen (birds-eye view)
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(180.f), glm::vec3(0.f, 0.f, 1.f));
+        //rotates world so we are in first person
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(90.f), glm::vec3(1.f, 0.f, 0.f));
+    }
+    if(direction == LEFT) {
+        //rotates world so pacman moves away from screen (birds-eye view)
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(270.f), glm::vec3(0.f, 0.f, 1.f));
+        //rotates world so we are in first person
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(-90.f), glm::vec3(0.f, 1.f, 0.f));
+    }*/
+}
 /**
  * @brief 
  * 

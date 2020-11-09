@@ -13,11 +13,13 @@
 class Character : public DynamicDrawing {
     protected:
         /* protected data */
-        int counter = 0, speed = 20;
+        int counter = 0, speed = 20, modelSize = 0;
+        GLuint modelVAO, modelShaderProgram;
+        std::string modelPath;
         float xPos = 0.f, yPos = 0.f, yTex = 0.f;
         float camX, camY;
         glm::mat4 modelMatrix;
-        glm::vec3 translation;
+        glm::vec3 translation, initialTranslation;
         /* protected functionality */
         std::vector<GLfloat> genCoordinates(const int row, const int col);
         void translatePos(const float xPos, const float yPos);
@@ -32,6 +34,6 @@ class Character : public DynamicDrawing {
         /* public functionality */
         ~Character();
         Character();
-        void draw(glm::mat4 collectionMatrix);
+        void draw(glm::mat4 projectionMatrix);
 };
 #endif

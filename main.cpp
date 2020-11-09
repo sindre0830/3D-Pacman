@@ -142,12 +142,12 @@ int main() {
 	//set background color black
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	//setup timer
-	static double limitFPS = 1.0 / 60.0;
+	static double limitFPS = 1.0 / 30.0;
     double lastTime = glfwGetTime(), nowTime = 0, timer = lastTime;
     double deltaTime = 0;
 	int counter = 0, gamemodeBuffer;
 	//reset cursor
-	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	g_level->gamemode = FIRST_PERSON;
 	//loop until user closes window
 	while(!glfwWindowShouldClose(window)) {
@@ -212,7 +212,7 @@ int main() {
 		pellet.draw(collectionMatrix);
 		if(g_level->gamemode == TWO_DIMENSIONAL) collectionMatrix = glm::mat4(1);
 		//draw pacman
-		pacman.draw(collectionMatrix);
+		pacman.draw(projectionMatrix);
 		//branch if game isn't over
 		if (!g_level->gameover && deltaTime >= 1.0){
 			//translate pacman
@@ -226,7 +226,7 @@ int main() {
 			//branch if ghost isn't dead
 			if(!ghostArr[i]->dead) {
 				noActiveGhosts = false;
-				ghostArr[i]->draw(glm::mat4(1.f));
+				ghostArr[i]->draw(projectionMatrix);
 				//branch if game isn't over and translate the ghost
 				if (!g_level->gameover && deltaTime >= 1.0) ghostArr[i]->mov();
 			}
@@ -273,32 +273,6 @@ int main() {
 		if (deltaTime >= 1.0) deltaTime -= 1.0;
 		//go to next buffer
 		glfwSwapBuffers(window);
-		//dynamic resizing
-		/*glfwSetWindowSizeCallback(window, [](GLFWwindow* window, int width, int height) {
-			int widthDifference = width - g_level->windowWidth;
-			int heightDifference = height - g_level->windowHeight;
-			if(widthDifference > 0 && heightDifference > 0) {
-				glViewport((widthDifference / 2) - (heightDifference / 2), 0, (width - widthDifference) + heightDifference, height);
-			} else if(widthDifference < 0 && heightDifference < 0) {
-				glViewport(-(heightDifference / 2), -(widthDifference / 2), (width + heightDifference), (height + widthDifference)); //wrong
-			} else if(widthDifference > 0 && heightDifference < 0) {
-				glViewport((widthDifference / 2) - (heightDifference / 2), 0, (width - widthDifference) + heightDifference, height);
-			} else if(widthDifference < 0 && heightDifference > 0) {
-				glViewport(0, -(widthDifference / 2) + (heightDifference / 2), width, (height + widthDifference) - heightDifference);
-			} else {
-				if(widthDifference > 0) {
-					glViewport((widthDifference / 2), 0, (width - widthDifference), height);
-				} else if(widthDifference < 0) {
-					glViewport(0, -(widthDifference / 2), width, (height + widthDifference));
-				}
-				if(heightDifference > 0) {
-					glViewport(0, (heightDifference / 2), width, (height - heightDifference));
-				} else if(heightDifference < 0) {
-					glViewport(-(heightDifference / 2), 0, (width + heightDifference), height);
-				}
-			}
-			
-		});*/
 		//break loop if 'ESC' key is pressed
 		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) break;
 	}

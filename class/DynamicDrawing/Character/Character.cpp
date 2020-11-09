@@ -15,17 +15,21 @@ extern Camera *g_camera;
  * @brief Destroy the Character:: Character object
  * 
  */
-Character::~Character() {}
+Character::~Character() {
+    glDeleteProgram(modelShaderProgram);
+    destroyVAO(modelVAO);
+}
 
 Character::Character() {
     //compile character shader
     shaderProgram = compileShader(characterVertexShader, characterFragmentShader);
+    modelShaderProgram = compileModelShader(characterModelVertexShader, characterModelFragmentShader);
 }
 /**
  * @brief Draw object by installing the shader program and binding the VAO and texture to the current rendering state
  * 
  */
-void Character::draw(glm::mat4 collectionMatrix) {
+void Character::draw(glm::mat4 projectionMatrix) {
     if(g_level->displayMinimap) {
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO);
@@ -44,12 +48,21 @@ void Character::draw(glm::mat4 collectionMatrix) {
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_transformationPos"), 1, false, glm::value_ptr(modelMatrix));
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
     } else {
-        glUseProgram(shaderProgram);
-        glBindVertexArray(VAO);
-        glUniform1i(glGetUniformLocation(shaderProgram, "u_texture"), 0);
-        modelMatrix = glm::translate(glm::mat4(1.f), translation);
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_transformationPos"), 1, false, glm::value_ptr(modelMatrix));
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
+        glUseProgram(modelShaderProgram);
+        glBindVertexArray(modelVAO);
+        modelMatrix = glm::mat4(1.f);
+        modelMatrix = glm::translate(modelMatrix, initialTranslation);
+        modelMatrix = glm::translate(modelMatrix, glm::vec3(xPos, yPos, 0.f));
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(180.f), glm::vec3(1.f, 0.f, 0.f));
+        //rotates the character to stand up
+        //
+        //modelMatrix = glm::rotate(modelMatrix, glm::radians(180.f), glm::vec3(0.5f, 0.f, 1.f));
+        modelMatrix = glm::scale(modelMatrix, glm::vec3(0.01f));
+        glUniformMatrix4fv(glGetUniformLocation(modelShaderProgram, "u_modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+		glUniformMatrix4fv(glGetUniformLocation(modelShaderProgram, "u_viewMatrix"), 1, GL_FALSE, glm::value_ptr(g_camera->viewMatrix));
+		glUniformMatrix4fv(glGetUniformLocation(modelShaderProgram, "u_projectionMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+
+        glDrawArrays(GL_TRIANGLES, 6, modelSize);
     }
 }
 /**

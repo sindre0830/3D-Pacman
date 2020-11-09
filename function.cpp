@@ -46,7 +46,7 @@ void rotateWorld(glm::mat4 &modelMatrix, const int direction) {
  * @param size 
  * @return GLuint 
  */
-GLuint LoadModel(const std::string path, const std::string file, int &size) {
+GLuint loadModel(const std::string path, const std::string file, int &size) {
 	struct Vertex {
 		glm::vec3 location;
 		glm::vec3 normals;

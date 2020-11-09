@@ -1,7 +1,9 @@
 /* library */
 #include "Pacman.h"
+#include "../CharacterShader.h"
 #include "../../../../header/dictionary.h"
 #include "../../../../header/levelData.h"
+#include "../../../../header/function.h"
 #include "../../../../header/Camera.h"
 /* global data */
 extern LevelData *g_level;
@@ -16,6 +18,8 @@ Pacman::~Pacman() {}
  * 
  */
 Pacman::Pacman() {
+	//set model path
+	modelPath = "pacman/pacman";
 	//set starting postions
     getPosition();
 	//set starting direction
@@ -52,15 +56,14 @@ Pacman::Pacman() {
 			0.f
 		);
 	}
-
-	/*if(direction == RIGHT) {
-		g_camera->changePosition(
-			g_level->gridElement[std::make_pair(g_level->pacmanCol - 2, g_level->pacmanRow)][TOP_LEFT][Y] * 0.5f,
-			0.f,
-			-g_level->gridElement[std::make_pair(g_level->pacmanCol, g_level->pacmanRow)][TOP_LEFT][X]
-		);
-	}*/
-	
+    //modelShaderProgram = compileModelShader(characterModelVertexShader, characterModelFragmentShader);
+	modelVAO = loadModel("models/pacman/", "pacman.obj", modelSize);
+	//sets z value to -1 so we don't see it in first person view
+	initialTranslation = glm::vec3(
+		g_level->gridElement[std::make_pair(g_level->pacmanCol, g_level->pacmanRow)][TOP_LEFT][X] + g_level->gridElementWidth * 0.5f, 
+		g_level->gridElement[std::make_pair(g_level->pacmanCol, g_level->pacmanRow)][TOP_LEFT][Y] - g_level->gridElementHeight * 0.5f, 
+		-1.f
+	);
 }
 /**
  * @brief Get starting position in the grid
@@ -89,62 +92,70 @@ void Pacman::mov(Pellet &pellet) {
 		case UP:
 			//branch if pacman has reached the next location or if the next location will be a wall
 			if(movUp(g_level->pacmanRow, g_level->pacmanCol)) {
-				g_camera->changePosition(
-					g_level->gridElement[std::make_pair(++g_level->pacmanCol, g_level->pacmanRow)][TOP_LEFT][X] + g_level->gridElementWidth * 0.5f,
-					g_level->gridElement[std::make_pair(g_level->pacmanCol, g_level->pacmanRow)][TOP_LEFT][Y] - g_level->gridElementHeight * 0.5f,
-					0.f
-				);
+				//update position in table
+				g_level->pacmanCol++;
+				//update camera position
+				updateCameraPosition();
+				g_camera->changePosition(camX, camY, 0.f);
 				//branch if location has a magic pellet or if the next location has a pellet and eat it
 				if(g_level->grid[g_level->pacmanCol][g_level->pacmanRow] == MAGICPELLET) {
 					g_level->magicEffect = true;
 					eat(pellet);
 				} else if(g_level->grid[g_level->pacmanCol][g_level->pacmanRow] == PELLET) eat(pellet);
-			} else if(g_level->grid[g_level->pacmanCol + 1][g_level->pacmanRow] == WALL) changeDirection = true;
+			} else if(g_level->grid[g_level->pacmanCol + 1][g_level->pacmanRow] == WALL) {
+				changeDirection = true;
+			} else g_camera->changePosition(camX, camY + g_level->gridElementHeight / (float)(speed) * (counter), 0.f);
 			break;
 		case LEFT:
 			//branch if pacman has reached the next location or if the next location will be a wall
 			if(movLeft(g_level->pacmanRow, g_level->pacmanCol)) {
-				g_camera->changePosition(
-					g_level->gridElement[std::make_pair(g_level->pacmanCol, --g_level->pacmanRow)][TOP_LEFT][X] + g_level->gridElementWidth * 0.5f,
-					g_level->gridElement[std::make_pair(g_level->pacmanCol, g_level->pacmanRow)][TOP_LEFT][Y] - g_level->gridElementHeight * 0.5f,
-					0.f
-				);
+				//update position in table
+				g_level->pacmanRow--;
+				//update camera position
+				updateCameraPosition();
+				g_camera->changePosition(camX, camY, 0.f);
 				//branch if location has a magic pellet or if the next location has a pellet and eat it
 				if(g_level->grid[g_level->pacmanCol][g_level->pacmanRow] == MAGICPELLET) {
 					g_level->magicEffect = true;
 					eat(pellet);
 				} else if(g_level->grid[g_level->pacmanCol][g_level->pacmanRow] == PELLET) eat(pellet);
-			} else if(g_level->grid[g_level->pacmanCol][g_level->pacmanRow - 1] == WALL) changeDirection = true;	
+			} else if(g_level->grid[g_level->pacmanCol][g_level->pacmanRow - 1] == WALL) {
+				changeDirection = true;
+			} else g_camera->changePosition(camX - g_level->gridElementWidth / (float)(speed) * counter, camY, 0.f);	
 			break;
 		case DOWN:
 			//branch if pacman has reached the next location or if the next location will be a wall
 			if(movDown(g_level->pacmanRow, g_level->pacmanCol)) {
-				g_camera->changePosition(
-					g_level->gridElement[std::make_pair(--g_level->pacmanCol, g_level->pacmanRow)][TOP_LEFT][X] + g_level->gridElementWidth * 0.5f,
-					g_level->gridElement[std::make_pair(g_level->pacmanCol, g_level->pacmanRow)][TOP_LEFT][Y] - g_level->gridElementHeight * 0.5f,
-					0.f
-				);
+				//update position in table
+				g_level->pacmanCol--;
+				//update camera position
+				updateCameraPosition();
+				g_camera->changePosition(camX, camY, 0.f);
 				//branch if location has a magic pellet or if the next location has a pellet and eat it
 				if(g_level->grid[g_level->pacmanCol][g_level->pacmanRow] == MAGICPELLET) {
 					g_level->magicEffect = true;
 					eat(pellet);
 				} else if(g_level->grid[g_level->pacmanCol][g_level->pacmanRow] == PELLET) eat(pellet);
-			} else if(g_level->grid[g_level->pacmanCol - 1][g_level->pacmanRow] == WALL) changeDirection = true;
+			} else if(g_level->grid[g_level->pacmanCol - 1][g_level->pacmanRow] == WALL) {
+				changeDirection = true;
+			} else g_camera->changePosition(camX, camY - g_level->gridElementHeight / (float)(speed) * counter, 0.f);
 			break;
 		case RIGHT:
 			//branch if pacman has reached the next location or if the next location will be a wall
 			if(movRight(g_level->pacmanRow, g_level->pacmanCol)) {
-				g_camera->changePosition(
-					g_level->gridElement[std::make_pair(g_level->pacmanCol, ++g_level->pacmanRow)][TOP_LEFT][X] + g_level->gridElementWidth * 0.5f,
-					g_level->gridElement[std::make_pair(g_level->pacmanCol, g_level->pacmanRow)][TOP_LEFT][Y] - g_level->gridElementHeight * 0.5f,
-					0.f
-				);
+				//update position in table
+				g_level->pacmanRow++;
+				//update camera position
+				updateCameraPosition();
+				g_camera->changePosition(camX, camY, 0.f);
 				//branch if location has a magic pellet or if the next location has a pellet and eat it
 				if(g_level->grid[g_level->pacmanCol][g_level->pacmanRow] == MAGICPELLET) {
 					g_level->magicEffect = true;
 					eat(pellet);
 				} else if(g_level->grid[g_level->pacmanCol][g_level->pacmanRow] == PELLET) eat(pellet);
-			} else if(g_level->grid[g_level->pacmanCol][g_level->pacmanRow + 1] == WALL) changeDirection = true;
+			} else if(g_level->grid[g_level->pacmanCol][g_level->pacmanRow + 1] == WALL) {
+				changeDirection = true;
+			} else g_camera->changePosition(camX + g_level->gridElementWidth / (float)(speed) * counter, camY, 0.f);
 			break;
 	}
 	//animate pacman
@@ -217,4 +228,9 @@ void Pacman::inputDirection(GLFWwindow *window) {
 		}
 	}*/
 	g_camera->changeDirection(direction);
+}
+
+void Pacman::updateCameraPosition() {
+	camX = g_level->gridElement[std::make_pair(g_level->pacmanCol, g_level->pacmanRow)][TOP_LEFT][X] + g_level->gridElementWidth * 0.5f;
+	camY = g_level->gridElement[std::make_pair(g_level->pacmanCol, g_level->pacmanRow)][TOP_LEFT][Y] - g_level->gridElementHeight * 0.5f;
 }

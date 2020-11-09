@@ -16,6 +16,7 @@ class DynamicDrawing {
         GLuint VAO;
         /* protected functionality */
         GLuint compileShader(const std::string &vertexShaderSrc, const std::string &fragmentShaderSrc);
+        GLuint compileModelShader(const std::string& vertexShaderSrc, const std::string& fragmentShaderSrc);
         GLuint genObject(const std::vector<GLfloat> arr, const int size);
         GLuint createVAO(const std::vector<GLfloat> &arr, const std::vector<GLuint> &arr_indices);
         std::vector<GLuint> genIndices(const int size);

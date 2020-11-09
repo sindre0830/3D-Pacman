@@ -32,6 +32,10 @@ Ghost::Ghost(const int row, const int col) {
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
 	//translate texture to show ghost
 	translateTex(4.0f / 6.0f, yTex);
+
+    //modelShaderProgram = compileModelShader(characterModelVertexShader, characterModelFragmentShader);
+	modelVAO = loadModel("models/ghost/ghost/", "ghost.obj", modelSize);
+	initialTranslation = glm::vec3(g_level->gridElement[std::make_pair(col, row)][TOP_LEFT][X] + g_level->gridElementWidth * 0.5f, g_level->gridElement[std::make_pair(col, row)][TOP_LEFT][Y] - g_level->gridElementHeight * 0.5f, 0.f);
 }
 /**
  * @brief Finds aggresive path to Pacman unless magic effect is active

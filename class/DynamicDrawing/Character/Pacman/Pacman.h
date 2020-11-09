@@ -14,6 +14,7 @@ class Pacman : public Character {
         void getPosition();
         void animate();
         void eat(Pellet &pellet);
+        void updateCameraPosition();
     public:
         /* public functionality */
         ~Pacman();

@@ -55,6 +55,7 @@ void Maze::draw(glm::mat4 collectionMatrix) {
 		glUseProgram(shaderProgram);
 		//draw walls
 		glBindVertexArray(VAO);
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(collectionMatrix));
 		glDrawElements(GL_TRIANGLES, (6 * wallSize), GL_UNSIGNED_INT, (const void*)0);
 		//draw corners
 		glBindVertexArray(cornerVAO);

@@ -16,7 +16,7 @@ struct LevelData {
     std::vector<std::vector<int>> grid;
     std::map<std::pair<int, int>, std::vector<std::vector<float>>> gridElement;
     float gridElementWidth, gridElementHeight;
-    bool magicEffect = false, scoreChanged = false, gameover = false;
+    bool magicEffect = false, scoreChanged = false, gameover = false, displayMinimap = false;
     /* functionality */
     LevelData();
     int getScore(const int index);

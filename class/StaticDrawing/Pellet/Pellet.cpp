@@ -45,7 +45,7 @@ void Pellet::draw(glm::mat4 collectionMatrix) {
 	if(g_level->gamemode == TWO_DIMENSIONAL) {
 		glUseProgram(shaderProgram);
 		glBindVertexArray(VAO);
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(glm::mat4(1.f)));
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(collectionMatrix));
 		glDrawElements(GL_TRIANGLES, (6 * g_level->pelletSize * 5), GL_UNSIGNED_INT, (const void*)0);
 	} else {
 		glUseProgram(shaderProgram);

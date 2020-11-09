@@ -191,22 +191,30 @@ void Pacman::eat(Pellet &pellet) {
  */
 void Pacman::inputDirection(GLFWwindow *window) {
 	//change direction on key press if pacman has completed a translation and it wont hit a wall
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS && changeDirection && g_level->pacmanCol + 1 < g_level->gridHeight && g_level->grid[g_level->pacmanCol + 1][g_level->pacmanRow] != WALL) {
-		direction = UP;
-		yTex = 0.5f;
-		translateTex(0.f, yTex);
-	} else if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS && changeDirection && g_level->pacmanRow - 1 >= 0 && g_level->grid[g_level->pacmanCol][g_level->pacmanRow - 1] != WALL) {
-		direction = LEFT;
-		yTex = 0.25f;
-		translateTex(0.f, yTex);
-	} else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS && changeDirection && g_level->pacmanCol - 1 >= 0 && g_level->grid[g_level->pacmanCol - 1][g_level->pacmanRow] != WALL) {
-		direction = DOWN;
-		yTex = 0.75f;
-		translateTex(0.f, yTex);
-	} else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS && changeDirection && g_level->pacmanRow + 1 < g_level->gridWidth && g_level->grid[g_level->pacmanCol][g_level->pacmanRow + 1] != WALL) {
-		direction = RIGHT;
-		yTex = 0.0f;
-		translateTex(0.f, yTex);
-	}
+	//if(g_level->gamemode == TWO_DIMENSIONAL) {
+		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS && changeDirection && g_level->pacmanCol + 1 < g_level->gridHeight && g_level->grid[g_level->pacmanCol + 1][g_level->pacmanRow] != WALL) {
+			direction = UP;
+			yTex = 0.5f;
+			translateTex(0.f, yTex);
+		} else if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS && changeDirection && g_level->pacmanRow - 1 >= 0 && g_level->grid[g_level->pacmanCol][g_level->pacmanRow - 1] != WALL) {
+			direction = LEFT;
+			yTex = 0.25f;
+			translateTex(0.f, yTex);
+		} else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS && changeDirection && g_level->pacmanCol - 1 >= 0 && g_level->grid[g_level->pacmanCol - 1][g_level->pacmanRow] != WALL) {
+			direction = DOWN;
+			yTex = 0.75f;
+			translateTex(0.f, yTex);
+		} else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS && changeDirection && g_level->pacmanRow + 1 < g_level->gridWidth && g_level->grid[g_level->pacmanCol][g_level->pacmanRow + 1] != WALL) {
+			direction = RIGHT;
+			yTex = 0.0f;
+			translateTex(0.f, yTex);
+		}
+	/*} else {
+		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS && changeDirection && g_level->pacmanCol + 1 < g_level->gridHeight && g_level->grid[g_level->pacmanCol + 1][g_level->pacmanRow] != WALL) {
+			if(direction == UP) {
+
+			}
+		}
+	}*/
 	g_camera->changeDirection(direction);
 }

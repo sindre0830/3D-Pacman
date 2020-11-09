@@ -5,11 +5,13 @@
 //vertex shader
 static const std::string wallVertexShader = R"(
 #version 430 core
-//input
+//input 
 layout(location = 0) in vec2 a_Position;
+//uniform 
+uniform mat4 u_collectionMatrix = mat4(1.f);
 
 void main() {
-	gl_Position = vec4(a_Position, 0.f, 1.f);
+	gl_Position = u_collectionMatrix * vec4(a_Position, 0.f, 1.f);
 }
 )";
 //fragment shader

@@ -25,14 +25,32 @@ Character::Character() {
  * @brief Draw object by installing the shader program and binding the VAO and texture to the current rendering state
  * 
  */
-void Character::draw() {
-    //if(g_level->gamemode == TWO_DIMENSIONAL) {
-        auto samplerSlotLocation = glGetUniformLocation(shaderProgram, "u_texture");
+void Character::draw(glm::mat4 collectionMatrix) {
+    if(g_level->displayMinimap) {
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO);
-        glUniform1i(samplerSlotLocation, 0);
+        glUniform1i(glGetUniformLocation(shaderProgram, "u_texture"), 0);
+        modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(0.75f, 0.75f, 0.f));
+        modelMatrix = glm::scale(modelMatrix, glm::vec3(0.25f));
+        modelMatrix = glm::translate(modelMatrix, translation);
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_transformationPos"), 1, false, glm::value_ptr(modelMatrix));
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
-    //}
+    }
+    if(g_level->gamemode == TWO_DIMENSIONAL) {
+        glUseProgram(shaderProgram);
+        glBindVertexArray(VAO);
+        glUniform1i(glGetUniformLocation(shaderProgram, "u_texture"), 0);
+        modelMatrix = glm::translate(glm::mat4(1.f), translation);
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_transformationPos"), 1, false, glm::value_ptr(modelMatrix));
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
+    } else {
+        glUseProgram(shaderProgram);
+        glBindVertexArray(VAO);
+        glUniform1i(glGetUniformLocation(shaderProgram, "u_texture"), 0);
+        modelMatrix = glm::translate(glm::mat4(1.f), translation);
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_transformationPos"), 1, false, glm::value_ptr(modelMatrix));
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
+    }
 }
 /**
  * @brief Generate array of grid positions and texture coordinates
@@ -67,12 +85,20 @@ std::vector<GLfloat> Character::genCoordinates(const int row, const int col) {
  * @param shader 
  */
 void Character::translatePos(const float xPos, const float yPos) {
+    /*if(g_level->displayMinimap) {
+        modelMatrix = glm::mat4(1.f);
+        modelMatrix = glm::translate(modelMatrix, glm::vec3(0.75f, 0.75f, 0.f));
+        modelMatrix = glm::scale(modelMatrix, glm::vec3(0.25f));
+        modelMatrix = glm::translate(modelMatrix, glm::vec3(xPos, yPos, 0.f));
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_transformationPos"), 1, false, glm::value_ptr(modelMatrix));
+        draw(glm::mat4(1.f));
+    }
+    modelMatrix = glm::mat4(1.f);*/
     //Generate matrix to translate
-    glm::mat4 translation = glm::translate(glm::mat4(1), glm::vec3(xPos, yPos, 0.f));
-    //get uniform to transform
-    GLuint uniform = glGetUniformLocation(shaderProgram, "u_transformationPos");
+    /*modelMatrix = glm::translate(modelMatrix, glm::vec3(xPos, yPos, 0.f));
+    glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_transformationPos"), 1, false, glm::value_ptr(modelMatrix));*/
     //send data from matrix to the uniform
-    glUniformMatrix4fv(uniform, 1, false, glm::value_ptr(translation));
+    translation = glm::vec3(xPos, yPos, 0.f);
 }
 /**
  * @brief Translate the texture on the x- and y-axis

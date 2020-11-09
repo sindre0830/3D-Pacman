@@ -145,7 +145,7 @@ int main() {
 	static double limitFPS = 1.0 / 60.0;
     double lastTime = glfwGetTime(), nowTime = 0, timer = lastTime;
     double deltaTime = 0;
-	int counter = 0;
+	int counter = 0, gamemodeBuffer;
 	//reset cursor
 	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	g_level->gamemode = FIRST_PERSON;
@@ -161,6 +161,24 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//check if user wants to change gamemode
 		changeDimension(window);
+		//create minimap
+		if(g_level->gamemode != TWO_DIMENSIONAL) {
+			g_level->displayMinimap = true;
+			gamemodeBuffer = g_level->gamemode;	
+			g_level->gamemode = TWO_DIMENSIONAL;
+
+			modelMatrix = glm::mat4(1.f);
+			modelMatrix = glm::translate(modelMatrix, glm::vec3(0.75f, 0.75f, 0.f));
+			modelMatrix = glm::scale(modelMatrix, glm::vec3(0.25f));
+			collectionMatrix = modelMatrix;
+
+			maze.draw(collectionMatrix);
+			pellet.draw(collectionMatrix);
+			//pacman.draw(collectionMatrix);
+
+			
+			g_level->gamemode = gamemodeBuffer;
+		} else g_level->displayMinimap = false;
 		//update view matrix
 		if(g_level->gamemode != TWO_DIMENSIONAL) g_camera->updateViewMatrix(window, deltaTime, pacman.direction);
 		//
@@ -170,6 +188,7 @@ int main() {
 		//modelMatrix = glm::scale(modelMatrix, glm::vec3(2.f));
 		//do calculations before sending it to the vertex shader
 		collectionMatrix = projectionMatrix * g_camera->viewMatrix * modelMatrix;
+		if(g_level->gamemode == TWO_DIMENSIONAL) collectionMatrix = glm::mat4(1);
 		//draw maze
 		maze.draw(collectionMatrix);
 		//draw scoreboard
@@ -188,10 +207,12 @@ int main() {
 		//modelMatrix = glm::scale(modelMatrix, glm::vec3(2.f, 2.f, 1.f));
 		//do calculations before sending it to the vertex shader
 		collectionMatrix = projectionMatrix * g_camera->viewMatrix * modelMatrix;
+		if(g_level->gamemode == TWO_DIMENSIONAL) collectionMatrix = glm::mat4(1);
 		//draw pellets
 		pellet.draw(collectionMatrix);
+		if(g_level->gamemode == TWO_DIMENSIONAL) collectionMatrix = glm::mat4(1);
 		//draw pacman
-		pacman.draw();
+		pacman.draw(collectionMatrix);
 		//branch if game isn't over
 		if (!g_level->gameover && deltaTime >= 1.0){
 			//translate pacman
@@ -205,9 +226,9 @@ int main() {
 			//branch if ghost isn't dead
 			if(!ghostArr[i]->dead) {
 				noActiveGhosts = false;
-				ghostArr[i]->draw();
+				ghostArr[i]->draw(glm::mat4(1.f));
 				//branch if game isn't over and translate the ghost
-				//if (!g_level->gameover && deltaTime >= 1.0) ghostArr[i]->mov();
+				if (!g_level->gameover && deltaTime >= 1.0) ghostArr[i]->mov();
 			}
 		}
 		//branch if there are no more ghosts on the level and end the game

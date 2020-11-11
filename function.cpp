@@ -123,15 +123,15 @@ GLuint loadModel(const std::string path, const std::string file, int &size) {
 void changeDimension(GLFWwindow* window) {
 	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
 		g_level->gamemode = FIRST_PERSON;
-		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	}
     if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
 		g_level->gamemode = TWO_DIMENSIONAL;
-		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	}
     if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS) {
 		g_level->gamemode = THIRD_PERSON;
-		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	}
 }
 

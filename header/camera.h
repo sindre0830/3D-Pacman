@@ -12,17 +12,18 @@
 class Camera {
     private:
         /* private data */
-        float yaw, pitch, lastX, lastY, camSpeed;
+        float fov, nearPlane, farPlane;
+        float yaw, pitch, lastX, lastY, camSpeed, xOffset = 0, yOffset = 0;
         bool firstMouse;
         glm::vec3 camFront, camPos, camUp;
         const float sensitivity = 0.05f;
     public:
         /* public data */
-        glm::mat4 viewMatrix;
+        glm::mat4 viewMatrix, projectionMatrix;
         /* public functionality */
         ~Camera();
-        Camera();
-        void changePosition(const float x, const float y, const float z);
+        Camera(const int width, const int height);
+        void changePosition(const float x, const float y);
         void changeDirection(const int pacmanDirection);
         void updateViewMatrix(GLFWwindow *window, const float deltaTime, const int pacmanDirection);
         void updateDirection(double xpos, double ypos);

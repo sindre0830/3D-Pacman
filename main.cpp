@@ -30,9 +30,7 @@ Camera *g_camera;
  */
 int main() {
 	static LevelData level;
-	static Camera camera;
 	g_level = &level;
-	g_camera = &camera;
 	//branch if file isn't initialized and kill the application
 	if (!g_level->inputData()) {
 		std::cerr << "File initialization failed.\n";
@@ -81,18 +79,15 @@ int main() {
 	enableDebug();
 	//get initial cursor position
 	glfwSetCursorPosCallback(window, mouse_callback);
+	//construct camera and set address to global pointer
+	static Camera camera(framebufferWidth, framebufferHeight);
+	g_camera = &camera;
 	//setup rotate
 	glm::mat4 modelMatrix(1.f);
-	//setup projection matrix
-	float fov = 120.f;
-	float nearPlane = 0.01f;
-	float farPlane = 100.f;
-	glm::mat4 projectionMatrix(1.f);
-	projectionMatrix = glm::perspective(glm::radians(fov), static_cast<float>(framebufferWidth) / framebufferHeight, nearPlane, farPlane);
 	//do calculations before sending it to the vertex shader
-	glm::mat4 collectionMatrix = projectionMatrix * g_camera->viewMatrix * modelMatrix;
+	glm::mat4 collectionMatrix = g_camera->projectionMatrix * g_camera->viewMatrix * modelMatrix;
 	//construct maze
-	Maze maze(projectionMatrix);
+	Maze maze(g_camera->projectionMatrix);
 	//construct array of scoreboard classes
 	std::vector<Score*> scoreboard(4, nullptr);
 	for(int i = 0; i < scoreboard.size(); i++) {
@@ -187,7 +182,7 @@ int main() {
 		//rotateWorld(modelMatrix, pacman.direction);
 		//modelMatrix = glm::scale(modelMatrix, glm::vec3(2.f));
 		//do calculations before sending it to the vertex shader
-		collectionMatrix = projectionMatrix * g_camera->viewMatrix * modelMatrix;
+		collectionMatrix = g_camera->projectionMatrix * g_camera->viewMatrix * modelMatrix;
 		if(g_level->gamemode == TWO_DIMENSIONAL) collectionMatrix = glm::mat4(1);
 		//draw maze
 		maze.draw(collectionMatrix);
@@ -206,13 +201,13 @@ int main() {
 		//rotateWorld(modelMatrix, pacman.direction);
 		//modelMatrix = glm::scale(modelMatrix, glm::vec3(2.f, 2.f, 1.f));
 		//do calculations before sending it to the vertex shader
-		collectionMatrix = projectionMatrix * g_camera->viewMatrix * modelMatrix;
+		collectionMatrix = g_camera->projectionMatrix * g_camera->viewMatrix * modelMatrix;
 		if(g_level->gamemode == TWO_DIMENSIONAL) collectionMatrix = glm::mat4(1);
 		//draw pellets
 		pellet.draw(collectionMatrix);
 		if(g_level->gamemode == TWO_DIMENSIONAL) collectionMatrix = glm::mat4(1);
 		//draw pacman
-		pacman.draw(projectionMatrix);
+		pacman.draw(g_camera->projectionMatrix);
 		//branch if game isn't over
 		if (!g_level->gameover && deltaTime >= 1.0){
 			//translate pacman
@@ -226,7 +221,7 @@ int main() {
 			//branch if ghost isn't dead
 			if(!ghostArr[i]->dead) {
 				noActiveGhosts = false;
-				ghostArr[i]->draw(projectionMatrix);
+				ghostArr[i]->draw(g_camera->projectionMatrix);
 				//branch if game isn't over and translate the ghost
 				if (!g_level->gameover && deltaTime >= 1.0) ghostArr[i]->mov();
 			}

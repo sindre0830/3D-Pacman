@@ -54,7 +54,7 @@ static const std::string characterModelVertexShader = R"(
 
 
 	void main() {
-		mat3 normalMatrix = transpose(inverse(mat3(u_viewMatrix * u_modelMatrix)));
+		//mat3 normalMatrix = transpose(inverse(mat3(u_viewMatrix * u_modelMatrix)));
 
         gl_Position = u_projectionMatrix * u_viewMatrix * u_modelMatrix * vec4(gridPos, 1.f);
 

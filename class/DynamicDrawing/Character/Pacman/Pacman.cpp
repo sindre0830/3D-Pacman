@@ -254,7 +254,7 @@ void Pacman::inputDirection(GLFWwindow *window) {
 			yTex = 0.75f;
 			translateTex(0.f, yTex);
 		}
-	} else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS && changeDirection && g_level->pacmanRow + 1 < g_level->gridWidth && g_level->grid[g_level->pacmanCol][g_level->pacmanRow + 1] != WALL) {
+	} else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS && changeDirection) {
 		if(g_level->gamemode == FIRST_PERSON) {
 			if(direction == UP && pathRight) {
 				direction = RIGHT;
@@ -280,6 +280,10 @@ void Pacman::inputDirection(GLFWwindow *window) {
 		}
 	}
 	g_camera->changeDirection(direction);
+	if(pathUP) std::cout << "\nUP\n";
+	if(pathLeft) std::cout << "\nLeft\n";
+	if(pathDown) std::cout << "\nDown\n";
+	if(pathRight) std::cout << "\nRight\n";
 }
 
 void Pacman::updateCameraPosition() {

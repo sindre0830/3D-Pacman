@@ -132,7 +132,7 @@ int main() {
 	//set background color black
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	//setup timer
-	static double limitFPS = 1.0 / 45.0;
+	static double limitFPS = 1.0 / 60.0;
     double lastTime = glfwGetTime(), nowTime = 0, timer = lastTime;
     double deltaTime = 0;
 	int counter = 0;

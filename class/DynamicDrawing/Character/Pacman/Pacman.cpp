@@ -19,8 +19,6 @@ Pacman::~Pacman() {}
  */
 Pacman::Pacman() {
 	isPacman = true;
-	//set model path
-	modelPath = "pacman/pacman";
 	//set starting postions
     getPosition();
 	//set starting direction
@@ -204,12 +202,12 @@ void Pacman::inputDirection(GLFWwindow *window) {
 		pathDown = g_level->pacmanCol - 1 >= 0 && g_level->grid[g_level->pacmanCol - 1][g_level->pacmanRow] != WALL,
 		pathRight = g_level->pacmanRow + 1 < g_level->gridWidth && g_level->grid[g_level->pacmanCol][g_level->pacmanRow + 1] != WALL;
 	//change direction on key press if pacman has completed a translation and it wont hit a wall
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS && changeDirection && pathUP && g_level->gamemode == TWO_DIMENSIONAL) {
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS && changeDirection && pathUP && g_level->gamemode != FIRST_PERSON) {
 		direction = UP;
 		yTex = 0.5f;
 		translateTex(0.f, yTex);
 	} else if(glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS && changeDirection) {
-		if(g_level->gamemode != TWO_DIMENSIONAL) {
+		if(g_level->gamemode == FIRST_PERSON) {
 			if(direction == UP && pathLeft) {
 				direction = LEFT;
 				yTex = 0.25f;
@@ -233,7 +231,7 @@ void Pacman::inputDirection(GLFWwindow *window) {
 			translateTex(0.f, yTex);
 		}
 	} else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS && changeDirection) {
-		if(g_level->gamemode != TWO_DIMENSIONAL) {
+		if(g_level->gamemode == FIRST_PERSON) {
 			if(direction == UP && pathDown) {
 				direction = DOWN;
 				yTex = 0.75f;
@@ -257,7 +255,7 @@ void Pacman::inputDirection(GLFWwindow *window) {
 			translateTex(0.f, yTex);
 		}
 	} else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS && changeDirection && g_level->pacmanRow + 1 < g_level->gridWidth && g_level->grid[g_level->pacmanCol][g_level->pacmanRow + 1] != WALL) {
-		if(g_level->gamemode != TWO_DIMENSIONAL) {
+		if(g_level->gamemode == FIRST_PERSON) {
 			if(direction == UP && pathRight) {
 				direction = RIGHT;
 				yTex = 0.0f;
@@ -275,7 +273,7 @@ void Pacman::inputDirection(GLFWwindow *window) {
 				yTex = 0.75f;
 				translateTex(0.f, yTex);
 			}
-		} else if(pathLeft) {
+		} else if(pathRight) {
 			direction = RIGHT;
 			yTex = 0.0f;
 			translateTex(0.f, yTex);

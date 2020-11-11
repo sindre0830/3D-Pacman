@@ -10,7 +10,7 @@ Camera::~Camera() {}
 
 Camera::Camera(const int width, const int height) {
 	//setup projection matrix
-	fov = 120.f;
+	fov = 60.f;
 	nearPlane = 0.01f;
 	farPlane = 100.f;
 	projectionMatrix = glm::mat4(1.f);
@@ -30,7 +30,7 @@ Camera::Camera(const int width, const int height) {
 
 void Camera::changePosition(const float x, const float y) {
 	float z = 0.01f;
-	if(g_level->gamemode == THIRD_PERSON) z = 0.3f;
+	if(g_level->gamemode == THIRD_PERSON) z = 0.5f;
 	camPos = glm::vec3(x + xOffset, y + yOffset, z);
 
 	viewMatrix = glm::mat4(1.f);
@@ -41,56 +41,52 @@ void Camera::changeDirection(const int pacmanDirection) {
 	//reset offset values
 	xOffset = 0.f;
 	yOffset = 0.f;
-	switch (pacmanDirection) {
-		case UP:
-			//rotate camera
-			if(g_level->gamemode == THIRD_PERSON) {
-				yaw = 90.f;
-				pitch = 180.f;
-			} else {
+	if(g_level->gamemode == THIRD_PERSON) {
+		yaw = 90.f;
+		pitch = 180.f;
+		//default world orientation
+		camUp = glm::vec3(0.f, 1.f, 0.f);
+	} else {
+		switch (pacmanDirection) {
+			case UP:
+				//rotate camera
 				yaw = 90.f;
 				pitch = 90.f;
-			}
-			//default world orientation
-			camUp = glm::vec3(0.f, 1.f, 0.f);
-			break;
-		case DOWN:
-			//rotate camera
-			if(g_level->gamemode == THIRD_PERSON) {
-				yaw = 90.f;
-				pitch = 180.f;
-			} else {
+				//default world orientation
+				camUp = glm::vec3(0.f, 1.f, 0.f);
+				//set offset
+				yOffset = -g_level->gridElementWidth / 1.5f;
+				break;
+			case DOWN:
+				//rotate camera
 				yaw = -90.f;
 				pitch = -90.f;
-			}
-			//default world orientation
-			camUp = glm::vec3(0.f, 1.f, 0.f);
-			break;
-		case LEFT:
-			//rotate camera
-			if(g_level->gamemode == THIRD_PERSON) {
-				yaw = -90.f;
-				pitch = 0.f;
-			} else {
+				//default world orientation
+				camUp = glm::vec3(0.f, 1.f, 0.f);
+				//set offset
+				yOffset = g_level->gridElementWidth / 1.5f;
+				break;
+			case LEFT:
+				//rotate camera
 				yaw = -180.f;
 				pitch = 0.f;
-			}
-			//turn world orientation
-			camUp = glm::vec3(0.f, 0.f, 1.f);
-			break;
-		case RIGHT:
-			//rotate camera
-			if(g_level->gamemode == THIRD_PERSON) {
-				yaw = -90.f;
-				pitch = 0.f;
-			} else {
+				//turn world orientation
+				camUp = glm::vec3(0.f, 0.f, 1.f);
+				//set offset
+				xOffset = g_level->gridElementWidth / 1.5f;
+				break;
+			case RIGHT:
+				//rotate camera
 				yaw = 0.f;
 				pitch = 0.f;
-			}
-			//turn world orientation
-			camUp = glm::vec3(0.f, 0.f, 1.f);
-			break;
+				//turn world orientation
+				camUp = glm::vec3(0.f, 0.f, 1.f);
+				//set offset
+				xOffset = -g_level->gridElementWidth / 1.5f;
+				break;
+		}
 	}
+	//update camera direction
 	glm::vec3 direction;
     direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
     direction.y = sin(glm::radians(pitch));

@@ -57,8 +57,8 @@ void Character::draw() {
         } else if(direction == RIGHT) {
             modelDirection == 90.f;
         }*/
-        float size = 0.01;
-        if(isPacman) size = 0.02f;
+        float size = 0.02;
+        //if(isPacman) size = 0.02f;
 
         glUseProgram(modelShaderProgram);
         glBindVertexArray(modelVAO);
@@ -69,7 +69,7 @@ void Character::draw() {
         modelMatrix = glm::translate(modelMatrix, glm::vec3(xPos, yPos, 0.f));
         //rotate the model to stand up
         modelMatrix = glm::rotate(modelMatrix, glm::radians(90.f), glm::vec3(1.f, 0.f, 0.f));
-        //rotate the character to face the correct direction
+        //rotate the character to face the correct direction //doesn't work
         //modelMatrix = glm::rotate(modelMatrix, glm::radians(modelDirection), glm::vec3(0.f, 0.f, 1.f));
         //scale down the model
         modelMatrix = glm::scale(modelMatrix, glm::vec3(size));

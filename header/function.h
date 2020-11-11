@@ -15,6 +15,7 @@
 #include <glm/gtx/matrix_transform_2d.hpp>
 #include <glm/gtc/type_ptr.hpp>
 /* functionality */
+glm::mat4 getMinimapModelMatrix();
 void rotateWorld(glm::mat4 &modelMatrix, const int direction);
 GLuint loadModel(const std::string path, const std::string file, int &size);
 void changeDimension(GLFWwindow* window);

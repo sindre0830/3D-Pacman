@@ -29,6 +29,7 @@ Camera *g_camera;
  * Main program.
  */
 int main() {
+	//construct level class and point adress to global pointer
 	static LevelData level;
 	g_level = &level;
 	//branch if file isn't initialized and kill the application
@@ -60,7 +61,7 @@ int main() {
 	//setting the OpenGL context to the window
 	glfwMakeContextCurrent(window);
 	//enable capture of cursor and focus it on the middle while hiding the icon
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	//branch if window isn't created and kill the application
 	if (window == nullptr) {
 		std::cerr << "GLFW failed on window creation.\n";
@@ -78,24 +79,20 @@ int main() {
 	//eanable capture of debug output
 	enableDebug();
 	//get initial cursor position
-	glfwSetCursorPosCallback(window, mouse_callback);
-	//construct camera and set address to global pointer
+	//glfwSetCursorPosCallback(window, mouse_callback);
+	//construct camera class and point adress to global pointer
 	static Camera camera(framebufferWidth, framebufferHeight);
 	g_camera = &camera;
-	//setup rotate
-	glm::mat4 modelMatrix(1.f);
-	//do calculations before sending it to the vertex shader
-	glm::mat4 collectionMatrix = g_camera->projectionMatrix * g_camera->viewMatrix * modelMatrix;
-	//construct maze
-	Maze maze(g_camera->projectionMatrix);
+	//construct maze class
+	Maze maze;
 	//construct array of scoreboard classes
 	std::vector<Score*> scoreboard(4, nullptr);
 	for(int i = 0; i < scoreboard.size(); i++) {
 		scoreboard[i] = new Score(0, (g_level->gridWidth - 2) - i);
 	}
-	//construct gameState
+	//construct gameState class
 	GameState gameState;
-	//construct pacman
+	//construct pacman class
 	Pacman pacman;
 	//create an array filled with all possible starting positions for ghosts
 	int ghostStartRow, ghostStartCol;
@@ -120,10 +117,8 @@ int main() {
 		getGhostPos(possibleStartingPos, ghostStartRow, ghostStartCol);
 		ghostArr[i] = new Ghost(ghostStartRow, ghostStartCol);
 	}
-	//construct pellets
+	//construct pellet class
 	Pellet pellet;
-	//enable depth
-	glEnable(GL_DEPTH_TEST); //doing it in the loop now
 	//enable MSAA
 	glEnable(GL_MULTISAMPLE);
 	//enable transparency on texture
@@ -137,12 +132,12 @@ int main() {
 	//set background color black
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	//setup timer
-	static double limitFPS = 1.0 / 30.0;
+	static double limitFPS = 1.0 / 45.0;
     double lastTime = glfwGetTime(), nowTime = 0, timer = lastTime;
     double deltaTime = 0;
-	int counter = 0, gamemodeBuffer;
+	int counter = 0;
 	//reset cursor
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	g_level->gamemode = FIRST_PERSON;
 	//loop until user closes window
 	while(!glfwWindowShouldClose(window)) {
@@ -158,34 +153,20 @@ int main() {
 		changeDimension(window);
 		//create minimap
 		if(g_level->gamemode != TWO_DIMENSIONAL) {
+			//update view matrix
+			if(g_level->gamemode != TWO_DIMENSIONAL) g_camera->updateViewMatrix(window, deltaTime, pacman.direction);
+			//disable depth so textures in minimap are transparent
+			glDisable(GL_DEPTH_TEST);
 			g_level->displayMinimap = true;
-			gamemodeBuffer = g_level->gamemode;	
-			g_level->gamemode = TWO_DIMENSIONAL;
-
-			modelMatrix = glm::mat4(1.f);
-			modelMatrix = glm::translate(modelMatrix, glm::vec3(0.75f, 0.75f, 0.f));
-			modelMatrix = glm::scale(modelMatrix, glm::vec3(0.25f));
-			collectionMatrix = modelMatrix;
-
-			maze.draw(collectionMatrix);
-			pellet.draw(collectionMatrix);
-			//pacman.draw(collectionMatrix);
-
-			
-			g_level->gamemode = gamemodeBuffer;
-		} else g_level->displayMinimap = false;
-		//update view matrix
-		if(g_level->gamemode != TWO_DIMENSIONAL) g_camera->updateViewMatrix(window, deltaTime, pacman.direction);
-		//
-		modelMatrix = glm::mat4(1.f);
-		//modelMatrix = glm::rotate(modelMatrix, glm::radians(-90.f), glm::vec3(1.f, 0.f, 0.f));
-		//rotateWorld(modelMatrix, pacman.direction);
-		//modelMatrix = glm::scale(modelMatrix, glm::vec3(2.f));
-		//do calculations before sending it to the vertex shader
-		collectionMatrix = g_camera->projectionMatrix * g_camera->viewMatrix * modelMatrix;
-		if(g_level->gamemode == TWO_DIMENSIONAL) collectionMatrix = glm::mat4(1);
+			//enable depth to display 3D space
+			glEnable(GL_DEPTH_TEST);
+		} else {
+			//disable depth so textures in 2D map are transparent
+			glDisable(GL_DEPTH_TEST);
+			g_level->displayMinimap = false;
+		}
 		//draw maze
-		maze.draw(collectionMatrix);
+		maze.draw();
 		//draw scoreboard
 		for(int i = 0; i < scoreboard.size(); i++) {
 			scoreboard[i]->draw();
@@ -194,20 +175,10 @@ int main() {
 		}
 		//branch if scoreboard has been updated and reset it
 		if(g_level->scoreChanged) g_level->scoreChanged = false;
-		//
-		modelMatrix = glm::mat4(1.f);
-		modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, 0.f, -0.02f));
-		//modelMatrix = glm::rotate(modelMatrix, glm::radians(-90.f), glm::vec3(1.f, 0.f, 0.f));
-		//rotateWorld(modelMatrix, pacman.direction);
-		//modelMatrix = glm::scale(modelMatrix, glm::vec3(2.f, 2.f, 1.f));
-		//do calculations before sending it to the vertex shader
-		collectionMatrix = g_camera->projectionMatrix * g_camera->viewMatrix * modelMatrix;
-		if(g_level->gamemode == TWO_DIMENSIONAL) collectionMatrix = glm::mat4(1);
 		//draw pellets
-		pellet.draw(collectionMatrix);
-		if(g_level->gamemode == TWO_DIMENSIONAL) collectionMatrix = glm::mat4(1);
+		pellet.draw();
 		//draw pacman
-		pacman.draw(g_camera->projectionMatrix);
+		pacman.draw();
 		//branch if game isn't over
 		if (!g_level->gameover && deltaTime >= 1.0){
 			//translate pacman
@@ -221,7 +192,7 @@ int main() {
 			//branch if ghost isn't dead
 			if(!ghostArr[i]->dead) {
 				noActiveGhosts = false;
-				ghostArr[i]->draw(g_camera->projectionMatrix);
+				ghostArr[i]->draw();
 				//branch if game isn't over and translate the ghost
 				if (!g_level->gameover && deltaTime >= 1.0) ghostArr[i]->mov();
 			}

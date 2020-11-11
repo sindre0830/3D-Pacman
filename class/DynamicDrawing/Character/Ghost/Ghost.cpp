@@ -182,5 +182,5 @@ void Ghost::changeColor(const int flag) {
 	//send data to uniform
 	glUniform1i(color, flag);
 	//update to the new color
-	draw(glm::mat4(1.f));
+	draw();
 }

@@ -13,6 +13,7 @@
 class Character : public DynamicDrawing {
     protected:
         /* protected data */
+        bool isPacman = false;
         int counter = 0, speed = 20, modelSize = 0;
         GLuint modelVAO, modelShaderProgram;
         std::string modelPath;
@@ -34,6 +35,6 @@ class Character : public DynamicDrawing {
         /* public functionality */
         ~Character();
         Character();
-        void draw(glm::mat4 projectionMatrix);
+        void draw();
 };
 #endif

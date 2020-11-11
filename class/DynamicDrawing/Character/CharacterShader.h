@@ -48,9 +48,9 @@ static const std::string characterModelVertexShader = R"(
     layout(location = 0) in vec3 gridPos;
     layout(location = 1) in vec3 normals;
     //uniform
-    layout(location=0) uniform mat4 u_modelMatrix = mat4(1);
-    layout(location=1) uniform mat4 u_viewMatrix = mat4(1);
-    layout(location=2) uniform mat4 u_projectionMatrix = mat4(1);
+    uniform mat4 u_modelMatrix = mat4(1);
+    uniform mat4 u_viewMatrix = mat4(1);
+    uniform mat4 u_projectionMatrix = mat4(1);
 
 
 	void main() {
@@ -65,9 +65,14 @@ static const std::string characterModelFragmentShader = R"(
 	#version 430 core
     //output
     out vec4 color;
+    //uniform
+	uniform int u_changeColor = 0;
 
 	void main() {
-		color = vec4(1.f, 0.f, 0.f, 1.f);
+		//branch if color should change
+		if(u_changeColor == 1) {
+			color = vec4(1.f, 1.f, 0.f, 1.f);
+		} else color = vec4(1.f, 0.f, 0.f, 1.f);
 	}
 )";
 #endif

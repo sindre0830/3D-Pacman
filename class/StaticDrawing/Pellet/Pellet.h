@@ -22,7 +22,7 @@ class Pellet : public StaticDrawing {
         /* public functionality */
         ~Pellet();
         Pellet();
-        void draw(glm::mat4 collectionMatrix);
+        void draw();
         void hidePellet(const int col, const int row);
 };
 #endif

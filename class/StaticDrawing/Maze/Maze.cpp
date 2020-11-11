@@ -3,8 +3,11 @@
 #include "MazeShader.h"
 #include "../../../header/dictionary.h"
 #include "../../../header/levelData.h"
+#include "../../../header/Camera.h"
+#include "../../../header/function.h"
 /* global data */
 extern LevelData *g_level;
+extern Camera *g_camera;
 /**
  * @brief Destroy the Wall:: Wall object
  * 
@@ -18,7 +21,7 @@ Maze::~Maze() {
  * @brief Construct a new Wall:: Wall object
  * 
  */
-Maze::Maze(glm::mat4 collectionMatrix) {
+Maze::Maze() {
 	//create shader program
     shaderProgram = compileShader(wallVertexShader, wallFragmentShader);
 	//generate wall VAO
@@ -43,28 +46,37 @@ Maze::Maze(glm::mat4 collectionMatrix) {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), 0);
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
-
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(collectionMatrix));
 }
 /**
  * @brief Draw object by installing the shader program and binding the VAO to the current rendering state
  * 
  */
-void Maze::draw(glm::mat4 collectionMatrix) {
+void Maze::draw() {
+	if(g_level->displayMinimap) {
+		glm::mat4 modelMatrix = getMinimapModelMatrix();
+		glUseProgram(shaderProgram);
+		//draw walls
+		glBindVertexArray(VAO);
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+		glDrawElements(GL_TRIANGLES, (6 * wallSize), GL_UNSIGNED_INT, (const void*)0);
+		//draw corners
+		glBindVertexArray(cornerVAO);
+		glDrawArrays(GL_TRIANGLES, 0, (3 * cornerSize));
+	}
 	if(g_level->gamemode == TWO_DIMENSIONAL) {
 		glUseProgram(shaderProgram);
 		//draw walls
 		glBindVertexArray(VAO);
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(collectionMatrix));
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(glm::mat4(1.f)));
 		glDrawElements(GL_TRIANGLES, (6 * wallSize), GL_UNSIGNED_INT, (const void*)0);
 		//draw corners
 		glBindVertexArray(cornerVAO);
 		glDrawArrays(GL_TRIANGLES, 0, (3 * cornerSize));
 	} else {
-		auto samplerSlotLocation = glGetUniformLocation(shaderProgram3D, "u_texture");
+		glm::mat4 collectionMatrix = g_camera->projectionMatrix * g_camera->viewMatrix;
 		glUseProgram(shaderProgram3D);
 		glBindVertexArray(vao3D);
-		glUniform1i(samplerSlotLocation, 3);
+		glUniform1i(glGetUniformLocation(shaderProgram3D, "u_texture"), 3);
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(collectionMatrix));
 		glDrawElements(GL_TRIANGLES, (6 * wallSize3D), GL_UNSIGNED_INT, (const void*)0);
 	}

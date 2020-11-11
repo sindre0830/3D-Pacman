@@ -18,6 +18,7 @@ Pacman::~Pacman() {}
  * 
  */
 Pacman::Pacman() {
+	isPacman = true;
 	//set model path
 	modelPath = "pacman/pacman";
 	//set starting postions
@@ -49,7 +50,7 @@ Pacman::Pacman() {
 	camY = g_level->gridElement[std::make_pair(g_level->pacmanCol, g_level->pacmanRow)][TOP_LEFT][Y] - g_level->gridElementHeight * 0.5f;
 	g_camera->changeDirection(direction);
 	g_camera->changePosition(camX, camY);
-    //modelShaderProgram = compileModelShader(characterModelVertexShader, characterModelFragmentShader);
+	//
 	modelVAO = loadModel("models/pacman/", "pacman.obj", modelSize);
 	//sets z value to -1 so we don't see it in first person view
 	initialTranslation = glm::vec3(

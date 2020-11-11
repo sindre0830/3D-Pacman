@@ -3,9 +3,12 @@
 #include "PelletShader.h"
 #include "../../../header/dictionary.h"
 #include "../../../header/levelData.h"
+#include "../../../header/Camera.h"
+#include "../../../header/function.h"
 
 /* global data */
 extern LevelData *g_level;
+extern Camera *g_camera;
 /**
  * @brief Destroy the Pellet:: Pellet object
  * 
@@ -41,13 +44,22 @@ Pellet::Pellet() {
  * @brief Draw object by installing the shader program and binding the VAO to the current rendering state
  * 
  */
-void Pellet::draw(glm::mat4 collectionMatrix) {
+void Pellet::draw() {
+	if(g_level->displayMinimap) {
+		glm::mat4 modelMatrix = getMinimapModelMatrix();
+		glUseProgram(shaderProgram);
+		glBindVertexArray(VAO);
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+		glDrawElements(GL_TRIANGLES, (6 * g_level->pelletSize * 5), GL_UNSIGNED_INT, (const void*)0);
+	}
 	if(g_level->gamemode == TWO_DIMENSIONAL) {
 		glUseProgram(shaderProgram);
 		glBindVertexArray(VAO);
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(collectionMatrix));
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(glm::mat4(1.f)));
 		glDrawElements(GL_TRIANGLES, (6 * g_level->pelletSize * 5), GL_UNSIGNED_INT, (const void*)0);
 	} else {
+		glm::mat4 modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(0.f, 0.f, -0.02f));
+		glm::mat4 collectionMatrix = g_camera->projectionMatrix * g_camera->viewMatrix * modelMatrix;
 		glUseProgram(shaderProgram);
 		glBindVertexArray(VAO);
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(collectionMatrix));

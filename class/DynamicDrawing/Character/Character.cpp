@@ -4,6 +4,7 @@
 #include "../../../header/dictionary.h"
 #include "../../../header/levelData.h"
 #include "../../../header/Camera.h"
+#include "../../../header/function.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/matrix_transform_2d.hpp>
@@ -29,13 +30,12 @@ Character::Character() {
  * @brief Draw object by installing the shader program and binding the VAO and texture to the current rendering state
  * 
  */
-void Character::draw(glm::mat4 projectionMatrix) {
+void Character::draw() {
     if(g_level->displayMinimap) {
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO);
         glUniform1i(glGetUniformLocation(shaderProgram, "u_texture"), 0);
-        modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(0.75f, 0.75f, 0.f));
-        modelMatrix = glm::scale(modelMatrix, glm::vec3(0.25f));
+        modelMatrix = getMinimapModelMatrix();
         modelMatrix = glm::translate(modelMatrix, translation);
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_transformationPos"), 1, false, glm::value_ptr(modelMatrix));
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
@@ -48,15 +48,17 @@ void Character::draw(glm::mat4 projectionMatrix) {
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_transformationPos"), 1, false, glm::value_ptr(modelMatrix));
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
     } else {
-        if(direction == UP) {
-            modelDirection == -45.f;     //wrong
+        /*if(direction == UP) {
+            modelDirection == -45.f;
         } else if(direction == LEFT) {
-            modelDirection == 0.f;    //wrong
+            modelDirection == 0.f;
         } else if(direction == DOWN) {
-            modelDirection == 45.f;    //wrong
+            modelDirection == 45.f;
         } else if(direction == RIGHT) {
-            modelDirection == 90.f;      //correct
-        }
+            modelDirection == 90.f;
+        }*/
+        float size = 0.01;
+        if(isPacman) size = 0.02f;
 
         glUseProgram(modelShaderProgram);
         glBindVertexArray(modelVAO);
@@ -70,10 +72,10 @@ void Character::draw(glm::mat4 projectionMatrix) {
         //rotate the character to face the correct direction
         //modelMatrix = glm::rotate(modelMatrix, glm::radians(modelDirection), glm::vec3(0.f, 0.f, 1.f));
         //scale down the model
-        modelMatrix = glm::scale(modelMatrix, glm::vec3(0.01f));
+        modelMatrix = glm::scale(modelMatrix, glm::vec3(size));
         glUniformMatrix4fv(glGetUniformLocation(modelShaderProgram, "u_modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 		glUniformMatrix4fv(glGetUniformLocation(modelShaderProgram, "u_viewMatrix"), 1, GL_FALSE, glm::value_ptr(g_camera->viewMatrix));
-		glUniformMatrix4fv(glGetUniformLocation(modelShaderProgram, "u_projectionMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+		glUniformMatrix4fv(glGetUniformLocation(modelShaderProgram, "u_projectionMatrix"), 1, GL_FALSE, glm::value_ptr(g_camera->projectionMatrix));
 
         glDrawArrays(GL_TRIANGLES, 6, modelSize);
     }

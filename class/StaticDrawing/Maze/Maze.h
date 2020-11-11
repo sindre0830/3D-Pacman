@@ -22,7 +22,7 @@ class Maze : public StaticDrawing {
     public:
         /* public functionality */
         ~Maze();
-        Maze(glm::mat4 collectionMatrix);
-        void draw(glm::mat4 collectionMatrix);
+        Maze();
+        void draw();
 };
 #endif

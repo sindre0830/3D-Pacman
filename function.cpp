@@ -13,6 +13,12 @@
 extern LevelData *g_level;
 extern Camera *g_camera;
 
+glm::mat4 getMinimapModelMatrix() {
+    glm::mat4 modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(0.75f, 0.75f, 0.f));
+    modelMatrix = glm::scale(modelMatrix, glm::vec3(0.25f));
+    return modelMatrix;
+}
+
 void rotateWorld(glm::mat4 &modelMatrix, const int direction) {
     /*if(direction == UP) {
         //rotates world so pacman moves away from screen (birds-eye view)
@@ -50,6 +56,7 @@ GLuint loadModel(const std::string path, const std::string file, int &size) {
 	struct Vertex {
 		glm::vec3 location;
 		glm::vec3 normals;
+		glm::vec2 textureCoordinate;
 	};
     //We create a vector of Vertex structs. OpenGL can understand these, and so will accept them as input.
     std::vector<Vertex> vertices;
@@ -91,8 +98,12 @@ GLuint loadModel(const std::string path, const std::string file, int &size) {
                 attrib.normals[(meshIndex.normal_index * 3) + 1],
                 attrib.normals[(meshIndex.normal_index * 3) + 2]
             };
+            glm::vec2 textureCoordinate = {                         //These go unnused, but if you want textures, you will need them.
+                attrib.texcoords[meshIndex.texcoord_index * 2],
+                attrib.texcoords[(meshIndex.texcoord_index * 2) + 1]
+            };
 
-            vertices.push_back({ vertice, normal }); //We add our new vertice struct to our vector
+            vertices.push_back({ vertice, normal, textureCoordinate  }); //We add our new vertice struct to our vector
 
         }
     }
@@ -109,11 +120,13 @@ GLuint loadModel(const std::string path, const std::string file, int &size) {
     glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (const void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (const void*)0);
 
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (const void*)3);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (const void*)3);
     
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)(sizeof(float) * 6));
     //This will be needed later to specify how much we need to draw. Look at the main loop to find this variable again.
     size = vertices.size();
 

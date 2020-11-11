@@ -17,7 +17,7 @@ class Character : public DynamicDrawing {
         GLuint modelVAO, modelShaderProgram;
         std::string modelPath;
         float xPos = 0.f, yPos = 0.f, yTex = 0.f;
-        float camX, camY;
+        float camX, camY, modelDirection = 0.f;
         glm::mat4 modelMatrix;
         glm::vec3 translation, initialTranslation;
         /* protected functionality */

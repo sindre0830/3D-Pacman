@@ -48,12 +48,28 @@ void Character::draw(glm::mat4 projectionMatrix) {
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_transformationPos"), 1, false, glm::value_ptr(modelMatrix));
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
     } else {
+        if(direction == UP) {
+            modelDirection == -45.f;     //wrong
+        } else if(direction == LEFT) {
+            modelDirection == 0.f;    //wrong
+        } else if(direction == DOWN) {
+            modelDirection == 45.f;    //wrong
+        } else if(direction == RIGHT) {
+            modelDirection == 90.f;      //correct
+        }
+
         glUseProgram(modelShaderProgram);
         glBindVertexArray(modelVAO);
         modelMatrix = glm::mat4(1.f);
+        //set the initial position
         modelMatrix = glm::translate(modelMatrix, initialTranslation);
+        //move model
         modelMatrix = glm::translate(modelMatrix, glm::vec3(xPos, yPos, 0.f));
+        //rotate the model to stand up
         modelMatrix = glm::rotate(modelMatrix, glm::radians(90.f), glm::vec3(1.f, 0.f, 0.f));
+        //rotate the character to face the correct direction
+        //modelMatrix = glm::rotate(modelMatrix, glm::radians(modelDirection), glm::vec3(0.f, 0.f, 1.f));
+        //scale down the model
         modelMatrix = glm::scale(modelMatrix, glm::vec3(0.01f));
         glUniformMatrix4fv(glGetUniformLocation(modelShaderProgram, "u_modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 		glUniformMatrix4fv(glGetUniformLocation(modelShaderProgram, "u_viewMatrix"), 1, GL_FALSE, glm::value_ptr(g_camera->viewMatrix));

@@ -53,10 +53,7 @@ void Character::draw(glm::mat4 projectionMatrix) {
         modelMatrix = glm::mat4(1.f);
         modelMatrix = glm::translate(modelMatrix, initialTranslation);
         modelMatrix = glm::translate(modelMatrix, glm::vec3(xPos, yPos, 0.f));
-        modelMatrix = glm::rotate(modelMatrix, glm::radians(180.f), glm::vec3(1.f, 0.f, 0.f));
-        //rotates the character to stand up
-        //
-        //modelMatrix = glm::rotate(modelMatrix, glm::radians(90.f), glm::vec3(0.f, 1.f, 0.f));
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(90.f), glm::vec3(1.f, 0.f, 0.f));
         modelMatrix = glm::scale(modelMatrix, glm::vec3(0.01f));
         glUniformMatrix4fv(glGetUniformLocation(modelShaderProgram, "u_modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 		glUniformMatrix4fv(glGetUniformLocation(modelShaderProgram, "u_viewMatrix"), 1, GL_FALSE, glm::value_ptr(g_camera->viewMatrix));

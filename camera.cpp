@@ -30,7 +30,7 @@ Camera::Camera(const int width, const int height) {
 
 void Camera::changePosition(const float x, const float y) {
 	float z = 0.01f;
-	if(g_level->gamemode == THIRD_PERSON) z = 0.5f;
+	if(g_level->gamemode == THIRD_PERSON) z = 0.6f;
 	camPos = glm::vec3(x + xOffset, y + yOffset, z);
 
 	viewMatrix = glm::mat4(1.f);
@@ -43,9 +43,10 @@ void Camera::changeDirection(const int pacmanDirection) {
 	yOffset = 0.f;
 	if(g_level->gamemode == THIRD_PERSON) {
 		yaw = 90.f;
-		pitch = 180.f;
+		pitch = 150.f;
 		//default world orientation
 		camUp = glm::vec3(0.f, 1.f, 0.f);
+		yOffset = -g_level->gridElementWidth * 6.f;
 	} else {
 		switch (pacmanDirection) {
 			case UP:

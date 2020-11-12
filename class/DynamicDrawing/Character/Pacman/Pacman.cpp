@@ -280,10 +280,6 @@ void Pacman::inputDirection(GLFWwindow *window) {
 		}
 	}
 	g_camera->changeDirection(direction);
-	if(pathUP) std::cout << "\nUP\n";
-	if(pathLeft) std::cout << "\nLeft\n";
-	if(pathDown) std::cout << "\nDown\n";
-	if(pathRight) std::cout << "\nRight\n";
 }
 
 void Pacman::updateCameraPosition() {

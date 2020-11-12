@@ -177,10 +177,9 @@ void Ghost::animate() {
  * @param flag 
  */
 void Ghost::changeColor(const int flag) {
-	//get uniform to transform
-	GLuint color = glGetUniformLocation(shaderProgram, "u_changeColor");
+    glUseProgram(shaderProgram);
 	//send data to uniform
-	glUniform1i(color, flag);
+	glUniform1i(glGetUniformLocation(shaderProgram, "u_changeColor"), flag);
 	//update to the new color
 	draw();
 }

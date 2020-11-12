@@ -65,14 +65,9 @@ static const std::string characterModelFragmentShader = R"(
 	#version 430 core
     //output
     out vec4 color;
-    //uniform
-	uniform int u_changeColor = 0;
 
 	void main() {
-		//branch if color should change
-		if(u_changeColor == 1) {
-			color = vec4(1.f, 1.f, 0.f, 1.f);
-		} else color = vec4(1.f, 0.f, 0.f, 1.f);
+		color = vec4(1.f, 0.f, 0.f, 1.f);
 	}
 )";
 #endif

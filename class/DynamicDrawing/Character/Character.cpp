@@ -34,10 +34,13 @@ void Character::draw() {
     if(g_level->displayMinimap) {
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO);
+        //
         glUniform1i(glGetUniformLocation(shaderProgram, "u_texture"), 0);
+        //
         modelMatrix = getMinimapModelMatrix();
         modelMatrix = glm::translate(modelMatrix, translation);
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_transformationPos"), 1, false, glm::value_ptr(modelMatrix));
+        //
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
     }
     if(g_level->gamemode == TWO_DIMENSIONAL) {
@@ -57,7 +60,7 @@ void Character::draw() {
         } else if(direction == RIGHT) {
             modelDirection == 90.f;
         }*/
-        float size = 0.02;
+        float size = 0.02f;
         //if(isPacman) size = 0.02f;
 
         glUseProgram(modelShaderProgram);
@@ -135,12 +138,11 @@ void Character::translatePos(const float xPos, const float yPos) {
  * @param yPos
  */
 void Character::translateTex(const float xPos, const float yPos) {
+    glUseProgram(shaderProgram);
 	//Generate matrix to translate
 	glm::mat3 translation = glm::translate(glm::mat3(1), glm::vec2(xPos, yPos));
-    //get uniform to transform
-	GLuint uniform = glGetUniformLocation(shaderProgram, "u_transformationTex");
 	//Send data from matrix to the uniform
-	glUniformMatrix3fv(uniform, 1, false, glm::value_ptr(translation));
+	glUniformMatrix3fv(glGetUniformLocation(shaderProgram, "u_transformationTex"), 1, false, glm::value_ptr(translation));
 }
 /**
  * @brief Move character up the grid if possible and update position

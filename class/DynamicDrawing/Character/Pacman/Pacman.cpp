@@ -220,7 +220,7 @@ void Pacman::inputDirection(GLFWwindow *window) {
 				direction = LEFT;
 				yTex = 0.25f;
 				translateTex(0.f, yTex);
-			} else if(direction == LEFT && pathUP) {
+			} else if(direction == LEFT && pathDown) {
 				direction = DOWN;
 				yTex = 0.75f;
 				translateTex(0.f, yTex);
@@ -228,7 +228,7 @@ void Pacman::inputDirection(GLFWwindow *window) {
 				direction = RIGHT;
 				yTex = 0.0f;
 				translateTex(0.f, yTex);
-			} else if(direction == RIGHT && pathDown) {
+			} else if(direction == RIGHT && pathUP) {
 				direction = UP;
 				yTex = 0.5f;
 				translateTex(0.f, yTex);

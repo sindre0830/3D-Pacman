@@ -183,8 +183,8 @@ void Ghost::changeColor(const int flag) {
 
 	glUseProgram(modelShaderProgram);
 	if(flag) {
-		glUniform3fv(glGetUniformLocation(modelShaderProgram, "u_color"), 1, glm::value_ptr(glm::vec3(0.f, 0.f, 1.f)));
-	} else glUniform3fv(glGetUniformLocation(modelShaderProgram, "u_color"), 1, glm::value_ptr(glm::vec3(1.f, 0.f, 0.f)));
+		glUniform3fv(glGetUniformLocation(modelShaderProgram, "u_objectColor"), 1, glm::value_ptr(glm::vec3(0.f, 0.f, 1.f)));
+	} else glUniform3fv(glGetUniformLocation(modelShaderProgram, "u_objectColor"), 1, glm::value_ptr(glm::vec3(1.f, 0.f, 0.f)));
 	//update to the new color
 	draw();
 }

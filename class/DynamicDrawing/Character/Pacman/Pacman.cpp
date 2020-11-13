@@ -50,6 +50,9 @@ Pacman::Pacman() {
 	g_camera->changePosition(camX, camY);
 	//
 	modelVAO = loadModel("models/pacman/", "pacman.obj", modelSize);
+	//change color to yellow;
+	glUseProgram(modelShaderProgram);
+	glUniform3fv(glGetUniformLocation(modelShaderProgram, "u_color"), 1, glm::value_ptr(glm::vec3(1.f, 1.f, 0.f)));
 	//sets z value to -1 so we don't see it in first person view
 	initialTranslation = glm::vec3(
 		g_level->gridElement[std::make_pair(g_level->pacmanCol, g_level->pacmanRow)][TOP_LEFT][X] + g_level->gridElementWidth * 0.5f, 

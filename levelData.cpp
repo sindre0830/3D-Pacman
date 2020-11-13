@@ -150,8 +150,8 @@ bool LevelData::inputData() {
 			}
 		}
 		//set window size
-		windowHeight = gridHeight * 30;
-		windowWidth = gridWidth * 30;
+		windowHeight = 1024;
+		windowWidth = 1024;
 		return true;
 	} else return false;
 }

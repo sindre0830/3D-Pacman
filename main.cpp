@@ -100,7 +100,11 @@ int main() {
 	for(int i = 0; i < g_level->gridHeight; i++) {
 		for(int j = 0; j < g_level->gridWidth; j++) {
 			//branch if ghost can spawn
-			if(g_level->grid[i][j] == PELLET) possibleStartingPos.push_back({i, j});
+			if(g_level->grid[i][j] == PELLET) {
+				if(g_level->pacmanCol - i > 3 || i - g_level->pacmanCol > 3) {
+					possibleStartingPos.push_back({i, j});
+				}
+			}
 		}
 	}
 	//construct array of ghost classes

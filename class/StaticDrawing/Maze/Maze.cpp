@@ -28,16 +28,20 @@ Maze::Maze() {
 	std::vector<GLfloat> arr = genWallCoordinates();
     VAO = genObject(arr, wallSize);
 	//set the vertex attribute
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLuint), (const void*)0);
 	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (const void*)0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
 	//generate corner VAO
 	cornerVAO = genCornerVAO();
 	//set the vertex attribute
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLuint), (const void*)0);
 	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (const void*)0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
+
 	//create 3D shader program
 	shaderProgram3D = compileShader(wallVertexShader3D, wallFragmentShader3D);
-
 	//generate 3D wall
 	arr = genWallCoordinates3D();
 	vao3D = genObject(arr, wallSize3D);
@@ -91,6 +95,7 @@ std::vector<GLfloat> Maze::genWallCoordinates() {
 	float
 		xResize = g_level->gridElementWidth / 1.2f,
 		yResize = g_level->gridElementHeight / 1.2f;
+	glm::vec3 colorBlue(0.09f, 0.09f, 0.4f);
 	//buffer array
 	std::vector<GLfloat> arr;
 	//fills in array with coordinates
@@ -103,9 +108,13 @@ std::vector<GLfloat> Maze::genWallCoordinates() {
 					wallSize++;
 					arr.insert(arr.end(), {
 						g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][X], g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][Y],
+						colorBlue.x, colorBlue.y, colorBlue.z,
 						g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][Y] + yResize,
+						colorBlue.x, colorBlue.y, colorBlue.z,
 						g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][Y] + yResize,
-						g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][Y]
+						colorBlue.x, colorBlue.y, colorBlue.z,
+						g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][Y],
+						colorBlue.x, colorBlue.y, colorBlue.z
 					});
 				}
 				//branch if there can be a wall under the target
@@ -113,9 +122,13 @@ std::vector<GLfloat> Maze::genWallCoordinates() {
 					wallSize++;
 					arr.insert(arr.end(), {
 						g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][X], g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][Y] - yResize,
+						colorBlue.x, colorBlue.y, colorBlue.z,
 						g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][Y],
+						colorBlue.x, colorBlue.y, colorBlue.z,
 						g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][Y],
-						g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][Y] - yResize
+						colorBlue.x, colorBlue.y, colorBlue.z,
+						g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][Y] - yResize,
+						colorBlue.x, colorBlue.y, colorBlue.z
 					});
 				}
 				//branch if there can be a wall left of the target
@@ -123,9 +136,13 @@ std::vector<GLfloat> Maze::genWallCoordinates() {
 					wallSize++;
 					arr.insert(arr.end(), {
 						g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][X], g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][Y],
+						colorBlue.x, colorBlue.y, colorBlue.z,
 						g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][Y],
+						colorBlue.x, colorBlue.y, colorBlue.z,
 						g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][X] - xResize, g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][Y],
-						g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][X] - xResize, g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][Y]
+						colorBlue.x, colorBlue.y, colorBlue.z,
+						g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][X] - xResize, g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][Y],
+						colorBlue.x, colorBlue.y, colorBlue.z
 					});
 				}
 				//branch if there can be a wall right of the target
@@ -133,11 +150,27 @@ std::vector<GLfloat> Maze::genWallCoordinates() {
 					wallSize++;
 					arr.insert(arr.end(), {
 						g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][X] + xResize, g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][Y],
+						colorBlue.x, colorBlue.y, colorBlue.z,
 						g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][X] + xResize, g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][Y],
+						colorBlue.x, colorBlue.y, colorBlue.z,
 						g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][Y],
-						g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][Y]
+						colorBlue.x, colorBlue.y, colorBlue.z,
+						g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][Y],
+						colorBlue.x, colorBlue.y, colorBlue.z
 					});
 				}
+			} else if(g_level->grid[i][j] != VOID) {
+				wallSize++;
+				arr.insert(arr.end(), {
+					g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][X], g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][Y],
+					0.f, 0.f, 0.f,
+					g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][Y],
+					0.f, 0.f, 0.f,
+					g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][Y],
+					0.f, 0.f, 0.f,
+					g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][Y],
+					0.f, 0.f, 0.f
+				});
 			}
 		}
 	}
@@ -154,6 +187,7 @@ GLuint Maze::genCornerVAO() {
 		//resize corner acording to size of wall
 		xResize = (g_level->gridElementWidth / 1.2f) / 5.f,
 		yResize = (g_level->gridElementHeight / 1.2f) / 5.f;
+	glm::vec3 colorBlue(0.09f, 0.09f, 0.4f);
 	//buffer array
 	std::vector<GLfloat> arr;
 	//fills in array with coordinates
@@ -167,10 +201,13 @@ GLuint Maze::genCornerVAO() {
 					arr.insert(arr.end(), {
 						//top left coordinate
 						g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][X] - xResize, g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][Y],
+						colorBlue.x, colorBlue.y, colorBlue.z,
 						//bottom right coordinate
 						g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][X], g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][Y] - yResize,
+						colorBlue.x, colorBlue.y, colorBlue.z,
 						//top right coordinate
-						g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][X], g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][Y]
+						g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][X], g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][Y],
+						colorBlue.x, colorBlue.y, colorBlue.z
 					});
 				}
 				//branch if there can be a corner bottom left of the target
@@ -179,10 +216,13 @@ GLuint Maze::genCornerVAO() {
 					arr.insert(arr.end(), {
 						//top left coordinate
 						g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][X] - xResize, g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][Y],
+						colorBlue.x, colorBlue.y, colorBlue.z,
 						//bottom right coordinate
 						g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][Y] + yResize,
+						colorBlue.x, colorBlue.y, colorBlue.z,
 						//top right coordinate
-						g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][Y]
+						g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_LEFT][Y],
+						colorBlue.x, colorBlue.y, colorBlue.z
 					});
 				}
 				//branch if there can be a corner bottom right of the target
@@ -191,10 +231,13 @@ GLuint Maze::genCornerVAO() {
 					arr.insert(arr.end(), {
 						//top left coordinate
 						g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][Y],
+						colorBlue.x, colorBlue.y, colorBlue.z,
 						//bottom left coordinate
 						g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][Y] + yResize,
+						colorBlue.x, colorBlue.y, colorBlue.z,
 						//top right coordinate
-						g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][X] + xResize, g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][Y]
+						g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][X] + xResize, g_level->gridElement[std::make_pair(i, j)][BOTTOM_RIGHT][Y],
+						colorBlue.x, colorBlue.y, colorBlue.z
 					});
 				}
 				//branch if there can be a corner top right of the target
@@ -203,10 +246,13 @@ GLuint Maze::genCornerVAO() {
 					arr.insert(arr.end(), {
 						//top left coordinate
 						g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][Y],
+						colorBlue.x, colorBlue.y, colorBlue.z,
 						//bottom left coordinate
 						g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][X], g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][Y] - yResize,
+						colorBlue.x, colorBlue.y, colorBlue.z,
 						//top right coordinate
-						g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][X] + xResize, g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][Y]
+						g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][X] + xResize, g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][Y],
+						colorBlue.x, colorBlue.y, colorBlue.z
 					});
 				}
 			}

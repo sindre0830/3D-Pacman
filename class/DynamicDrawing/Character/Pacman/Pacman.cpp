@@ -210,82 +210,84 @@ void Pacman::inputDirection(GLFWwindow *window) {
 		pathDown = g_level->pacmanCol - 1 >= 0 && g_level->grid[g_level->pacmanCol - 1][g_level->pacmanRow] != WALL && g_level->grid[g_level->pacmanCol - 1][g_level->pacmanRow] != VOID,
 		pathRight = g_level->pacmanRow + 1 < g_level->gridWidth && g_level->grid[g_level->pacmanCol][g_level->pacmanRow + 1] != WALL && g_level->grid[g_level->pacmanCol][g_level->pacmanRow + 1] != VOID;
 	//change direction on key press if pacman has completed a translation and it wont hit a wall
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS && changeDirection && pathUP && g_level->gamemode != FIRST_PERSON) {
-		direction = UP;
-		yTex = 0.5f;
-		translateTex(0.f, yTex);
-	} else if(glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS && changeDirection) {
-		if(g_level->gamemode == FIRST_PERSON) {
-			if(direction == UP && pathLeft) {
-				direction = LEFT;
-				yTex = 0.25f;
-				translateTex(0.f, yTex);
-			} else if(direction == LEFT && pathDown) {
-				direction = DOWN;
-				yTex = 0.75f;
-				translateTex(0.f, yTex);
-			} else if(direction == DOWN && pathRight) {
-				direction = RIGHT;
-				yTex = 0.0f;
-				translateTex(0.f, yTex);
-			} else if(direction == RIGHT && pathUP) {
-				direction = UP;
-				yTex = 0.5f;
-				translateTex(0.f, yTex);
-			}
-		} else if(pathLeft) {
-			direction = LEFT;
-			yTex = 0.25f;
+	if(changeDirection) {
+		if(glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS && pathUP && g_level->gamemode != FIRST_PERSON) {
+			direction = UP;
+			yTex = 0.5f;
 			translateTex(0.f, yTex);
-		}
-	} else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS && changeDirection) {
-		if(g_level->gamemode == FIRST_PERSON) {
-			if(direction == UP && pathDown) {
-				direction = DOWN;
-				yTex = 0.75f;
-				translateTex(0.f, yTex);
-			} else if(direction == LEFT && pathRight) {
-				direction = RIGHT;
-				yTex = 0.0f;
-				translateTex(0.f, yTex);
-			} else if(direction == DOWN && pathUP) {
-				direction = UP;
-				yTex = 0.5f;
-				translateTex(0.f, yTex);
-			} else if(direction == RIGHT && pathLeft) {
+		} else if(glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+			if(g_level->gamemode == FIRST_PERSON) {
+				if(direction == UP && pathLeft) {
+					direction = LEFT;
+					yTex = 0.25f;
+					translateTex(0.f, yTex);
+				} else if(direction == LEFT && pathDown) {
+					direction = DOWN;
+					yTex = 0.75f;
+					translateTex(0.f, yTex);
+				} else if(direction == DOWN && pathRight) {
+					direction = RIGHT;
+					yTex = 0.0f;
+					translateTex(0.f, yTex);
+				} else if(direction == RIGHT && pathUP) {
+					direction = UP;
+					yTex = 0.5f;
+					translateTex(0.f, yTex);
+				}
+			} else if(pathLeft) {
 				direction = LEFT;
 				yTex = 0.25f;
 				translateTex(0.f, yTex);
 			}
-		} else if(pathDown) {
-			direction = DOWN;
-			yTex = 0.75f;
-			translateTex(0.f, yTex);
-		}
-	} else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS && changeDirection) {
-		if(g_level->gamemode == FIRST_PERSON) {
-			if(direction == UP && pathRight) {
-				direction = RIGHT;
-				yTex = 0.0f;
-				translateTex(0.f, yTex);
-			} else if(direction == LEFT && pathUP) {
-				direction = UP;
-				yTex = 0.5f;
-				translateTex(0.f, yTex);
-			} else if(direction == DOWN && pathLeft) {
-				direction = LEFT;
-				yTex = 0.25f;
-				translateTex(0.f, yTex);
-			} else if(direction == RIGHT && pathDown) {
+		} else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+			if(g_level->gamemode == FIRST_PERSON) {
+				if(direction == UP && pathDown) {
+					direction = DOWN;
+					yTex = 0.75f;
+					translateTex(0.f, yTex);
+				} else if(direction == LEFT && pathRight) {
+					direction = RIGHT;
+					yTex = 0.0f;
+					translateTex(0.f, yTex);
+				} else if(direction == DOWN && pathUP) {
+					direction = UP;
+					yTex = 0.5f;
+					translateTex(0.f, yTex);
+				} else if(direction == RIGHT && pathLeft) {
+					direction = LEFT;
+					yTex = 0.25f;
+					translateTex(0.f, yTex);
+				}
+			} else if(pathDown) {
 				direction = DOWN;
 				yTex = 0.75f;
 				translateTex(0.f, yTex);
 			}
-		} else if(pathRight) {
-			direction = RIGHT;
-			yTex = 0.0f;
-			translateTex(0.f, yTex);
-		}
+		} else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+			if(g_level->gamemode == FIRST_PERSON) {
+				if(direction == UP && pathRight) {
+					direction = RIGHT;
+					yTex = 0.0f;
+					translateTex(0.f, yTex);
+				} else if(direction == LEFT && pathUP) {
+					direction = UP;
+					yTex = 0.5f;
+					translateTex(0.f, yTex);
+				} else if(direction == DOWN && pathLeft) {
+					direction = LEFT;
+					yTex = 0.25f;
+					translateTex(0.f, yTex);
+				} else if(direction == RIGHT && pathDown) {
+					direction = DOWN;
+					yTex = 0.75f;
+					translateTex(0.f, yTex);
+				}
+			} else if(pathRight) {
+				direction = RIGHT;
+				yTex = 0.0f;
+				translateTex(0.f, yTex);
+			}
+		}	
 	}
 	g_camera->changeDirection(direction);
 }

@@ -14,7 +14,18 @@ extern LevelData *g_level;
 extern Camera *g_camera;
 
 glm::mat4 getMinimapModelMatrix() {
+    float angle = 0.f;
+    if(g_level->gamemode == FIRST_PERSON) {
+        if(g_camera->direction == LEFT) {
+            angle = 90.f;
+        } else if(g_camera->direction == DOWN) {
+            angle = 180.f;
+        } else if(g_camera->direction == RIGHT) {
+            angle = 270.f;
+        }    
+    }
     glm::mat4 modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(0.75f, 0.75f, 0.f));
+    modelMatrix = glm::rotate(modelMatrix, glm::radians(angle), glm::vec3(0.f, 0.f, 1.f));
     modelMatrix = glm::scale(modelMatrix, glm::vec3(0.25f));
     return modelMatrix;
 }

@@ -19,6 +19,7 @@ class Camera {
         const float sensitivity = 0.05f;
     public:
         /* public data */
+        int direction = 0;
         glm::mat4 viewMatrix, projectionMatrix;
         /* public functionality */
         ~Camera();

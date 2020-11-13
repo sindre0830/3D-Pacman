@@ -38,6 +38,7 @@ void Camera::changePosition(const float x, const float y) {
 }
 
 void Camera::changeDirection(const int pacmanDirection) {
+	direction = pacmanDirection;
 	//reset offset values
 	xOffset = 0.f;
 	yOffset = 0.f;
@@ -48,7 +49,7 @@ void Camera::changeDirection(const int pacmanDirection) {
 		camUp = glm::vec3(0.f, 1.f, 0.f);
 		yOffset = -g_level->gridElementWidth * 6.f;
 	} else {
-		switch (pacmanDirection) {
+		switch (direction) {
 			case UP:
 				//rotate camera
 				yaw = 90.f;
@@ -88,11 +89,11 @@ void Camera::changeDirection(const int pacmanDirection) {
 		}
 	}
 	//update camera direction
-	glm::vec3 direction;
-    direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-    direction.y = sin(glm::radians(pitch));
-    direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-    camFront = glm::normalize(direction);
+	glm::vec3 cameraDirection;
+    cameraDirection.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+    cameraDirection.y = sin(glm::radians(pitch));
+    cameraDirection.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+    camFront = glm::normalize(cameraDirection);
 }
 
 void Camera::updateViewMatrix(GLFWwindow* window, const float deltaTime, const int pacmanDirection) {

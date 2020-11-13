@@ -248,7 +248,7 @@ bool Character::movRight(int &row, int &col) {
         //update position
         row = g_level->rowOffset / 2;
         //teleport to the opposite side of the grid
-        translatePos(xPos -= (float)(g_level->gridWidth - 1 - (g_level->rowOffset / 2)) * g_level->gridElementWidth, yPos);
+        translatePos(xPos -= (float)(g_level->gridWidth - g_level->rowOffset - 1) * g_level->gridElementWidth, yPos);
     }
     return false;
 }

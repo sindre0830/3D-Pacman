@@ -99,7 +99,7 @@ std::vector<GLfloat> Maze::genWallCoordinates() {
 			//branch if target is a wall
 			if (g_level->grid[i][j] == WALL) {
 				//branch if there can be a wall above the target
-				if(i + 1 < g_level->gridHeight && g_level->grid[i + 1][j] != WALL) {
+				if(i + 1 < g_level->gridHeight && g_level->grid[i + 1][j] != WALL && g_level->grid[i + 1][j] != VOID) {
 					wallSize++;
 					arr.insert(arr.end(), {
 						g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][X], g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][Y],
@@ -109,7 +109,7 @@ std::vector<GLfloat> Maze::genWallCoordinates() {
 					});
 				}
 				//branch if there can be a wall under the target
-				if(i - 1 >= 0 && g_level->grid[i - 1][j] != WALL) {
+				if(i - 1 >= 0 && g_level->grid[i - 1][j] != WALL && g_level->grid[i - 1][j] != VOID) {
 					wallSize++;
 					arr.insert(arr.end(), {
 						g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][X], g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][Y] - yResize,
@@ -119,7 +119,7 @@ std::vector<GLfloat> Maze::genWallCoordinates() {
 					});
 				}
 				//branch if there can be a wall left of the target
-				if(j - 1 >= 0 && g_level->grid[i][j - 1] != WALL) {
+				if(j - 1 >= 0 && g_level->grid[i][j - 1] != WALL && g_level->grid[i][j - 1] != VOID) {
 					wallSize++;
 					arr.insert(arr.end(), {
 						g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][X], g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][Y],
@@ -129,7 +129,7 @@ std::vector<GLfloat> Maze::genWallCoordinates() {
 					});
 				}
 				//branch if there can be a wall right of the target
-				if(j + 1 < g_level->gridWidth && g_level->grid[i][j + 1] != WALL) {
+				if(j + 1 < g_level->gridWidth && g_level->grid[i][j + 1] != WALL && g_level->grid[i][j + 1] != VOID) {
 					wallSize++;
 					arr.insert(arr.end(), {
 						g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][X] + xResize, g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][Y],
@@ -237,8 +237,8 @@ std::vector<GLfloat> Maze::genWallCoordinates3D() {
 	//fills in array with coordinates
 	for (int i = 0; i < g_level->gridHeight; i++) {
 		for (int j = 0; j < g_level->gridWidth; j++) {
-			//branch if target is a wall
-			if (g_level->grid[i][j] != WALL) {
+			//branch if target isn't a wall or void
+			if (g_level->grid[i][j] != WALL && g_level->grid[i][j] != VOID) {
 				//branch if there can be a wall above the target
 				if(i + 1 < g_level->gridHeight && g_level->grid[i + 1][j] == WALL) {
 					wallSize3D++;

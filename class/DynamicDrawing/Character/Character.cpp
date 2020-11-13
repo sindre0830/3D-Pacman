@@ -154,9 +154,9 @@ void Character::translateTex(const float xPos, const float yPos) {
  */
 bool Character::movUp(int &row, int &col) {
     //branch if character isn't about to teleport
-	if(col + 1 < g_level->gridHeight) {
+	if(col + 1 < g_level->gridHeight && g_level->grid[col + 1][row] != VOID) {
         //branch if next location wont be a wall
-        if(g_level->grid[col + 1][row] != WALL) {
+        if(g_level->grid[col + 1][row] != WALL && g_level->grid[col + 1][row] != VOID) {
             counter++;
             //translate position
             translatePos(xPos, (yPos += g_level->gridElementHeight / (float)(speed)));
@@ -165,9 +165,9 @@ bool Character::movUp(int &row, int &col) {
         }
     } else {
         //update position
-        col = 0;
+        col = g_level->colOffset / 2;
         //teleport to the opposite side of the grid
-        translatePos(xPos, yPos -= (float)(g_level->gridHeight - 1) * g_level->gridElementHeight);
+        translatePos(xPos, yPos -= (float)(g_level->gridHeight - g_level->colOffset - 1) * g_level->gridElementHeight);
     }
     return false;
 }
@@ -181,9 +181,9 @@ bool Character::movUp(int &row, int &col) {
  */
 bool Character::movLeft(int &row, int &col) {
     //branch if character isn't about to teleport
-	if(row - 1 >= 0) {
+	if(row - 1 >= 0 && g_level->grid[col][row - 1] != VOID) {
         //branch if next location wont be a wall
-        if(g_level->grid[col][row - 1] != WALL) {
+        if(g_level->grid[col][row - 1] != WALL && g_level->grid[col][row - 1] != VOID) {
             counter++;
             //translate position
             translatePos((xPos -= g_level->gridElementWidth / (float)(speed)), yPos);
@@ -192,9 +192,9 @@ bool Character::movLeft(int &row, int &col) {
         }
     } else {
         //update position
-        row = g_level->gridWidth - 1;
+        row = g_level->gridWidth - (g_level->rowOffset / 2) - 1;
         //teleport to the opposite side of the grid
-        translatePos(xPos += (float)(g_level->gridWidth - 1) * g_level->gridElementWidth, yPos);
+        translatePos(xPos += (float)(g_level->gridWidth - g_level->rowOffset - 1) * g_level->gridElementWidth, yPos);
     }
     return false;
 }
@@ -208,9 +208,9 @@ bool Character::movLeft(int &row, int &col) {
  */
 bool Character::movDown(int &row, int &col) {
     //branch if character isn't about to teleport
-	if(col - 1 >= 0) {
+	if(col - 1 >= 0 && g_level->grid[col - 1][row] != VOID) {
         //branch if next location wont be a wall
-        if(g_level->grid[col - 1][row] != WALL) {
+        if(g_level->grid[col - 1][row] != WALL && g_level->grid[col - 1][row] != VOID) {
             counter++;
             //translate position
             translatePos(xPos, (yPos -= g_level->gridElementHeight / (float)(speed)));
@@ -219,9 +219,9 @@ bool Character::movDown(int &row, int &col) {
         }
     } else {
         //update position
-        col = g_level->gridHeight - 1;
+        col = g_level->gridHeight - (g_level->colOffset / 2 - 1);
         //teleport to the opposite side of the grid
-        translatePos(xPos, yPos += (float)(g_level->gridHeight - 1) * g_level->gridElementHeight);
+        translatePos(xPos, yPos += (float)(g_level->gridHeight - g_level->colOffset - 1) * g_level->gridElementHeight);
     }
     return false;
 }
@@ -235,9 +235,9 @@ bool Character::movDown(int &row, int &col) {
  */
 bool Character::movRight(int &row, int &col) {
     //branch if character isn't about to teleport
-	if(row + 1 < g_level->gridWidth) {
+	if(row + 1 < g_level->gridWidth && g_level->grid[col][row + 1] != VOID) {
         //branch if next location wont be a wall
-        if(g_level->grid[col][row + 1] != WALL) {
+        if(g_level->grid[col][row + 1] != WALL && g_level->grid[col][row + 1] != VOID) {
             counter++;
             //translate position
             translatePos((xPos += g_level->gridElementWidth / (float)(speed)), yPos);
@@ -246,9 +246,9 @@ bool Character::movRight(int &row, int &col) {
         }
 	} else {
         //update position
-        row = 0;
+        row = g_level->rowOffset / 2;
         //teleport to the opposite side of the grid
-        translatePos(xPos -= (float)(g_level->gridWidth - 1) * g_level->gridElementWidth, yPos);
+        translatePos(xPos -= (float)(g_level->gridWidth - 1 - (g_level->rowOffset / 2)) * g_level->gridElementWidth, yPos);
     }
     return false;
 }

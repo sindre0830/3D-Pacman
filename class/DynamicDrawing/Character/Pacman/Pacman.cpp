@@ -22,16 +22,16 @@ Pacman::Pacman() {
 	//set starting postions
     getPosition();
 	//set starting direction
-	if (g_level->pacmanCol == 0) {
+	if (g_level->pacmanCol == g_level->colOffset / 2) {
 		yTex = 0.5f;
 		direction = UP;
-	} else if (g_level->pacmanRow == g_level->gridWidth - 1) {
+	} else if (g_level->pacmanRow == g_level->gridWidth - (g_level->rowOffset / 2) - 1) {
 		yTex = 0.25f;
 		direction = LEFT;
-	} else if (g_level->pacmanCol == g_level->gridHeight - 1) {
+	} else if (g_level->pacmanCol == g_level->gridHeight - (g_level->colOffset / 2) - 1) {
 		yTex = 0.75f;
 		direction = DOWN;
-	} else if(g_level->pacmanRow == 0) {
+	} else if(g_level->pacmanRow == g_level->rowOffset / 2) {
 		yTex = 0.0f;
 		direction = RIGHT;
 	}
@@ -78,6 +78,11 @@ void Pacman::getPosition() {
  * @param shader
  */
 void Pacman::mov(Pellet &pellet) {
+	bool
+		pathUP = g_level->pacmanCol + 1 < g_level->gridHeight && g_level->grid[g_level->pacmanCol + 1][g_level->pacmanRow] != WALL && g_level->grid[g_level->pacmanCol + 1][g_level->pacmanRow] != VOID,
+		pathLeft = g_level->pacmanRow - 1 >= 0 && g_level->grid[g_level->pacmanCol][g_level->pacmanRow - 1] != WALL && g_level->grid[g_level->pacmanCol][g_level->pacmanRow - 1] != VOID,
+		pathDown = g_level->pacmanCol - 1 >= 0 && g_level->grid[g_level->pacmanCol - 1][g_level->pacmanRow] != WALL && g_level->grid[g_level->pacmanCol - 1][g_level->pacmanRow] != VOID,
+		pathRight = g_level->pacmanRow + 1 < g_level->gridWidth && g_level->grid[g_level->pacmanCol][g_level->pacmanRow + 1] != WALL && g_level->grid[g_level->pacmanCol][g_level->pacmanRow + 1] != VOID;
 	if(g_level->gamemode == THIRD_PERSON) {
 		initialTranslation.z = 0.f;
 	} else initialTranslation.z = -1.f;
@@ -97,7 +102,7 @@ void Pacman::mov(Pellet &pellet) {
 					g_level->magicEffect = true;
 					eat(pellet);
 				} else if(g_level->grid[g_level->pacmanCol][g_level->pacmanRow] == PELLET) eat(pellet);
-			} else if(g_level->grid[g_level->pacmanCol + 1][g_level->pacmanRow] == WALL) {
+			} else if(!pathUP) {
 				changeDirection = true;
 			} else g_camera->changePosition(camX, camY + g_level->gridElementHeight / (float)(speed) * (counter));
 			break;
@@ -114,7 +119,7 @@ void Pacman::mov(Pellet &pellet) {
 					g_level->magicEffect = true;
 					eat(pellet);
 				} else if(g_level->grid[g_level->pacmanCol][g_level->pacmanRow] == PELLET) eat(pellet);
-			} else if(g_level->grid[g_level->pacmanCol][g_level->pacmanRow - 1] == WALL) {
+			} else if(!pathLeft) {
 				changeDirection = true;
 			} else g_camera->changePosition(camX - g_level->gridElementWidth / (float)(speed) * counter, camY);	
 			break;
@@ -131,7 +136,7 @@ void Pacman::mov(Pellet &pellet) {
 					g_level->magicEffect = true;
 					eat(pellet);
 				} else if(g_level->grid[g_level->pacmanCol][g_level->pacmanRow] == PELLET) eat(pellet);
-			} else if(g_level->grid[g_level->pacmanCol - 1][g_level->pacmanRow] == WALL) {
+			} else if(!pathDown) {
 				changeDirection = true;
 			} else g_camera->changePosition(camX, camY - g_level->gridElementHeight / (float)(speed) * counter);
 			break;
@@ -148,7 +153,7 @@ void Pacman::mov(Pellet &pellet) {
 					g_level->magicEffect = true;
 					eat(pellet);
 				} else if(g_level->grid[g_level->pacmanCol][g_level->pacmanRow] == PELLET) eat(pellet);
-			} else if(g_level->grid[g_level->pacmanCol][g_level->pacmanRow + 1] == WALL) {
+			} else if(!pathRight) {
 				changeDirection = true;
 			} else g_camera->changePosition(camX + g_level->gridElementWidth / (float)(speed) * counter, camY);
 			break;
@@ -197,10 +202,10 @@ void Pacman::eat(Pellet &pellet) {
  */
 void Pacman::inputDirection(GLFWwindow *window) {
 	bool
-		pathUP = g_level->pacmanCol + 1 < g_level->gridHeight && g_level->grid[g_level->pacmanCol + 1][g_level->pacmanRow] != WALL,
-		pathLeft = g_level->pacmanRow - 1 >= 0 && g_level->grid[g_level->pacmanCol][g_level->pacmanRow - 1] != WALL,
-		pathDown = g_level->pacmanCol - 1 >= 0 && g_level->grid[g_level->pacmanCol - 1][g_level->pacmanRow] != WALL,
-		pathRight = g_level->pacmanRow + 1 < g_level->gridWidth && g_level->grid[g_level->pacmanCol][g_level->pacmanRow + 1] != WALL;
+		pathUP = g_level->pacmanCol + 1 < g_level->gridHeight && g_level->grid[g_level->pacmanCol + 1][g_level->pacmanRow] != WALL && g_level->grid[g_level->pacmanCol + 1][g_level->pacmanRow] != VOID,
+		pathLeft = g_level->pacmanRow - 1 >= 0 && g_level->grid[g_level->pacmanCol][g_level->pacmanRow - 1] != WALL && g_level->grid[g_level->pacmanCol][g_level->pacmanRow - 1] != VOID,
+		pathDown = g_level->pacmanCol - 1 >= 0 && g_level->grid[g_level->pacmanCol - 1][g_level->pacmanRow] != WALL && g_level->grid[g_level->pacmanCol - 1][g_level->pacmanRow] != VOID,
+		pathRight = g_level->pacmanRow + 1 < g_level->gridWidth && g_level->grid[g_level->pacmanCol][g_level->pacmanRow + 1] != WALL && g_level->grid[g_level->pacmanCol][g_level->pacmanRow + 1] != VOID;
 	//change direction on key press if pacman has completed a translation and it wont hit a wall
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS && changeDirection && pathUP && g_level->gamemode != FIRST_PERSON) {
 		direction = UP;

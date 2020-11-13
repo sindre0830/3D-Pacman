@@ -12,7 +12,7 @@ LevelData::LevelData() {
     int index = 0;
     bool flag = true;
     //array with all possible levels
-    std::vector<std::string> possibleLevelsArr = {"level1"/*, "level1"*/};
+    std::vector<std::string> possibleLevelsArr = {"level0"/*, "level1"*/};
     //branch if there is only 1 level in the array
     if(possibleLevelsArr.size() > 1) {
         //print out all possible levels to the terminal
@@ -73,9 +73,18 @@ bool LevelData::inputData() {
         //input grid height from file
 		file >> gridHeight;
 		file.ignore();
-
-		std::cout << gridWidth << ", " << gridHeight << "\n";
-
+		//get offsets
+		if(gridWidth < gridHeight) {
+			rowOffset = gridHeight - gridWidth;
+		} else colOffset = gridWidth - gridHeight;
+		//
+		if(rowOffset % 2 || colOffset % 2) return false;
+		//declare a vector filled with VOID to be used incase of colOffsets
+		std::vector<int> rowVOID(gridWidth + rowOffset, VOID);
+		for(int i = 0; i < colOffset / 2; i++) {
+			grid.push_back(rowVOID);
+		}
+		//go through file and add values to grid vector
 		for (int i = 0; i < gridHeight; i++) {
 			std::vector<int> arrRow;
 			for (int j = 0; j < gridWidth; j++) {
@@ -92,9 +101,19 @@ bool LevelData::inputData() {
 				arrRow.push_back(buffer);
 				file.ignore();
 			}
+			for(int i = 0; i < rowOffset / 2; i++){
+				arrRow.insert(arrRow.begin(), VOID);
+				arrRow.insert(arrRow.end(), VOID);
+			}
 			grid.push_back(arrRow);
 		}
 		file.close();
+		for(int i = 0; i < colOffset / 2; i++) {
+			grid.push_back(rowVOID);
+		}
+		//set correct width and hight values
+		gridWidth += rowOffset;
+		gridHeight += colOffset;
 		//set top left magicpellet
 		for (int i = 0, j = 0; i < gridHeight && j < gridWidth; i++, j++) {
 			if(grid[i][j] == PELLET) {

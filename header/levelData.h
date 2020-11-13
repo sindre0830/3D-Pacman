@@ -12,6 +12,7 @@
 struct LevelData {
     /* data */
     std::string filePath = "level/";
+    int rowOffset = 0, colOffset = 0;
     int gridWidth, gridHeight, pelletSize, score, pacmanCol, pacmanRow, gamemode = TWO_DIMENSIONAL, windowWidth, windowHeight;
     std::vector<std::vector<int>> grid;
     std::map<std::pair<int, int>, std::vector<std::vector<float>>> gridElement;

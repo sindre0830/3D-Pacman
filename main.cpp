@@ -138,7 +138,7 @@ int main() {
 	int counter = 0;
 	//reset cursor
 	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-	g_level->gamemode = FIRST_PERSON;
+	g_level->gamemode = THIRD_PERSON;
 	//loop until user closes window
 	while(!glfwWindowShouldClose(window)) {
 		//delta time managment

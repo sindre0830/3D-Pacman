@@ -110,7 +110,8 @@ static const std::string characterModelFragmentShader = R"(
 	void main() {
 		vec3 light = directionalLight(u_lightColor, u_lightDirection);
 		
-		color = vec4(u_objectColor, 1.f) * vec4(light, 1.f);
+		//color = vec4(u_objectColor, 1.f) * vec4(light, 1.f);
+		color = vec4(u_objectColor, 1.f);
 	}
 )";
 #endif

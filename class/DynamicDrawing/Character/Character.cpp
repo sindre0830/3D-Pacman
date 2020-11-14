@@ -5,10 +5,9 @@
 #include "../../../header/levelData.h"
 #include "../../../header/Camera.h"
 #include "../../../header/function.h"
-#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/matrix_transform_2d.hpp>
-#include <glm/gtc/type_ptr.hpp>
 /* global data */
 extern LevelData *g_level;
 extern Camera *g_camera;
@@ -31,26 +30,25 @@ Character::Character() {
  * 
  */
 void Character::draw() {
-    if(g_level->displayMinimap) {
-        glUseProgram(shaderProgram);
-        glBindVertexArray(VAO);
-        //
-        glUniform1i(glGetUniformLocation(shaderProgram, "u_texture"), 0);
-        //
-        modelMatrix = getMinimapModelMatrix();
-        modelMatrix = glm::translate(modelMatrix, translation);
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_transformationPos"), 1, false, glm::value_ptr(modelMatrix));
-        //
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
-    }
+    glUseProgram(shaderProgram);
+    glBindVertexArray(VAO);
     if(g_level->gamemode == TWO_DIMENSIONAL) {
-        glUseProgram(shaderProgram);
-        glBindVertexArray(VAO);
+        //draw in 2D space
         glUniform1i(glGetUniformLocation(shaderProgram, "u_texture"), 0);
         modelMatrix = glm::translate(glm::mat4(1.f), translation);
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_transformationPos"), 1, false, glm::value_ptr(modelMatrix));
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
     } else {
+        //draw minimap
+        glUniform1i(glGetUniformLocation(shaderProgram, "u_texture"), 0);
+        modelMatrix = getMinimapModelMatrix();
+        modelMatrix = glm::translate(modelMatrix, translation);
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_transformationPos"), 1, false, glm::value_ptr(modelMatrix));
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
+        //draw in 3D space
+        glUseProgram(modelShaderProgram);
+        glBindVertexArray(modelVAO);
+        //get direction angel
         if(direction == UP) {
             modelDirection = 90.f;
         } else if(direction == LEFT) {
@@ -60,11 +58,6 @@ void Character::draw() {
         } else if(direction == RIGHT) {
             modelDirection = 0.f;
         }
-        float size = 0.02f;
-        //if(isPacman) size = 0.02f;
-
-        glUseProgram(modelShaderProgram);
-        glBindVertexArray(modelVAO);
         modelMatrix = glm::mat4(1.f);
         //set the initial position
         modelMatrix = glm::translate(modelMatrix, initialTranslation);
@@ -75,11 +68,10 @@ void Character::draw() {
         //rotate the character to face the correct direction
         modelMatrix = glm::rotate(modelMatrix, glm::radians(modelDirection), glm::vec3(0.f, 1.f, 0.f));
         //scale down the model
-        modelMatrix = glm::scale(modelMatrix, glm::vec3(size));
+        modelMatrix = glm::scale(modelMatrix, glm::vec3(0.02f));
         glUniformMatrix4fv(glGetUniformLocation(modelShaderProgram, "u_modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 		glUniformMatrix4fv(glGetUniformLocation(modelShaderProgram, "u_viewMatrix"), 1, GL_FALSE, glm::value_ptr(g_camera->viewMatrix));
 		glUniformMatrix4fv(glGetUniformLocation(modelShaderProgram, "u_projectionMatrix"), 1, GL_FALSE, glm::value_ptr(g_camera->projectionMatrix));
-
         glDrawArrays(GL_TRIANGLES, 6, modelSize);
     }
 }
@@ -116,19 +108,6 @@ std::vector<GLfloat> Character::genCoordinates(const int row, const int col) {
  * @param shader 
  */
 void Character::translatePos(const float xPos, const float yPos) {
-    /*if(g_level->displayMinimap) {
-        modelMatrix = glm::mat4(1.f);
-        modelMatrix = glm::translate(modelMatrix, glm::vec3(0.75f, 0.75f, 0.f));
-        modelMatrix = glm::scale(modelMatrix, glm::vec3(0.25f));
-        modelMatrix = glm::translate(modelMatrix, glm::vec3(xPos, yPos, 0.f));
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_transformationPos"), 1, false, glm::value_ptr(modelMatrix));
-        draw(glm::mat4(1.f));
-    }
-    modelMatrix = glm::mat4(1.f);*/
-    //Generate matrix to translate
-    /*modelMatrix = glm::translate(modelMatrix, glm::vec3(xPos, yPos, 0.f));
-    glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_transformationPos"), 1, false, glm::value_ptr(modelMatrix));*/
-    //send data from matrix to the uniform
     translation = glm::vec3(xPos, yPos, 0.f);
 }
 /**

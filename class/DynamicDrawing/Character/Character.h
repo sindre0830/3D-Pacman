@@ -3,9 +3,6 @@
 /* library */
 #include "../DynamicDrawing.h"
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/matrix_transform_2d.hpp>
-#include <glm/gtc/type_ptr.hpp>
 /**
  * @brief Internal class
  * 
@@ -13,10 +10,8 @@
 class Character : public DynamicDrawing {
     protected:
         /* protected data */
-        bool isPacman = false;
         int counter = 0, speed = 20, modelSize = 0;
         GLuint modelVAO, modelShaderProgram;
-        std::string modelPath;
         float xPos = 0.f, yPos = 0.f, yTex = 0.f;
         float camX, camY, modelDirection = 0.f;
         glm::mat4 modelMatrix;

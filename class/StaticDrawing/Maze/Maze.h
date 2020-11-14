@@ -2,10 +2,6 @@
 #define __MAZE_H
 /* library */
 #include "../StaticDrawing.h"
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/matrix_transform_2d.hpp>
-#include <glm/gtc/type_ptr.hpp>
 /**
  * @brief Leaf class
  * 

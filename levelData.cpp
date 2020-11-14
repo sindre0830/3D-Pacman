@@ -9,28 +9,9 @@
  * 
  */
 LevelData::LevelData() {
-    int index = 0;
-    bool flag = true;
-    //array with all possible levels
-    std::vector<std::string> possibleLevelsArr = {"level0"/*, "level1"*/};
-    //branch if there is only 1 level in the array
-    if(possibleLevelsArr.size() > 1) {
-        //print out all possible levels to the terminal
-        std::cout << "Choose a level:\t";
-        for(int i = 0; i < possibleLevelsArr.size(); i++) {
-            std::cout << i << (i < possibleLevelsArr.size() - 1 ? ", " : "\n");
-        }
-        //loop until user has inputed a valid integer 
-        do {
-            std::cout << "Level(0-" << possibleLevelsArr.size() - 1 << "): ";
-            std::cin >> index;
-            //branch if integer is valid
-            if(index <= possibleLevelsArr.size() - 1) flag = false;
-        } while(flag);
-        std::cout << std::endl;
-    }
-    //append filename to the filepath
-    filePath.append(possibleLevelsArr[index]);
+	//set window size
+	windowHeight = 1024;
+	windowWidth = 1024;
 }
 /**
  * @brief Converts score to string and makes sure it has as many characters as there are numbers in scoreboard
@@ -61,7 +42,8 @@ int LevelData::getScore(const int index) {
  * @brief inputs data from level file.
  * 
  */
-bool LevelData::inputData() {
+bool LevelData::inputData(const int index) {
+	filePath.append(possibleLevelsArr[index]);
     std::ifstream file;
 	file.open(filePath);
     //branch if file is open else end program
@@ -149,9 +131,6 @@ bool LevelData::inputData() {
 				gridElement[std::make_pair(i, j)].push_back({x + gridElementWidth, y + gridElementHeight});
 			}
 		}
-		//set window size
-		windowHeight = 1024;
-		windowWidth = 1024;
 		return true;
 	} else return false;
 }

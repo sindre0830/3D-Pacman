@@ -33,10 +33,10 @@ GameState::GameState() {
  * @brief Draw object by installing the shader program and binding the VAO and texture to the current rendering state
  * 
  */
-void GameState::draw() {
+void GameState::draw(const int texIndex) {
     glUseProgram(shaderProgram);
     glBindVertexArray(VAO);
-    glUniform1i(glGetUniformLocation(shaderProgram, "u_texture"), 2);
+    glUniform1i(glGetUniformLocation(shaderProgram, "u_texture"), texIndex);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
 }
 /**

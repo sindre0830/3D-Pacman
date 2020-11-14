@@ -12,6 +12,7 @@
 struct LevelData {
     /* data */
     std::string filePath = "level/";
+    std::vector<std::string> possibleLevelsArr = {"level0", "level1"};
     int rowOffset = 0, colOffset = 0;
     int gridWidth, gridHeight, pelletSize, score, pacmanCol, pacmanRow, gamemode = TWO_DIMENSIONAL, windowWidth, windowHeight;
     std::vector<std::vector<int>> grid;
@@ -21,7 +22,7 @@ struct LevelData {
     /* functionality */
     LevelData();
     int getScore(const int index);
-    bool inputData();
+    bool inputData(const int index);
 };
 
 #endif

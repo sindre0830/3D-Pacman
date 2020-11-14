@@ -32,12 +32,6 @@ int main() {
 	//construct level class and point adress to global pointer
 	static LevelData level;
 	g_level = &level;
-	//branch if file isn't initialized and kill the application
-	if (!g_level->inputData()) {
-		std::cerr << "File initialization failed.\n";
-		std::cin.get();
-		return EXIT_FAILURE;
-	}
 	//branch if GLFW isn't initialized and kill the application
 	if(!glfwInit()) {
 		std::cerr << "GLFW initialization failed.\n";
@@ -78,6 +72,60 @@ int main() {
 	}
 	//eanable capture of debug output
 	enableDebug();
+	//enable MSAA
+	glEnable(GL_MULTISAMPLE);
+	//enable transparency on texture
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//
+	GLuint menuTex = loadTexture("sprite/menu.png", 5);
+	//set background color black
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	//construct gameState class
+	GameState gameState;
+	//
+	gameState.draw(5);
+	//go to next buffer
+	glfwSwapBuffers(window);
+	//delete textures not needed anymore
+	glDeleteTextures(1, &menuTex);
+	int levelIndex;
+	while(!glfwWindowShouldClose(window)) {
+		//processes all pending events
+		glfwPollEvents();
+		if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+
+			//end program if 'ESC' key is pressed
+			return EXIT_SUCCESS;
+		} else if(glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS) {
+			levelIndex = 0;
+			break;
+		} else if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
+			levelIndex = 1;
+			break;
+		}
+	}
+	//
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//
+	GLuint loadingTex = loadTexture("sprite/loading.png", 4);
+	//
+	gameState.draw(4);
+	//go to next buffer
+	glfwSwapBuffers(window);
+	//delete textures not needed anymore
+	glDeleteTextures(1, &loadingTex);
+	//branch if file isn't initialized and kill the application
+	if (!g_level->inputData(levelIndex)) {
+		std::cerr << "File initialization failed.\n";
+		std::cin.get();
+		return EXIT_FAILURE;
+	}
+    //load the texture, create OpenGL texture, and bind it to the current context
+	GLuint characterTex = loadTexture("sprite/pacman.png", 0);
+    GLuint numberTex = loadTexture("sprite/number.png", 1);
+    GLuint gameoverTex = loadTexture("sprite/gameover.png", 2);
+	GLuint wallTex = loadTexture("sprite/wall.png", 3);
 	//get initial cursor position
 	//glfwSetCursorPosCallback(window, mouse_callback);
 	//construct camera class and point adress to global pointer
@@ -90,8 +138,6 @@ int main() {
 	for(int i = 0; i < scoreboard.size(); i++) {
 		scoreboard[i] = new Score(0, (g_level->gridWidth - 2) - i);
 	}
-	//construct gameState class
-	GameState gameState;
 	//construct pacman class
 	Pacman pacman;
 	//create an array filled with all possible starting positions for ghosts
@@ -123,18 +169,6 @@ int main() {
 	}
 	//construct pellet class
 	Pellet pellet;
-	//enable MSAA
-	glEnable(GL_MULTISAMPLE);
-	//enable transparency on texture
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    //load the texture, create OpenGL texture, and bind it to the current context
-	GLuint characterTex = loadTexture("sprite/pacman.png", 0);
-    GLuint numberTex = loadTexture("sprite/number.png", 1);
-    GLuint gameoverTex = loadTexture("sprite/gameover.png", 2);
-	GLuint wallTex = loadTexture("sprite/wall.png", 3);
-	//set background color black
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	//setup timer
 	static double limitFPS = 1.0 / 60.0;
     double lastTime = glfwGetTime(), nowTime = 0, timer = lastTime;
@@ -211,7 +245,7 @@ int main() {
 			}
 		}
 		//branch if game is over and 1 second has gone since game is over and display "GAME OVER" to the screen
-		if(g_level->gameover && counter > 0) gameState.draw();
+		if(g_level->gameover && counter > 0) gameState.draw(2);
 		//branch if there has been one second since game loop started
 		if(glfwGetTime() - timer > 1.0f) {
 			timer++;

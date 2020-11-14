@@ -19,6 +19,6 @@ class GameState {
         /* public functionality */
         ~GameState();
         GameState();
-        void draw();
+        void draw(const int texIndex);
 };
 #endif

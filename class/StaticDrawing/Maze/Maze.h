@@ -1,15 +1,18 @@
 #ifndef __MAZE_H
 #define __MAZE_H
 /* library */
-#include "../StaticDrawing.h"
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <vector>
 /**
  * @brief Leaf class
  * 
  */
-class Maze : public StaticDrawing {
+class Maze {
     private:
         /* private data */
-        GLuint cornerVAO, shaderProgram3D, vao3D;
+        GLuint shaderProgram2D, shaderProgram3D;
+        GLuint wallVAO, cornerVAO, modelVAO;
         int wallSize = 0, cornerSize = 0, wallSize3D = 0;
         /* private functionality */
         std::vector<GLfloat> genWallCoordinates();

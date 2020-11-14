@@ -2,13 +2,17 @@
 #include "GameState.h"
 #include "GameStateShader.h"
 #include "../../../header/levelData.h"
+#include "../../../header/function.h"
 /* global data */
 extern LevelData *g_level;
 /**
  * @brief Destroy the Gameover:: Gameover object
  * 
  */
-GameState::~GameState() {}
+GameState::~GameState() {
+	glDeleteProgram(shaderProgram);
+    destroyVAO(VAO);
+}
 /**
  * @brief Construct a new Gameover:: Gameover object
  * 

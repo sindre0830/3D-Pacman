@@ -15,7 +15,10 @@ extern Camera *g_camera;
  * @brief Destroy the Pellet:: Pellet object
  * 
  */
-Pellet::~Pellet() {}
+Pellet::~Pellet() {
+	glDeleteProgram(shaderProgram);
+    destroyVAO(VAO);
+}
 /**
  * @brief Construct a new Pellet:: Pellet object
  * 

@@ -29,20 +29,17 @@ add_executable(${PROJECT_NAME}
 	header/function.h
 	function.cpp
 
-	class/StaticDrawing/StaticDrawing.h
-	class/StaticDrawing/StaticDrawing.cpp
+	class/StaticDrawing/Maze/Maze.h
+	class/StaticDrawing/Maze/MazeShader.h
+	class/StaticDrawing/Maze/Maze.cpp
 
-		class/StaticDrawing/Maze/Maze.h
-		class/StaticDrawing/Maze/MazeShader.h
-		class/StaticDrawing/Maze/Maze.cpp
+	class/StaticDrawing/Pellet/Pellet.h
+	class/StaticDrawing/Pellet/PelletShader.h
+	class/StaticDrawing/Pellet/Pellet.cpp
 
-		class/StaticDrawing/Pellet/Pellet.h
-		class/StaticDrawing/Pellet/PelletShader.h
-		class/StaticDrawing/Pellet/Pellet.cpp
-
-		class/StaticDrawing/GameState/GameState.h
-		class/StaticDrawing/GameState/GameStateShader.h
-		class/StaticDrawing/GameState/GameState.cpp
+	class/StaticDrawing/GameState/GameState.h
+	class/StaticDrawing/GameState/GameStateShader.h
+	class/StaticDrawing/GameState/GameState.cpp
 
 	class/DynamicDrawing/DynamicDrawing.h
 	class/DynamicDrawing/DynamicDrawing.cpp

@@ -1,15 +1,19 @@
 #ifndef __PELLET_H
 #define __PELLET_H
 /* library */
-#include "../StaticDrawing.h"
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <vector>
 #include <map>
 /**
  * @brief Leaf class
  * 
  */
-class Pellet : public StaticDrawing {
+class Pellet {
     private:
         /* private data */
+        GLuint shaderProgram;
+        GLuint VAO;
         std::map<std::pair<int, int>, int> bufferPos;
         const int pelletByteSize = ((6 * 4) * 5) * sizeof(GLfloat);
         /* private functionality */

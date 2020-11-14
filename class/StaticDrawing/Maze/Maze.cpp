@@ -15,9 +15,11 @@ extern Camera *g_camera;
  * 
  */
 Maze::~Maze() {
+	glDeleteProgram(shaderProgram2D);
 	glDeleteProgram(shaderProgram3D);
+    destroyVAO(wallVAO);
     destroyVAO(cornerVAO);
-	destroyVAO(vao3D);
+	destroyVAO(modelVAO);
 }
 /**
  * @brief Construct a new Wall:: Wall object
@@ -25,10 +27,10 @@ Maze::~Maze() {
  */
 Maze::Maze() {
 	//create shader program
-    shaderProgram = compileShader(wallVertexShader, wallFragmentShader);
+    shaderProgram2D = compileShader(wallVertexShader, wallFragmentShader);
 	//generate wall VAO
 	std::vector<GLfloat> arr = genWallCoordinates();
-    VAO = genObject(arr, wallSize);
+    wallVAO = genObject(arr, wallSize);
 	//set the vertex attribute
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (const void*)0);
@@ -45,7 +47,7 @@ Maze::Maze() {
 	shaderProgram3D = compileShader(wallVertexShader3D, wallFragmentShader3D);
 	//generate 3D wall
 	arr = genWallCoordinates3D();
-	vao3D = genObject(arr, wallSize3D);
+	modelVAO = genObject(arr, wallSize3D);
     //specify the layout of the vertex data
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (const void*)0);
@@ -57,11 +59,11 @@ Maze::Maze() {
  * 
  */
 void Maze::draw() {
-	glUseProgram(shaderProgram);
-	glBindVertexArray(VAO);
+	glUseProgram(shaderProgram2D);
+	glBindVertexArray(wallVAO);
 	if(g_level->gamemode == TWO_DIMENSIONAL) {
 		//draw walls
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(glm::mat4(1.f)));
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram2D, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(glm::mat4(1.f)));
 		glDrawElements(GL_TRIANGLES, (6 * wallSize), GL_UNSIGNED_INT, (const void*)0);
 		//draw corners
 		glBindVertexArray(cornerVAO);
@@ -70,14 +72,14 @@ void Maze::draw() {
 		//draw minimap
 		glm::mat4 modelMatrix = getMinimapModelMatrix();
 		//draw walls
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram2D, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 		glDrawElements(GL_TRIANGLES, (6 * wallSize), GL_UNSIGNED_INT, (const void*)0);
 		//draw corners
 		glBindVertexArray(cornerVAO);
 		glDrawArrays(GL_TRIANGLES, 0, (3 * cornerSize));
 		//draw in 3D space
 		glUseProgram(shaderProgram3D);
-		glBindVertexArray(vao3D);
+		glBindVertexArray(modelVAO);
 		//set texture
 		glUniform1i(glGetUniformLocation(shaderProgram3D, "u_texture"), 3);
 		//set collection matrix

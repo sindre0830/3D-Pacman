@@ -1,13 +1,18 @@
 #ifndef __GAMESTATE_H
 #define __GAMESTATE_H
 /* library */
-#include "../StaticDrawing.h"
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <vector>
 /**
  * @brief Leaf class
  * 
  */
-class GameState : public StaticDrawing {
+class GameState {
     private:
+        /* private data */
+        GLuint shaderProgram;
+        GLuint VAO;
         /* private functionality */
         std::vector<GLfloat> genCoordinates();
     public:

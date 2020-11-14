@@ -20,22 +20,26 @@ Ghost::Ghost(const int row, const int col) {
 	//set starting postions
 	rowPos = row;
 	colPos = col;
-	//set random direction
-	findRandomPath();
+	//set initial direction
+	getRandomPath();
     //create VAO
 	std::vector<GLfloat> arr = genCoordinates(rowPos, colPos);
     VAO = genObject(arr, 1);
 	//specify the layout of the vertex data
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (const void*)0);
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (const void*)(2 * sizeof(GLfloat)));
 	//translate texture to show ghost
-	translateTex(4.0f / 6.0f, yTex);
-
-    //modelShaderProgram = compileModelShader(characterModelVertexShader, characterModelFragmentShader);
+	translateTex(4.f / 6.f, yTex);
+	//create model VAO
 	modelVAO = loadModel("models/ghost/ghost/", "ghost.obj", modelSize);
-	initialTranslation = glm::vec3(g_level->gridElement[std::make_pair(col, row)][TOP_LEFT][X] + g_level->gridElementWidth * 0.5f, g_level->gridElement[std::make_pair(col, row)][TOP_LEFT][Y] - g_level->gridElementHeight * 0.5f, 0.f);
+	//set initial translation
+	initialTranslation = glm::vec3(
+		g_level->gridElement[std::make_pair(col, row)][TOP_LEFT][X] + g_level->gridElementWidth * 0.5f, 
+		g_level->gridElement[std::make_pair(col, row)][TOP_LEFT][Y] - g_level->gridElementHeight * 0.5f, 
+		0.f
+	);
 }
 /**
  * @brief Finds aggresive path to Pacman unless magic effect is active
@@ -53,14 +57,14 @@ void Ghost::pathfinding() {
 			direction = LEFT;
 		} else if(direction != LEFT && g_level->grid[colPos][rowPos + 1] != WALL && rowPos < g_level->pacmanRow) {
 			direction = RIGHT;
-		} else findRandomPath();
-	} else findRandomPath();
+		} else getRandomPath();
+	} else getRandomPath();
 }
 /**
  * @brief Finds random path
  * 
  */
-void Ghost::findRandomPath() {
+void Ghost::getRandomPath() {
 	int index = 0;
 	//store all possible directions in an array
 	std::vector<int> possiblePaths;
@@ -124,7 +128,7 @@ void Ghost::mov() {
 			break;
 		case RIGHT:
 			//face right
-			yTex = 0.0f;
+			yTex = 0.f;
 			//branch if ghost was able to move and increase counter or check for coalition 1/4 into the translation
 			if(movRight(rowPos, colPos)) {
 				//update the ghost position in array
@@ -161,14 +165,14 @@ void Ghost::checkCoalition(const int row, const int col) {
 void Ghost::animate() {
 	//animate ghost according to the percentage of movement left till it has reached the next location
 	if (counter == speed * 0.25f) {
-		translateTex(4.0f / 6.0f, yTex);
+		translateTex(4.f / 6.f, yTex);
 	} else if (counter == speed * 0.5f) {
-		translateTex(5.0f / 6.0f, yTex);
+		translateTex(5.f / 6.f, yTex);
 	} else if (counter == speed * 0.75f) {
-		translateTex(4.0f / 6.0f, yTex);
+		translateTex(4.f / 6.f, yTex);
 	} else if (counter >= speed) {
 		counter = 0;
-		translateTex(5.0f / 6.0f, yTex);
+		translateTex(5.f / 6.f, yTex);
 	}
 }
 /**
@@ -177,14 +181,12 @@ void Ghost::animate() {
  * @param flag 
  */
 void Ghost::changeColor(const int flag) {
+	//update 2D shader
     glUseProgram(shaderProgram);
-	//send data to uniform
 	glUniform1i(glGetUniformLocation(shaderProgram, "u_changeColor"), flag);
-
+	//update 3D shader
 	glUseProgram(modelShaderProgram);
 	if(flag) {
 		glUniform3fv(glGetUniformLocation(modelShaderProgram, "u_objectColor"), 1, glm::value_ptr(glm::vec3(0.f, 0.f, 1.f)));
 	} else glUniform3fv(glGetUniformLocation(modelShaderProgram, "u_objectColor"), 1, glm::value_ptr(glm::vec3(1.f, 0.f, 0.f)));
-	//update to the new color
-	draw();
 }

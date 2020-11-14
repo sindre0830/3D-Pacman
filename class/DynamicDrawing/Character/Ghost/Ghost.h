@@ -12,8 +12,9 @@ class Ghost : public Character {
         int rowPos, colPos;
         /* private functionality */
         void pathfinding();
-        void findRandomPath();
+        void getRandomPath();
         void animate();
+        void checkCoalition(const int row, const int col);
     public:
         /* public data */
         bool dead = false;
@@ -21,7 +22,6 @@ class Ghost : public Character {
         ~Ghost();
         Ghost(const int row, const int col);
         void mov();
-        void checkCoalition(const int row, const int col);
         void changeColor(const int flag);
 };
 #endif

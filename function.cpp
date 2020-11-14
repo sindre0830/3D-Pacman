@@ -1,6 +1,6 @@
 /* library */
 #define TINYOBJLOADER_IMPLEMENTATION
-#include "header/tiny_obj_loader.h"
+#include "external/tiny_obj_loader.h"
 #include "header/function.h"
 #include "header/levelData.h"
 #include "header/Camera.h"

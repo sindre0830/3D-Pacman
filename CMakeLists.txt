@@ -16,7 +16,7 @@ add_executable(${PROJECT_NAME}
 
 	main.cpp
 
-	header/tiny_obj_loader.h
+	external/tiny_obj_loader.h
 
 	header/dictionary.h
 

@@ -1,20 +1,17 @@
 /* library */
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "external/tiny_obj_loader.h"
-#include "header/function.h"
+#include "header/functionality.h"
 #include "header/levelData.h"
 #include "header/Camera.h"
 #include <set>
 #include <stb_image.h>
-#include <fstream>
 #include <iostream>
 #include <algorithm>
 #include <random>
 /* global data */
 extern LevelData *g_level;
 extern Camera *g_camera;
-
-
 /**
  * @brief Compile the vertex and fragment shader.
  * 
@@ -161,8 +158,11 @@ void destroyVAO(GLuint &vao) {
 
 	glDeleteVertexArrays(1, &vao);
 }
-
-
+/**
+ * @brief Get the Minimap Model Matrix object
+ * 
+ * @return glm::mat4 
+ */
 glm::mat4 getMinimapModelMatrix() {
     float angle = 0.f;
     if(g_level->gamemode == FIRST_PERSON) {
@@ -178,33 +178,6 @@ glm::mat4 getMinimapModelMatrix() {
     modelMatrix = glm::rotate(modelMatrix, glm::radians(angle), glm::vec3(0.f, 0.f, 1.f));
     modelMatrix = glm::scale(modelMatrix, glm::vec3(0.25f));
     return modelMatrix;
-}
-
-void rotateWorld(glm::mat4 &modelMatrix, const int direction) {
-    /*if(direction == UP) {
-        //rotates world so pacman moves away from screen (birds-eye view)
-        modelMatrix = glm::rotate(modelMatrix, glm::radians(0.f), glm::vec3(0.f, 0.f, 1.f));
-        //rotates world so we are in first person
-        modelMatrix = glm::rotate(modelMatrix, glm::radians(-90.f), glm::vec3(1.f, 0.f, 0.f));
-    }
-    if(direction == RIGHT) {
-        //rotates world so pacman moves away from screen (birds-eye view)
-        modelMatrix = glm::rotate(modelMatrix, glm::radians(90.f), glm::vec3(0.f, 0.f, 1.f));
-        //rotates world so we are in first person
-        modelMatrix = glm::rotate(modelMatrix, glm::radians(90.f), glm::vec3(0.f, 1.f, 0.f));
-    }
-    if(direction == DOWN) {
-        //rotates world so pacman moves away from screen (birds-eye view)
-        modelMatrix = glm::rotate(modelMatrix, glm::radians(180.f), glm::vec3(0.f, 0.f, 1.f));
-        //rotates world so we are in first person
-        modelMatrix = glm::rotate(modelMatrix, glm::radians(90.f), glm::vec3(1.f, 0.f, 0.f));
-    }
-    if(direction == LEFT) {
-        //rotates world so pacman moves away from screen (birds-eye view)
-        modelMatrix = glm::rotate(modelMatrix, glm::radians(270.f), glm::vec3(0.f, 0.f, 1.f));
-        //rotates world so we are in first person
-        modelMatrix = glm::rotate(modelMatrix, glm::radians(-90.f), glm::vec3(0.f, 1.f, 0.f));
-    }*/
 }
 /**
  * @brief 
@@ -293,7 +266,11 @@ GLuint loadModel(const std::string path, const std::string file, int &size) {
 
     return VAO;
 }
-
+/**
+ * @brief 
+ * 
+ * @param window 
+ */
 void changeDimension(GLFWwindow* window) {
 	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
 		g_level->gamemode = FIRST_PERSON;
@@ -308,11 +285,23 @@ void changeDimension(GLFWwindow* window) {
 		//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	}
 }
-
+/**
+ * @brief 
+ * 
+ * @param window 
+ * @param xpos 
+ * @param ypos 
+ */
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
 	g_camera->updateDirection(xpos, ypos);
 }
-
+/**
+ * @brief 
+ * 
+ * @param window 
+ * @param width 
+ * @param height 
+ */
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
 
@@ -355,7 +344,13 @@ void getGhostPos(std::vector<std::vector<int>> &arr, int &row, int &col) {
 	//remove position from array so ghosts don't spawn on same tile
 	arr.erase(arr.begin() + index);
 }
-
+/**
+ * @brief 
+ * 
+ * @param min 
+ * @param max 
+ * @return int 
+ */
 int randomIndex(const int min, const int max) {
 	//initialise (seed) engine
 	std::random_device rd;

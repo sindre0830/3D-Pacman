@@ -1,11 +1,6 @@
 #ifndef __FUNCTION_H
 #define __FUNCTION_H
 /* library */
-#include "../class/GameState/GameState.h"
-#include "../class/Score/Score.h"
-#include "../class/Pellet/Pellet.h"
-#include "../class/Character/Pacman/Pacman.h"
-#include "../class/Character/Ghost/Ghost.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <string>
@@ -22,7 +17,6 @@ std::vector<GLuint> genIndices(const int size);
 void destroyVAO(GLuint &vao);
 
 glm::mat4 getMinimapModelMatrix();
-void rotateWorld(glm::mat4 &modelMatrix, const int direction);
 GLuint loadModel(const std::string path, const std::string file, int &size);
 void changeDimension(GLFWwindow* window);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);

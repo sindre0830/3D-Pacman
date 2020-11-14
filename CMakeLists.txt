@@ -26,8 +26,8 @@ add_executable(${PROJECT_NAME}
 	header/Camera.h
 	Camera.cpp
 
-	header/function.h
-	function.cpp
+	header/functionality.h
+	functionality.cpp
 
 	class/Maze/Maze.h
 	class/Maze/MazeShader.h

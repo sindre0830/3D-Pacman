@@ -157,16 +157,16 @@ int main() {
 		changeDimension(window);
 		//create minimap
 		if(g_level->gamemode != TWO_DIMENSIONAL) {
-			//update view matrix
-			if(g_level->gamemode != TWO_DIMENSIONAL) g_camera->updateViewMatrix(window, deltaTime, pacman.direction);
-			//disable depth so textures in minimap are transparent
-			glDisable(GL_DEPTH_TEST);
-			g_level->displayMinimap = true;
 			//enable depth to display 3D space
 			glEnable(GL_DEPTH_TEST);
+			//update view matrix
+			g_camera->updateViewMatrix(window, deltaTime, pacman.direction);
+			//enable minimap
+			g_level->displayMinimap = true;
 		} else {
 			//disable depth so textures in 2D map are transparent
 			glDisable(GL_DEPTH_TEST);
+			//disable minimap
 			g_level->displayMinimap = false;
 		}
 		//draw maze

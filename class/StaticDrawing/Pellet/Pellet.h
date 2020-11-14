@@ -3,10 +3,6 @@
 /* library */
 #include "../StaticDrawing.h"
 #include <map>
-#include <iostream>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/glm.hpp>
 /**
  * @brief Leaf class
  * 

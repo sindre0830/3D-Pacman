@@ -18,7 +18,6 @@ Pacman::~Pacman() {}
  * 
  */
 Pacman::Pacman() {
-	isPacman = true;
 	//set starting postions
     getPosition();
 	//set starting direction
@@ -35,20 +34,17 @@ Pacman::Pacman() {
 		yTex = 0.0f;
 		direction = RIGHT;
 	}
+	//set initial camera direction
+	g_camera->changeDirection(direction);
     //create VAO
 	std::vector<GLfloat> arr = genCoordinates(g_level->pacmanRow, g_level->pacmanCol);
     VAO = genObject(arr, 1);
 	//specify the layout of the vertex data
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (const void*)0);
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
-	
-	camX = g_level->gridElement[std::make_pair(g_level->pacmanCol, g_level->pacmanRow)][TOP_LEFT][X] + g_level->gridElementWidth * 0.5f;
-	camY = g_level->gridElement[std::make_pair(g_level->pacmanCol, g_level->pacmanRow)][TOP_LEFT][Y] - g_level->gridElementHeight * 0.5f;
-	g_camera->changeDirection(direction);
-	g_camera->changePosition(camX, camY);
-	//
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (const void*)(2 * sizeof(GLfloat)));
+	//create model VAO
 	modelVAO = loadModel("models/pacman/", "pacman.obj", modelSize);
 	//change color to yellow;
 	glUseProgram(modelShaderProgram);
@@ -59,6 +55,10 @@ Pacman::Pacman() {
 		g_level->gridElement[std::make_pair(g_level->pacmanCol, g_level->pacmanRow)][TOP_LEFT][Y] - g_level->gridElementHeight * 0.5f, 
 		-1.f
 	);
+	//set initial camera positions
+	camX = initialTranslation.x;
+	camY = initialTranslation.y;
+	g_camera->changePosition(camX, camY);
 }
 /**
  * @brief Get starting position in the grid
@@ -88,7 +88,7 @@ void Pacman::mov(Pellet &pellet) {
 		pathRight = g_level->pacmanRow + 1 < g_level->gridWidth && g_level->grid[g_level->pacmanCol][g_level->pacmanRow + 1] != WALL && g_level->grid[g_level->pacmanCol][g_level->pacmanRow + 1] != VOID;
 	if(g_level->gamemode == THIRD_PERSON) {
 		initialTranslation.z = 0.f;
-	} else initialTranslation.z = -1.f;
+	} else initialTranslation.z = 10.f;
 	//branch if pacman can change direction and pacman is moving set change direction to false
 	if(changeDirection && counter < speed) changeDirection = false;
 	switch (direction) {
@@ -291,7 +291,10 @@ void Pacman::inputDirection(GLFWwindow *window) {
 	}
 	g_camera->changeDirection(direction);
 }
-
+/**
+ * @brief update camera position values
+ * 
+ */
 void Pacman::updateCameraPosition() {
 	camX = g_level->gridElement[std::make_pair(g_level->pacmanCol, g_level->pacmanRow)][TOP_LEFT][X] + g_level->gridElementWidth * 0.5f;
 	camY = g_level->gridElement[std::make_pair(g_level->pacmanCol, g_level->pacmanRow)][TOP_LEFT][Y] - g_level->gridElementHeight * 0.5f;

@@ -2,7 +2,7 @@
 #define __PACMAN_H
 /* library */
 #include "../Character.h"
-#include "../../../StaticDrawing/Pellet/Pellet.h"
+#include "../../Pellet/Pellet.h"
 /**
  * Leaf class
  */

@@ -29,31 +29,31 @@ add_executable(${PROJECT_NAME}
 	header/function.h
 	function.cpp
 
-	class/StaticDrawing/Maze/Maze.h
-	class/StaticDrawing/Maze/MazeShader.h
-	class/StaticDrawing/Maze/Maze.cpp
+	class/Maze/Maze.h
+	class/Maze/MazeShader.h
+	class/Maze/Maze.cpp
 
-	class/StaticDrawing/Pellet/Pellet.h
-	class/StaticDrawing/Pellet/PelletShader.h
-	class/StaticDrawing/Pellet/Pellet.cpp
+	class/Pellet/Pellet.h
+	class/Pellet/PelletShader.h
+	class/Pellet/Pellet.cpp
 
-	class/StaticDrawing/GameState/GameState.h
-	class/StaticDrawing/GameState/GameStateShader.h
-	class/StaticDrawing/GameState/GameState.cpp
+	class/GameState/GameState.h
+	class/GameState/GameStateShader.h
+	class/GameState/GameState.cpp
 
-	class/DynamicDrawing/Score/Score.h
-	class/DynamicDrawing/Score/ScoreShader.h
-	class/DynamicDrawing/Score/Score.cpp
+	class/Score/Score.h
+	class/Score/ScoreShader.h
+	class/Score/Score.cpp
 
-	class/DynamicDrawing/Character/Character.h
-	class/DynamicDrawing/Character/CharacterShader.h
-	class/DynamicDrawing/Character/Character.cpp
+	class/Character/Character.h
+	class/Character/CharacterShader.h
+	class/Character/Character.cpp
 
-		class/DynamicDrawing/Character/Ghost/Ghost.h
-		class/DynamicDrawing/Character/Ghost/Ghost.cpp
+		class/Character/Ghost/Ghost.h
+		class/Character/Ghost/Ghost.cpp
 
-		class/DynamicDrawing/Character/Pacman/Pacman.h
-		class/DynamicDrawing/Character/Pacman/Pacman.cpp
+		class/Character/Pacman/Pacman.h
+		class/Character/Pacman/Pacman.cpp
 	)
 
 target_include_directories(${PROJECT_NAME}

@@ -1,10 +1,10 @@
 /* library */
 #include "Maze.h"
 #include "MazeShader.h"
-#include "../../../header/dictionary.h"
-#include "../../../header/levelData.h"
-#include "../../../header/Camera.h"
-#include "../../../header/function.h"
+#include "../../header/dictionary.h"
+#include "../../header/levelData.h"
+#include "../../header/Camera.h"
+#include "../../header/function.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 /* global data */

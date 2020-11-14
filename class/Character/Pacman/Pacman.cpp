@@ -1,10 +1,10 @@
 /* library */
 #include "Pacman.h"
 #include "../CharacterShader.h"
-#include "../../../../header/dictionary.h"
-#include "../../../../header/levelData.h"
-#include "../../../../header/function.h"
-#include "../../../../header/Camera.h"
+#include "../../../header/dictionary.h"
+#include "../../../header/levelData.h"
+#include "../../../header/function.h"
+#include "../../../header/Camera.h"
 /* global data */
 extern LevelData *g_level;
 extern Camera *g_camera;

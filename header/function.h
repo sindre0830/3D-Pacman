@@ -1,11 +1,11 @@
 #ifndef __FUNCTION_H
 #define __FUNCTION_H
 /* library */
-#include "../class/StaticDrawing/GameState/GameState.h"
-#include "../class/DynamicDrawing/Score/Score.h"
-#include "../class/StaticDrawing/Pellet/Pellet.h"
-#include "../class/DynamicDrawing/Character/Pacman/Pacman.h"
-#include "../class/DynamicDrawing/Character/Ghost/Ghost.h"
+#include "../class/GameState/GameState.h"
+#include "../class/Score/Score.h"
+#include "../class/Pellet/Pellet.h"
+#include "../class/Character/Pacman/Pacman.h"
+#include "../class/Character/Ghost/Ghost.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <string>

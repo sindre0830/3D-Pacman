@@ -1,6 +1,6 @@
 /**
- * Assignment 1 - Pacman
- * Fully functional Pacman game
+ * Assignment 2 - Pacman
+ * Fully functional Pacman game in 3D space
  *
  * @author Sindre Eiklid (sindreik@stud.ntnu.no)
  * @author Casper Melhus (caspertm@stud.ntnu.no)
@@ -90,11 +90,13 @@ int main() {
 	//delete textures not needed anymore
 	glDeleteTextures(1, &menuTex);
 	int levelIndex;
-	while(!glfwWindowShouldClose(window)) {
+	//
+	while(true) {
 		//processes all pending events
 		glfwPollEvents();
-		if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-
+		if(glfwWindowShouldClose(window)) {
+			return EXIT_SUCCESS;
+		} else if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 			//end program if 'ESC' key is pressed
 			return EXIT_SUCCESS;
 		} else if(glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS) {

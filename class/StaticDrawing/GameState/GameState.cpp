@@ -21,19 +21,18 @@ GameState::GameState() {
     VAO = genObject(arr, 1);
     //specify the layout of the vertex data
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (const void*)0);
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (const void*)(2 * sizeof(GLfloat)));
 }
 /**
  * @brief Draw object by installing the shader program and binding the VAO and texture to the current rendering state
  * 
  */
 void GameState::draw() {
-    auto samplerSlotLocation = glGetUniformLocation(shaderProgram, "u_texture");
     glUseProgram(shaderProgram);
     glBindVertexArray(VAO);
-    glUniform1i(samplerSlotLocation, 2);
+    glUniform1i(glGetUniformLocation(shaderProgram, "u_texture"), 2);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
 }
 /**

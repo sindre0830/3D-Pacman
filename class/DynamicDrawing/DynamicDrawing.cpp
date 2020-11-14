@@ -18,34 +18,7 @@ DynamicDrawing::~DynamicDrawing() {
  * @return GLuint 
  */
 GLuint DynamicDrawing::compileShader(const std::string &vertexShaderSrc, const std::string &fragmentShaderSrc) {
-
-	auto vertexSrc = vertexShaderSrc.c_str();
-	auto fragmentSrc = fragmentShaderSrc.c_str();
-
-	auto vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vertexSrc, nullptr);
-	glCompileShader(vertexShader);
-
-	auto fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentSrc, nullptr);
-	glCompileShader(fragmentShader);
-
-	auto shaderProgram = glCreateProgram();
-
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-
-	glBindFragDataLocation(shaderProgram, 0, "outColor");
-    glLinkProgram(shaderProgram);
-    glUseProgram(shaderProgram);
-
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
-
-	return shaderProgram;
-}
-
-GLuint DynamicDrawing::compileModelShader(const std::string& vertexShaderSrc, const std::string& fragmentShaderSrc) {
+    GLint isCompiled = 0;
 
     auto vertexSrc = vertexShaderSrc.c_str();
     auto fragmentSrc = fragmentShaderSrc.c_str();
@@ -53,16 +26,14 @@ GLuint DynamicDrawing::compileModelShader(const std::string& vertexShaderSrc, co
     auto vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexSrc, nullptr);
     glCompileShader(vertexShader);
-    GLint isCompiled = 0;
+
     glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &isCompiled);
-    if (!isCompiled) {
+    if(!isCompiled) {
         GLint maxLength = 0;
         glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &maxLength);
-
         // The maxLength includes the NULL character
         std::vector<GLchar> errorLog(maxLength);
         glGetShaderInfoLog(vertexShader, maxLength, &maxLength, &errorLog[0]);
-
         // Provide the infolog in whatever manor you deem best.
         std::cout << errorLog.data() << std::endl;
         std::cin.get();
@@ -71,11 +42,8 @@ GLuint DynamicDrawing::compileModelShader(const std::string& vertexShaderSrc, co
     glShaderSource(fragmentShader, 1, &fragmentSrc, nullptr);
     glCompileShader(fragmentShader);
 
-    //I spent like 3 hours trying to find shader errors. Here you go. Now this will print any error you get trying to compile a shader.
-    //Don't suffer like I did.
-
     glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &isCompiled);
-    if (!isCompiled) {
+    if(!isCompiled) {
         GLint maxLength = 0;
         glGetShaderiv(fragmentShader, GL_INFO_LOG_LENGTH, &maxLength);
 
@@ -93,20 +61,21 @@ GLuint DynamicDrawing::compileModelShader(const std::string& vertexShaderSrc, co
     glAttachShader(shaderProgram, vertexShader);
     glAttachShader(shaderProgram, fragmentShader);
 
+	glBindFragDataLocation(shaderProgram, 0, "outColor");
     glLinkProgram(shaderProgram);
+	glUseProgram(shaderProgram);
 
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
     return shaderProgram;
 }
-
 /**
  * @brief Generate VAO (rectangle shape)
  * 
  * @return GLuint 
  */
-GLuint DynamicDrawing::genObject(const std::vector<GLfloat> arr, const int size) {
+GLuint DynamicDrawing::genObject(const std::vector<GLfloat> &arr, const int size) {
     std::vector<GLuint> arrIndices = genIndices(size);
     return createVAO(arr, arrIndices);
 }

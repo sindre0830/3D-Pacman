@@ -23,7 +23,7 @@ Character::~Character() {
 Character::Character() {
     //compile character shader
     shaderProgram = compileShader(characterVertexShader, characterFragmentShader);
-    modelShaderProgram = compileModelShader(characterModelVertexShader, characterModelFragmentShader);
+    modelShaderProgram = compileShader(characterModelVertexShader, characterModelFragmentShader);
 }
 /**
  * @brief Draw object by installing the shader program and binding the VAO and texture to the current rendering state

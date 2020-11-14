@@ -175,7 +175,7 @@ glm::mat4 getMinimapModelMatrix() {
         }    
     }
     glm::mat4 modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(0.75f, 0.75f, 0.f));
-    modelMatrix = glm::rotate(modelMatrix, glm::radians(angle), glm::vec3(0.f, 0.f, 1.f));
+    //modelMatrix = glm::rotate(modelMatrix, glm::radians(angle), glm::vec3(0.f, 0.f, 1.f));
     modelMatrix = glm::scale(modelMatrix, glm::vec3(0.25f));
     return modelMatrix;
 }

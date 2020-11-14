@@ -1,19 +1,22 @@
 #ifndef __CHARACTER_H
 #define __CHARACTER_H
 /* library */
-#include "../DynamicDrawing.h"
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <vector>
 /**
  * @brief Internal class
  * 
  */
-class Character : public DynamicDrawing {
+class Character {
     protected:
         /* protected data */
+        GLuint shaderProgram2D, shaderProgram3D;
+        GLuint spriteVAO, modelVAO;
         int counter = 0, speed = 20, modelSize = 0;
-        GLuint modelVAO, modelShaderProgram;
         float xPos = 0.f, yPos = 0.f, yTex = 0.f;
-        float camX, camY, modelDirection = 0.f;
+        float camX = 0.f, camY = 0.f, modelDirection = 0.f;
         glm::mat4 modelMatrix;
         glm::vec3 translation, initialTranslation;
         /* protected functionality */

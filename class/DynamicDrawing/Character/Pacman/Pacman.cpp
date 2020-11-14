@@ -38,7 +38,7 @@ Pacman::Pacman() {
 	g_camera->changeDirection(direction);
     //create VAO
 	std::vector<GLfloat> arr = genCoordinates(g_level->pacmanRow, g_level->pacmanCol);
-    VAO = genObject(arr, 1);
+    spriteVAO = genObject(arr, 1);
 	//specify the layout of the vertex data
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (const void*)0);
@@ -47,8 +47,8 @@ Pacman::Pacman() {
 	//create model VAO
 	modelVAO = loadModel("models/pacman/", "pacman.obj", modelSize);
 	//change color to yellow;
-	glUseProgram(modelShaderProgram);
-	glUniform3fv(glGetUniformLocation(modelShaderProgram, "u_objectColor"), 1, glm::value_ptr(glm::vec3(1.f, 1.f, 0.f)));
+	glUseProgram(shaderProgram3D);
+	glUniform3fv(glGetUniformLocation(shaderProgram3D, "u_objectColor"), 1, glm::value_ptr(glm::vec3(1.f, 1.f, 0.f)));
 	//sets z value to -1 so we don't see it in first person view
 	initialTranslation = glm::vec3(
 		g_level->gridElement[std::make_pair(g_level->pacmanCol, g_level->pacmanRow)][TOP_LEFT][X] + g_level->gridElementWidth * 0.5f, 

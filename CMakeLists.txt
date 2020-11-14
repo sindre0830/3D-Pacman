@@ -41,22 +41,19 @@ add_executable(${PROJECT_NAME}
 	class/StaticDrawing/GameState/GameStateShader.h
 	class/StaticDrawing/GameState/GameState.cpp
 
-	class/DynamicDrawing/DynamicDrawing.h
-	class/DynamicDrawing/DynamicDrawing.cpp
+	class/DynamicDrawing/Score/Score.h
+	class/DynamicDrawing/Score/ScoreShader.h
+	class/DynamicDrawing/Score/Score.cpp
 
-		class/DynamicDrawing/Character/Character.h
-		class/DynamicDrawing/Character/CharacterShader.h
-		class/DynamicDrawing/Character/Character.cpp
+	class/DynamicDrawing/Character/Character.h
+	class/DynamicDrawing/Character/CharacterShader.h
+	class/DynamicDrawing/Character/Character.cpp
 
-			class/DynamicDrawing/Character/Ghost/Ghost.h
-			class/DynamicDrawing/Character/Ghost/Ghost.cpp
+		class/DynamicDrawing/Character/Ghost/Ghost.h
+		class/DynamicDrawing/Character/Ghost/Ghost.cpp
 
-			class/DynamicDrawing/Character/Pacman/Pacman.h
-			class/DynamicDrawing/Character/Pacman/Pacman.cpp
-
-		class/DynamicDrawing/Score/Score.h
-		class/DynamicDrawing/Score/ScoreShader.h
-		class/DynamicDrawing/Score/Score.cpp
+		class/DynamicDrawing/Character/Pacman/Pacman.h
+		class/DynamicDrawing/Character/Pacman/Pacman.cpp
 	)
 
 target_include_directories(${PROJECT_NAME}

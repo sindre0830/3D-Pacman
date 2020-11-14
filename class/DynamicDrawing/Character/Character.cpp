@@ -16,37 +16,39 @@ extern Camera *g_camera;
  * 
  */
 Character::~Character() {
-    glDeleteProgram(modelShaderProgram);
+	glDeleteProgram(shaderProgram2D);
+    glDeleteProgram(shaderProgram3D);
+    destroyVAO(spriteVAO);
     destroyVAO(modelVAO);
 }
 
 Character::Character() {
     //compile character shader
-    shaderProgram = compileShader(characterVertexShader, characterFragmentShader);
-    modelShaderProgram = compileShader(characterModelVertexShader, characterModelFragmentShader);
+    shaderProgram2D = compileShader(characterVertexShader, characterFragmentShader);
+    shaderProgram3D = compileShader(characterModelVertexShader, characterModelFragmentShader);
 }
 /**
  * @brief Draw object by installing the shader program and binding the VAO and texture to the current rendering state
  * 
  */
 void Character::draw() {
-    glUseProgram(shaderProgram);
-    glBindVertexArray(VAO);
+    glUseProgram(shaderProgram2D);
+    glBindVertexArray(spriteVAO);
     if(g_level->gamemode == TWO_DIMENSIONAL) {
         //draw in 2D space
-        glUniform1i(glGetUniformLocation(shaderProgram, "u_texture"), 0);
+        glUniform1i(glGetUniformLocation(shaderProgram2D, "u_texture"), 0);
         modelMatrix = glm::translate(glm::mat4(1.f), translation);
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_transformationPos"), 1, false, glm::value_ptr(modelMatrix));
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram2D, "u_transformationPos"), 1, false, glm::value_ptr(modelMatrix));
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
     } else {
         //draw minimap
-        glUniform1i(glGetUniformLocation(shaderProgram, "u_texture"), 0);
+        glUniform1i(glGetUniformLocation(shaderProgram2D, "u_texture"), 0);
         modelMatrix = getMinimapModelMatrix();
         modelMatrix = glm::translate(modelMatrix, translation);
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_transformationPos"), 1, false, glm::value_ptr(modelMatrix));
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram2D, "u_transformationPos"), 1, false, glm::value_ptr(modelMatrix));
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
         //draw in 3D space
-        glUseProgram(modelShaderProgram);
+        glUseProgram(shaderProgram3D);
         glBindVertexArray(modelVAO);
         //get direction angel
         if(direction == UP) {
@@ -69,9 +71,9 @@ void Character::draw() {
         modelMatrix = glm::rotate(modelMatrix, glm::radians(modelDirection), glm::vec3(0.f, 1.f, 0.f));
         //scale down the model
         modelMatrix = glm::scale(modelMatrix, glm::vec3(0.02f));
-        glUniformMatrix4fv(glGetUniformLocation(modelShaderProgram, "u_modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
-		glUniformMatrix4fv(glGetUniformLocation(modelShaderProgram, "u_viewMatrix"), 1, GL_FALSE, glm::value_ptr(g_camera->viewMatrix));
-		glUniformMatrix4fv(glGetUniformLocation(modelShaderProgram, "u_projectionMatrix"), 1, GL_FALSE, glm::value_ptr(g_camera->projectionMatrix));
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_viewMatrix"), 1, GL_FALSE, glm::value_ptr(g_camera->viewMatrix));
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_projectionMatrix"), 1, GL_FALSE, glm::value_ptr(g_camera->projectionMatrix));
         glDrawArrays(GL_TRIANGLES, 6, modelSize);
     }
 }
@@ -117,11 +119,11 @@ void Character::translatePos(const float xPos, const float yPos) {
  * @param yPos
  */
 void Character::translateTex(const float xPos, const float yPos) {
-    glUseProgram(shaderProgram);
+    glUseProgram(shaderProgram2D);
 	//Generate matrix to translate
 	glm::mat3 translation = glm::translate(glm::mat3(1), glm::vec2(xPos, yPos));
 	//Send data from matrix to the uniform
-	glUniformMatrix3fv(glGetUniformLocation(shaderProgram, "u_transformationTex"), 1, false, glm::value_ptr(translation));
+	glUniformMatrix3fv(glGetUniformLocation(shaderProgram2D, "u_transformationTex"), 1, false, glm::value_ptr(translation));
 }
 /**
  * @brief Move character up the grid if possible and update position

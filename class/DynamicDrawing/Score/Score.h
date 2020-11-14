@@ -1,14 +1,18 @@
 #ifndef __SCORE_H
 #define __SCORE_H
 /* library */
-#include "../DynamicDrawing.h"
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <vector>
 /**
  * @brief Leaf class
  * 
  */
-class Score : public DynamicDrawing {
+class Score {
     private:
         /* private data */
+        GLuint shaderProgram;
+        GLuint VAO;
         int lastNumber = 0;
         /* private functionality */
         std::vector<GLfloat> genCoordinates(const int col, const int row);

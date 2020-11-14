@@ -24,7 +24,7 @@ Ghost::Ghost(const int row, const int col) {
 	getRandomPath();
     //create VAO
 	std::vector<GLfloat> arr = genCoordinates(rowPos, colPos);
-    VAO = genObject(arr, 1);
+    spriteVAO = genObject(arr, 1);
 	//specify the layout of the vertex data
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (const void*)0);
@@ -182,11 +182,11 @@ void Ghost::animate() {
  */
 void Ghost::changeColor(const int flag) {
 	//update 2D shader
-    glUseProgram(shaderProgram);
-	glUniform1i(glGetUniformLocation(shaderProgram, "u_changeColor"), flag);
+    glUseProgram(shaderProgram2D);
+	glUniform1i(glGetUniformLocation(shaderProgram2D, "u_changeColor"), flag);
 	//update 3D shader
-	glUseProgram(modelShaderProgram);
+	glUseProgram(shaderProgram3D);
 	if(flag) {
-		glUniform3fv(glGetUniformLocation(modelShaderProgram, "u_objectColor"), 1, glm::value_ptr(glm::vec3(0.f, 0.f, 1.f)));
-	} else glUniform3fv(glGetUniformLocation(modelShaderProgram, "u_objectColor"), 1, glm::value_ptr(glm::vec3(1.f, 0.f, 0.f)));
+		glUniform3fv(glGetUniformLocation(shaderProgram3D, "u_objectColor"), 1, glm::value_ptr(glm::vec3(0.f, 0.f, 1.f)));
+	} else glUniform3fv(glGetUniformLocation(shaderProgram3D, "u_objectColor"), 1, glm::value_ptr(glm::vec3(1.f, 0.f, 0.f)));
 }

@@ -27,19 +27,18 @@ Score::Score(const int col, const int row) {
     VAO = genObject(arr, 1);
     //specify the layout of the vertex data
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (const void*)0);
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (const void*)(2 * sizeof(GLfloat)));
 }
 /**
  * @brief Draw object by installing the shader program and binding the VAO and texture to the current rendering state
  * 
  */
 void Score::draw() {
-    GLint samplerSlotLocation = glGetUniformLocation(shaderProgram, "u_texture");
     glUseProgram(shaderProgram);
     glBindVertexArray(VAO);
-    glUniform1i(samplerSlotLocation, 1);
+    glUniform1i(glGetUniformLocation(shaderProgram, "u_texture"), 1);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
 }
 /**
@@ -88,10 +87,9 @@ void Score::update(const int num) {
  * @param xPos 
  */
 void Score::translateTex(const float xPos) {
+    glUseProgram(shaderProgram);
     //Generate matrix to translate
 	glm::mat3 translation = glm::translate(glm::mat3(1), glm::vec2(xPos, 0.f));
-    //get uniform to transform
-	GLuint uniform = glGetUniformLocation(shaderProgram, "u_transformationTex");
 	//send data from matrix to the uniform
-	glUniformMatrix3fv(uniform, 1, false, glm::value_ptr(translation));
+	glUniformMatrix3fv(glGetUniformLocation(shaderProgram, "u_transformationTex"), 1, false, glm::value_ptr(translation));
 }

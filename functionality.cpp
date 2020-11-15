@@ -320,8 +320,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 			glViewport((widthDifference / 2), 0, (width - widthDifference), height);
 		} else if(widthDifference < 0) {
 			glViewport(0, -(widthDifference / 2), width, (height + widthDifference));
-		}
-		if(heightDifference > 0) {
+		} else if(heightDifference > 0) {
 			glViewport(0, (heightDifference / 2), width, (height - heightDifference));
 		} else if(heightDifference < 0) {
 			glViewport(-(heightDifference / 2), 0, (width + heightDifference), height);

@@ -83,21 +83,18 @@ int main() {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	//construct gameState class
 	GameState gameState;
-	//
-	gameState.draw(5);
-	//go to next buffer
-	glfwSwapBuffers(window);
-	//delete textures not needed anymore
-	glDeleteTextures(1, &menuTex);
 	int levelIndex;
 	//
 	while(true) {
 		//processes all pending events
 		glfwPollEvents();
-		if(glfwWindowShouldClose(window)) {
-			return EXIT_SUCCESS;
-		} else if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-			//end program if 'ESC' key is pressed
+		//
+		glClear(GL_COLOR_BUFFER_BIT);
+		//
+		gameState.draw(5);
+		if(glfwWindowShouldClose(window) || glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+			glDeleteTextures(1, &menuTex);
+			//end program if 'ESC' key is pressed or the user has closed the window
 			return EXIT_SUCCESS;
 		} else if(glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS) {
 			levelIndex = 0;
@@ -106,9 +103,11 @@ int main() {
 			levelIndex = 1;
 			break;
 		}
+		//go to next buffer
+		glfwSwapBuffers(window);
 	}
 	//
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT);
 	//
 	GLuint loadingTex = loadTexture("sprite/loading.png", 4);
 	//
@@ -116,6 +115,7 @@ int main() {
 	//go to next buffer
 	glfwSwapBuffers(window);
 	//delete textures not needed anymore
+	glDeleteTextures(1, &menuTex);
 	glDeleteTextures(1, &loadingTex);
 	//branch if file isn't initialized and kill the application
 	if (!g_level->inputData(levelIndex)) {

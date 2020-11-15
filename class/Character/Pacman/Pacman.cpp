@@ -211,11 +211,13 @@ void Pacman::inputDirection(GLFWwindow *window) {
 		pathRight = g_level->pacmanRow + 1 < g_level->gridWidth && g_level->grid[g_level->pacmanCol][g_level->pacmanRow + 1] != WALL && g_level->grid[g_level->pacmanCol][g_level->pacmanRow + 1] != VOID;
 	//change direction on key press if pacman has completed a translation and it wont hit a wall
 	if(changeDirection) {
-		if(glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS && pathUP && g_level->gamemode != FIRST_PERSON) {
-			direction = UP;
-			yTex = 0.5f;
-			translateTex(0.f, yTex);
-		} else if(glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+		if(glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+			if(pathUP && g_level->gamemode != FIRST_PERSON) {
+				direction = UP;
+				yTex = 0.5f;
+				translateTex(0.f, yTex);	
+			}
+		} else if(glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
 			if(g_level->gamemode == FIRST_PERSON) {
 				if(direction == UP && pathLeft) {
 					direction = LEFT;
@@ -239,7 +241,7 @@ void Pacman::inputDirection(GLFWwindow *window) {
 				yTex = 0.25f;
 				translateTex(0.f, yTex);
 			}
-		} else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+		} else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
 			if(g_level->gamemode == FIRST_PERSON) {
 				if(direction == UP && pathDown) {
 					direction = DOWN;
@@ -263,7 +265,7 @@ void Pacman::inputDirection(GLFWwindow *window) {
 				yTex = 0.75f;
 				translateTex(0.f, yTex);
 			}
-		} else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+		} else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
 			if(g_level->gamemode == FIRST_PERSON) {
 				if(direction == UP && pathRight) {
 					direction = RIGHT;

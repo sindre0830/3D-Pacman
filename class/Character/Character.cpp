@@ -200,7 +200,7 @@ bool Character::movDown(int &row, int &col) {
         }
     } else {
         //update position
-        col = g_level->gridHeight - (g_level->colOffset / 2 - 1);
+        col = g_level->gridHeight - (g_level->colOffset / 2) - 1;
         //teleport to the opposite side of the grid
         translatePos(xPos, yPos += (float)(g_level->gridHeight - g_level->colOffset - 1) * g_level->gridElementHeight);
     }

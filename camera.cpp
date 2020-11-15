@@ -29,7 +29,7 @@ Camera::Camera(const int width, const int height) {
 }
 
 void Camera::changePosition(const float x, const float y) {
-	float z = 0.01f;
+	float z = 0.02f;
 	if(g_level->gamemode == THIRD_PERSON) z = 0.6f;
 	camPos = glm::vec3(x + xOffset, y + yOffset, z);
 

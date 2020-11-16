@@ -1,9 +1,9 @@
 /* library */
 #include "header/score.h"
 #include "shader/score.h"
-#include "../header/dictionary.h"
-#include "../header/level.h"
-#include "../header/functionality.h"
+#include "dictionary.h"
+#include "level.h"
+#include "functionality.h"
 #include <glm/glm.hpp>
 #include <glm/gtx/matrix_transform_2d.hpp>
 #include <glm/gtc/type_ptr.hpp>

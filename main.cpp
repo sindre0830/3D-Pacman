@@ -9,10 +9,10 @@
  * @date 2020/11/17
  */
  /* library */
-#include "header/dictionary.h"
-#include "header/level.h"
-#include "header/camera.h"
-#include "header/functionality.h"
+#include "dictionary.h"
+#include "level.h"
+#include "camera.h"
+#include "functionality.h"
 #include "class/header/score.h"
 #include "class/header/maze.h"
 #include "class/header/pellet.h"

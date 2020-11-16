@@ -1,7 +1,7 @@
 /* library */
-#include "header/functionality.h"
-#include "header/level.h"
-#include "header/camera.h"
+#include "functionality.h"
+#include "level.h"
+#include "camera.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/matrix_transform_2d.hpp>
 #include <glm/gtc/type_ptr.hpp>

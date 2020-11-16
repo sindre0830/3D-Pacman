@@ -1,6 +1,6 @@
 /* library */
-#include "header/level.h"
-#include "header/dictionary.h"
+#include "level.h"
+#include "dictionary.h"
 #include <iostream>
 #include <fstream>
 #include <algorithm>

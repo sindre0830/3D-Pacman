@@ -158,23 +158,14 @@ void destroyVAO(GLuint &vao) {
 	glDeleteVertexArrays(1, &vao);
 }
 /**
- * @brief Get the Minimap Model Matrix object
+ * @brief Create the minimap model matrix
  * 
  * @return glm::mat4 
  */
 glm::mat4 getMinimapModelMatrix() {
-    float angle = 0.f;
-    if(g_level->gamemode == FIRST_PERSON) {
-        if(g_camera->direction == LEFT) {
-            angle = 90.f;
-        } else if(g_camera->direction == DOWN) {
-            angle = 180.f;
-        } else if(g_camera->direction == RIGHT) {
-            angle = 270.f;
-        }    
-    }
+    //move scene to top right corner
     glm::mat4 modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(0.75f, 0.75f, 0.f));
-    //modelMatrix = glm::rotate(modelMatrix, glm::radians(angle), glm::vec3(0.f, 0.f, 1.f));
+    //scale scene down to 1/4 of the size
     modelMatrix = glm::scale(modelMatrix, glm::vec3(0.25f));
     return modelMatrix;
 }
@@ -283,16 +274,6 @@ void changeDimension(GLFWwindow* window) {
 		g_level->gamemode = THIRD_PERSON;
 		//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	}
-}
-/**
- * @brief 
- * 
- * @param window 
- * @param xpos 
- * @param ypos 
- */
-void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
-	g_camera->updateDirection(xpos, ypos);
 }
 /**
  * @brief 

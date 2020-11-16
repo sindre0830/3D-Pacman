@@ -2,7 +2,6 @@
 #include "header/camera.h"
 #include "header/dictionary.h"
 #include "header/levelData.h"
-#include <iostream>
 
 extern LevelData *g_level;
 
@@ -94,51 +93,4 @@ void Camera::changeDirection(const int pacmanDirection) {
     cameraDirection.y = sin(glm::radians(pitch));
     cameraDirection.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
     camFront = glm::normalize(cameraDirection);
-}
-
-void Camera::updateViewMatrix(GLFWwindow* window, const float deltaTime, const int pacmanDirection) {
-    /*camSpeed = 0.01f * deltaTime;
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camPos += camSpeed * camFront;
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        camPos -= camSpeed * camFront;
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        camPos -= glm::normalize(glm::cross(camFront, camUp)) * camSpeed;
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camPos += glm::normalize(glm::cross(camFront, camUp)) * camSpeed;
-
-    viewMatrix = glm::mat4(1.f);
-	viewMatrix = glm::lookAt(camPos, camPos + camFront, camUp);*/
-}
-
-void Camera::updateDirection(double xpos, double ypos) {
-	/*if (firstMouse) {
-        lastX = xpos;
-        lastY = ypos;
-        firstMouse = false;
-    }
-
-	float xoffset = xpos - lastX;
-	float yoffset = lastY - ypos;
-	lastX = xpos;
-	lastY = ypos;
-
-	xoffset *= sensitivity;
-	yoffset *= sensitivity;
-
-	yaw   += xoffset;
-	pitch += yoffset;
-
-	if(pitch > 89.0f) pitch =  89.0f;
-	if(pitch < -89.0f) pitch = -89.0f;
-
-	//restrict y movement (0 = first-person, -89 = third-person)
-	//pitch = -90.f;
-	//yaw = -90.f;
-
-	glm::vec3 direction;
-    direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-    direction.y = sin(glm::radians(pitch));
-    direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-    camFront = glm::normalize(direction);*/
 }

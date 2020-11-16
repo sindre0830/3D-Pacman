@@ -6,7 +6,7 @@
  * @author Casper Melhus (caspertm@stud.ntnu.no)
  * @author Brage Heimly N�ss
  * 
- * @date 2020/10/21
+ * @date 2020/11/17
  */
 /* library */
 #include "header/dictionary.h"
@@ -54,8 +54,6 @@ int main() {
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	//setting the OpenGL context to the window
 	glfwMakeContextCurrent(window);
-	//enable capture of cursor and focus it on the middle while hiding the icon
-	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	//branch if window isn't created and kill the application
 	if (window == nullptr) {
 		std::cerr << "GLFW failed on window creation.\n";
@@ -128,8 +126,6 @@ int main() {
     GLuint numberTex = loadTexture("sprite/number.png", 1);
     GLuint gameoverTex = loadTexture("sprite/gameover.png", 2);
 	GLuint wallTex = loadTexture("sprite/wall.png", 3);
-	//get initial cursor position
-	//glfwSetCursorPosCallback(window, mouse_callback);
 	//construct camera class and point adress to global pointer
 	static Camera camera(framebufferWidth, framebufferHeight);
 	g_camera = &camera;
@@ -176,9 +172,6 @@ int main() {
     double lastTime = glfwGetTime(), nowTime = 0, timer = lastTime;
     double deltaTime = 0;
 	int counter = 0;
-	//reset cursor
-	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-	g_level->gamemode = THIRD_PERSON;
 	//loop until user closes window
 	while(!glfwWindowShouldClose(window)) {
 		//delta time managment
@@ -195,8 +188,6 @@ int main() {
 		if(g_level->gamemode != TWO_DIMENSIONAL) {
 			//enable depth to display 3D space
 			glEnable(GL_DEPTH_TEST);
-			//update view matrix
-			g_camera->updateViewMatrix(window, deltaTime, pacman.direction);
 		} else {
 			//disable depth so textures in 2D map are transparent
 			glDisable(GL_DEPTH_TEST);

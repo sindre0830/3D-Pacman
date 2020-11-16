@@ -43,7 +43,12 @@ int LevelData::getScore(const int index) {
  * 
  */
 bool LevelData::inputData(const int index) {
+	//set file pathing values
+    std::string filePath = "level/";
+    std::vector<std::string> possibleLevelsArr = {"level0", "level1"};
+	//get file data from user input
 	filePath.append(possibleLevelsArr[index]);
+	//read from file
     std::ifstream file;
 	file.open(filePath);
     //branch if file is open else end program

@@ -11,14 +11,12 @@
  */
 struct LevelData {
     /* data */
-    std::string filePath = "level/";
-    std::vector<std::string> possibleLevelsArr = {"level0", "level1"};
     int rowOffset = 0, colOffset = 0;
     int gridWidth, gridHeight, pelletSize, score, pacmanCol, pacmanRow, gamemode = TWO_DIMENSIONAL, windowWidth, windowHeight;
     std::vector<std::vector<int>> grid;
     std::map<std::pair<int, int>, std::vector<std::vector<float>>> gridElement;
     float gridElementWidth, gridElementHeight;
-    bool magicEffect = false, scoreChanged = false, gameover = false, displayMinimap = false;
+    bool magicEffect = false, scoreChanged = false, gameover = false;
     /* functionality */
     LevelData();
     int getScore(const int index);

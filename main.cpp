@@ -190,20 +190,16 @@ int main() {
 		//for every frame reset background color buffer and depth buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//check if user wants to change gamemode
-		changeDimension(window);
+		if(!g_level->gameover) changeDimension(window);
 		//create minimap
 		if(g_level->gamemode != TWO_DIMENSIONAL) {
 			//enable depth to display 3D space
 			glEnable(GL_DEPTH_TEST);
 			//update view matrix
 			g_camera->updateViewMatrix(window, deltaTime, pacman.direction);
-			//enable minimap
-			g_level->displayMinimap = true;
 		} else {
 			//disable depth so textures in 2D map are transparent
 			glDisable(GL_DEPTH_TEST);
-			//disable minimap
-			g_level->displayMinimap = false;
 		}
 		//draw maze
 		maze.draw();
@@ -234,7 +230,7 @@ int main() {
 				noActiveGhosts = false;
 				ghostArr[i]->draw();
 				//branch if game isn't over and translate the ghost
-				if (!g_level->gameover && deltaTime >= 1.0) ghostArr[i]->mov();
+				if(!g_level->gameover && deltaTime >= 1.0) ghostArr[i]->mov();
 			}
 		}
 		//branch if there are no more ghosts on the level and end the game

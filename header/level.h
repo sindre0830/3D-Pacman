@@ -4,21 +4,20 @@
 #include "dictionary.h"
 #include <vector>
 #include <map>
-#include <string>
 /**
  * @brief Global structure with all level related data
  * 
  */
 struct Level {
     /* data */
-    int rowOffset = 0, colOffset = 0;
-    int gridWidth, gridHeight, pelletSize, score, pacmanCol, pacmanRow, gamemode = TWO_DIMENSIONAL, windowWidth, windowHeight;
+    const int windowWidth = 1024, windowHeight = 1024;
+    int rowOffset = 0, colOffset = 0, gridWidth = 0, gridHeight = 0;
+    int pelletSize = 0, score = 0, gamemode = THIRD_PERSON, pacmanCol = 0, pacmanRow = 0;
     std::vector<std::vector<int>> grid;
     std::map<std::pair<int, int>, std::vector<std::vector<float>>> gridElement;
-    float gridElementWidth, gridElementHeight;
+    float gridElementWidth = 0.f, gridElementHeight = 0.f;
     bool magicEffect = false, scoreChanged = false, gameover = false;
     /* functionality */
-    Level();
     int getScore(const int index);
     bool inputData(const int index);
 };

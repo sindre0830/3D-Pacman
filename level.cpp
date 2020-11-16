@@ -4,15 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-/**
- * @brief Construct a new Level Data:: Level Data object
- * 
- */
-Level::Level() {
-	//set window size
-	windowHeight = 1024;
-	windowWidth = 1024;
-}
+#include <string>
 /**
  * @brief Converts score to string and makes sure it has as many characters as there are numbers in scoreboard
  * 
@@ -64,10 +56,11 @@ bool Level::inputData(const int index) {
 		if(gridWidth < gridHeight) {
 			rowOffset = gridHeight - gridWidth;
 		} else colOffset = gridWidth - gridHeight;
-		//
+		//stop program if offsets aren't even numbers
 		if(rowOffset % 2 || colOffset % 2) return false;
 		//declare a vector filled with VOID to be used incase of colOffsets
 		std::vector<int> rowVOID(gridWidth + rowOffset, VOID);
+		//add top offsets
 		for(int i = 0; i < colOffset / 2; i++) {
 			grid.push_back(rowVOID);
 		}
@@ -88,6 +81,7 @@ bool Level::inputData(const int index) {
 				arrRow.push_back(buffer);
 				file.ignore();
 			}
+			//add offsets at start and end of array
 			for(int i = 0; i < rowOffset / 2; i++){
 				arrRow.insert(arrRow.begin(), VOID);
 				arrRow.insert(arrRow.end(), VOID);
@@ -95,6 +89,7 @@ bool Level::inputData(const int index) {
 			grid.push_back(arrRow);
 		}
 		file.close();
+		//add bottom offset
 		for(int i = 0; i < colOffset / 2; i++) {
 			grid.push_back(rowVOID);
 		}

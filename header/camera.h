@@ -9,7 +9,7 @@
 class Camera {
     private:
         /* private data */
-        float xOffset = 0, yOffset = 0;
+        float xOffset = 0.f, yOffset = 0.f;
         glm::vec3 camFront, camPos, camUp;
     public:
         /* public data */

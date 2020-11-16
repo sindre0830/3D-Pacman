@@ -85,10 +85,10 @@ static const std::string characterModelFragmentShader = R"(
     uniform mat4 u_modelMatrix = mat4(1);
     uniform mat4 u_viewMatrix = mat4(1);
 	uniform vec3 u_objectColor = vec3(1.f, 0.f, 0.f);
-	uniform vec3 u_lightColor = vec3(1.f, 1.f, 1.f);
-	uniform vec3 u_lightPos = vec3(1.f, 0.f, 1.f);
-	uniform vec3 u_lightDirection = vec3(-1.f, -1.f, -1.f);  
-	uniform float u_specularity = 1.f;
+	uniform vec3 u_lightColor = vec3(1.f);
+	uniform vec3 u_lightPos = vec3(1.f);
+	uniform vec3 u_lightDirection = vec3(1.f);  
+	uniform float u_specularity = 0.7f;
 	/**
 	 * @brief Get directional light
 	 * 
@@ -97,23 +97,22 @@ static const std::string characterModelFragmentShader = R"(
 	 * @return vec3 directional light value
 	 */
 	vec3 directionalLight(in vec3 color, in vec3 direction) {
-		float ambientStrength = 0.1f;
+		float ambientStrength = 0.9f;
 		vec3 ambient = ambientStrength * color;
 
-		//vec3 lightDir = normalize(u_lightPos - vs_fragPos.xyz);
-        vec3 lightDir = normalize(direction);
+        vec3 lightDirection = normalize(direction);
 
-		vec3 diffuse = color * max(0.f, dot(vs_normal, lightDir));
+		vec3 diffuse = color * max(0.f, dot(vs_normal, lightDirection));
 
 		vec3 viewDirection = normalize(vec3(inverse(u_viewMatrix) * vec4(0, 0, 0, 1) - u_modelMatrix * vs_fragPos));
 
-		vec3 reflectionDirection = reflect(lightDir, vs_normal);
+		vec3 reflectionDirection = reflect(lightDirection, vs_normal);
 
-		float specularPower = pow(max(0.f, dot(viewDirection, reflectionDirection)), 32);
+		float specularPower = pow(max(0.f, dot(viewDirection, reflectionDirection)), 8);
 
 		vec3 specular = u_specularity * specularPower * color;
 
-		return ambient + diffuse + specular;
+		return ambient + /*diffuse + */specular;
 	}
     /**
      * Main fragment shader program.

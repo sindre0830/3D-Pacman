@@ -74,6 +74,9 @@ void Character::draw() {
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_viewMatrix"), 1, GL_FALSE, glm::value_ptr(g_camera->viewMatrix));
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_projectionMatrix"), 1, GL_FALSE, glm::value_ptr(g_camera->projectionMatrix));
+        //dynamic light direction
+        glm::vec3 lightDirection(sin(glfwGetTime()), -0.5f, cos(glfwGetTime()));
+		glUniform3fv(glGetUniformLocation(shaderProgram3D, "u_lightDirection"), 1, glm::value_ptr(lightDirection));
         glDrawArrays(GL_TRIANGLES, 6, modelSize);
     }
 }

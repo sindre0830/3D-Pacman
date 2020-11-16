@@ -215,7 +215,7 @@ int main() {
 		//branch if game isn't over
 		if(!g_level->gameover && deltaTime >= 1.0) {
 			//translate pacman
-			pacman.mov(pellet);
+			pacman.mov(&pellet);
 			//check for user input and change direction accordingly
 			pacman.inputDirection(window);
 		}

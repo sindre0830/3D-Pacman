@@ -13,13 +13,13 @@ class Pacman : public Character {
         /* private functionality */
         void getPosition();
         void animate();
-        void eat(Pellet &pellet);
+        void eat(Pellet* pellet);
         void updateCameraPosition();
     public:
         /* public functionality */
         ~Pacman();
         Pacman();
-        void mov(Pellet &pellet);
+        void mov(Pellet* pellet);
         void inputDirection(GLFWwindow *window);
 };
 #endif

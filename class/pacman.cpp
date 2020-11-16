@@ -81,7 +81,7 @@ void Pacman::getPosition() {
  * 
  * @param shader
  */
-void Pacman::mov(Pellet &pellet) {
+void Pacman::mov(Pellet* pellet) {
 	bool
 		pathUP = g_level->pacmanCol + 1 < g_level->gridHeight && g_level->grid[g_level->pacmanCol + 1][g_level->pacmanRow] != WALL && g_level->grid[g_level->pacmanCol + 1][g_level->pacmanRow] != VOID,
 		pathLeft = g_level->pacmanRow - 1 >= 0 && g_level->grid[g_level->pacmanCol][g_level->pacmanRow - 1] != WALL && g_level->grid[g_level->pacmanCol][g_level->pacmanRow - 1] != VOID,
@@ -188,14 +188,14 @@ void Pacman::animate() {
  * 
  * @param pellet 
  */
-void Pacman::eat(Pellet &pellet) {
+void Pacman::eat(Pellet* pellet) {
 	//remove pellet in array
 	g_level->grid[g_level->pacmanCol][g_level->pacmanRow] = EMPTY;
 	//increment score
 	g_level->score++;
 	g_level->scoreChanged = true;
 	//hide pellet
-	pellet.hidePellet(g_level->pacmanCol, g_level->pacmanRow);
+	pellet->hidePellet(g_level->pacmanCol, g_level->pacmanRow);
 	//branch if there isn't any more pellets in the game and end it
 	if(g_level->score == g_level->pelletSize) g_level->gameover = true;
 }

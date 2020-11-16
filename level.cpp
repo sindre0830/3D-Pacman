@@ -44,7 +44,7 @@ bool Level::inputData(const int index) {
     std::ifstream file;
 	file.open(filePath);
     //branch if file is open else end program
-	if (file) {
+	if(file) {
 		int buffer;
         //input grid width from file
 		file >> gridWidth;
@@ -65,13 +65,13 @@ bool Level::inputData(const int index) {
 			grid.push_back(rowVOID);
 		}
 		//go through file and add values to grid vector
-		for (int i = 0; i < gridHeight; i++) {
+		for(int i = 0; i < gridHeight; i++) {
 			std::vector<int> arrRow;
-			for (int j = 0; j < gridWidth; j++) {
+			for(int j = 0; j < gridWidth; j++) {
                 //input element type from file
 				file >> buffer;
                 //branch if element is a pellet
-				if (buffer == PELLET) {
+				if(buffer == PELLET) {
 					//branch if position is a teleportation entrence else increase pellet size
 					if(i == 0 || i == gridHeight - 1 || j == 0 || j == gridWidth - 1) {
                         //set element to empty
@@ -97,14 +97,14 @@ bool Level::inputData(const int index) {
 		gridWidth += rowOffset;
 		gridHeight += colOffset;
 		//set top left magicpellet
-		for (int i = 0, j = 0; i < gridHeight && j < gridWidth; i++, j++) {
+		for(int i = 0, j = 0; i < gridHeight && j < gridWidth; i++, j++) {
 			if(grid[i][j] == PELLET) {
 				grid[i][j] = MAGICPELLET;
 				break;
 			}
 		}
 		//set bottom right magicpellet
-		for (int i = gridHeight - 1, j = gridWidth - 1; i >= 0 && j >= 0; i--, j--) {
+		for(int i = gridHeight - 1, j = gridWidth - 1; i >= 0 && j >= 0; i--, j--) {
 			if(grid[i][j] == PELLET) {
 				grid[i][j] = MAGICPELLET;
 				break;
@@ -119,8 +119,8 @@ bool Level::inputData(const int index) {
 		float
 			x = -1.f,
 			y = -1.f;
-		for (int i = 0; i < gridHeight; i++, x = -1.f, y += gridElementHeight) {
-			for (int j = 0; j < gridWidth; j++, x += gridElementWidth) {
+		for(int i = 0; i < gridHeight; i++, x = -1.f, y += gridElementHeight) {
+			for(int j = 0; j < gridWidth; j++, x += gridElementWidth) {
 				//top left
 				gridElement[std::make_pair(i, j)].push_back({x, y + gridElementHeight});
 				//bottom left

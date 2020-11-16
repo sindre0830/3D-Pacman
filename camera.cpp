@@ -51,7 +51,7 @@ void Camera::changeDirection(const int pacmanDirection) {
 		yOffset = -g_level->gridElementWidth * 6.f;
 	//branch if gamemode is first person and set view matrix according to the direction of the main character
 	} else {
-		switch (direction) {
+		switch(direction) {
 			case UP:
 				//rotate camera
 				yaw = 90.f;

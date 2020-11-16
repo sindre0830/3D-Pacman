@@ -76,7 +76,7 @@ int main() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	//
-	GLuint menuTex = loadTexture("sprite/menu.png", 5);
+	GLuint menuTex = loadTexture("sprite/menu.png", MENU_TEXTURE);
 	//set background color black
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	//construct gameState class
@@ -89,7 +89,7 @@ int main() {
 		//
 		glClear(GL_COLOR_BUFFER_BIT);
 		//
-		gameState.draw(5);
+		gameState.draw(MENU_TEXTURE);
 		if(glfwWindowShouldClose(window) || glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 			glDeleteTextures(1, &menuTex);
 			//end program if 'ESC' key is pressed or the user has closed the window
@@ -107,9 +107,9 @@ int main() {
 	//
 	glClear(GL_COLOR_BUFFER_BIT);
 	//
-	GLuint loadingTex = loadTexture("sprite/loading.png", 4);
+	GLuint loadingTex = loadTexture("sprite/loading.png", LOADING_TEXTURE);
 	//
-	gameState.draw(4);
+	gameState.draw(LOADING_TEXTURE);
 	//go to next buffer
 	glfwSwapBuffers(window);
 	//delete textures not needed anymore
@@ -122,10 +122,10 @@ int main() {
 		return EXIT_FAILURE;
 	}
     //load the texture, create OpenGL texture, and bind it to the current context
-	GLuint characterTex = loadTexture("sprite/pacman.png", 0);
-    GLuint numberTex = loadTexture("sprite/number.png", 1);
-    GLuint gameoverTex = loadTexture("sprite/gameover.png", 2);
-	GLuint wallTex = loadTexture("sprite/wall.png", 3);
+	GLuint characterTex = loadTexture("sprite/pacman.png", CHARACTER_TEXTURE);
+    GLuint numberTex = loadTexture("sprite/number.png", NUMBER_TEXTURE);
+    GLuint gameoverTex = loadTexture("sprite/gameover.png", GAMEOVER_TEXTURE);
+	GLuint wallTex = loadTexture("sprite/wall.png", WALL_TEXTURE);
 	//construct camera class and point adress to global pointer
 	static Camera camera(framebufferWidth, framebufferHeight);
 	g_camera = &camera;
@@ -234,7 +234,7 @@ int main() {
 			}
 		}
 		//branch if game is over and 1 second has gone since game is over and display "GAME OVER" to the screen
-		if(g_level->gameover && counter > 0) gameState.draw(2);
+		if(g_level->gameover && counter > 0) gameState.draw(GAMEOVER_TEXTURE);
 		//branch if there has been one second since game loop started
 		if(glfwGetTime() - timer > 1.0f) {
 			timer++;

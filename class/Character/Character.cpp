@@ -36,13 +36,13 @@ void Character::draw() {
     glBindVertexArray(spriteVAO);
     if(g_level->gamemode == TWO_DIMENSIONAL) {
         //draw in 2D space
-        glUniform1i(glGetUniformLocation(shaderProgram2D, "u_texture"), 0);
+        glUniform1i(glGetUniformLocation(shaderProgram2D, "u_texture"), CHARACTER_TEXTURE);
         modelMatrix = glm::translate(glm::mat4(1.f), translation);
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram2D, "u_transformationPos"), 1, false, glm::value_ptr(modelMatrix));
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
     } else {
         //draw minimap
-        glUniform1i(glGetUniformLocation(shaderProgram2D, "u_texture"), 0);
+        glUniform1i(glGetUniformLocation(shaderProgram2D, "u_texture"), CHARACTER_TEXTURE);
         modelMatrix = getMinimapModelMatrix();
         modelMatrix = glm::translate(modelMatrix, translation);
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram2D, "u_transformationPos"), 1, false, glm::value_ptr(modelMatrix));

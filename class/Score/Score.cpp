@@ -42,7 +42,7 @@ Score::Score(const int col, const int row) {
 void Score::draw() {
     glUseProgram(shaderProgram);
     glBindVertexArray(VAO);
-    glUniform1i(glGetUniformLocation(shaderProgram, "u_texture"), 1);
+    glUniform1i(glGetUniformLocation(shaderProgram, "u_texture"), NUMBER_TEXTURE);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
 }
 /**

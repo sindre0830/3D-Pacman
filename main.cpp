@@ -5,10 +5,10 @@
  * @author Sindre Eiklid (sindreik@stud.ntnu.no)
  * @author Casper Melhus (caspertm@stud.ntnu.no)
  * @author Brage Heimly N�ss
- * 
+ *
  * @date 2020/11/17
  */
-/* library */
+ /* library */
 #include "header/dictionary.h"
 #include "header/level.h"
 #include "header/camera.h"
@@ -22,9 +22,12 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <memory>
 /* global data */
-Level *g_level;
-Camera *g_camera;
+Level* g_level;
+//std::shared_ptr<Level> g_level = std::make_shared<Level>();
+Camera* g_camera;
+//std::shared_ptr<Camera> g_camera = std::make_shared<Camera>();
 /**
  * Main program.
  */
@@ -33,7 +36,7 @@ int main() {
 	static Level level;
 	g_level = &level;
 	//branch if GLFW isn't initialized and kill the application
-	if(!glfwInit()) {
+	if (!glfwInit()) {
 		std::cerr << "GLFW initialization failed.\n";
 		std::cin.get();
 		return EXIT_FAILURE;
@@ -46,7 +49,7 @@ int main() {
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	//create window
-	GLFWwindow *window = glfwCreateWindow(g_level->windowWidth, g_level->windowHeight, "Pac-Man", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(g_level->windowWidth, g_level->windowHeight, "Pac-Man", nullptr, nullptr);
 	//set framebuffer size data
 	int framebufferWidth = 0, framebufferHeight = 0;
 	glfwGetFramebufferSize(window, &framebufferWidth, &framebufferHeight);
@@ -62,7 +65,7 @@ int main() {
 		return EXIT_FAILURE;
 	}
 	//branch if GLEW isn't initialized and kill the application
-	if(glewInit() != GLEW_OK) {
+	if (glewInit() != GLEW_OK) {
 		std::cerr << "GLEW initialization failuare.\n";
 		glfwTerminate();
 		std::cin.get();
@@ -83,7 +86,7 @@ int main() {
 	GameState gameState;
 	int levelIndex;
 	//menu screen loop
-	while(true) {
+	while (true) {
 		//processes all pending events
 		glfwPollEvents();
 		//for every frame reset background color buffer
@@ -91,15 +94,17 @@ int main() {
 		//draw menu screen
 		gameState.draw(MENU_TEXTURE);
 		//branch if user decide to end program
-		if(glfwWindowShouldClose(window) || glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+		if (glfwWindowShouldClose(window) || glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 			glDeleteTextures(1, &menuTex);
 			//end program if 'ESC' key is pressed or the user has closed the window
 			return EXIT_SUCCESS;
-		//branch if user enters a relevant level index
-		} else if(glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS) {
+			//branch if user enters a relevant level index
+		}
+		else if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS) {
 			levelIndex = 0;
 			break;
-		} else if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
+		}
+		else if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
 			levelIndex = 1;
 			break;
 		}
@@ -123,10 +128,10 @@ int main() {
 		std::cin.get();
 		return EXIT_FAILURE;
 	}
-    //load all relevant textures for the game loop
+	//load all relevant textures for the game loop
 	GLuint characterTex = loadTexture("sprite/pacman.png", CHARACTER_TEXTURE);
-    GLuint numberTex = loadTexture("sprite/number.png", NUMBER_TEXTURE);
-    GLuint gameoverTex = loadTexture("sprite/gameover.png", GAMEOVER_TEXTURE);
+	GLuint numberTex = loadTexture("sprite/number.png", NUMBER_TEXTURE);
+	GLuint gameoverTex = loadTexture("sprite/gameover.png", GAMEOVER_TEXTURE);
 	GLuint wallTex = loadTexture("sprite/wall.png", WALL_TEXTURE);
 	//construct camera class and point adress to global pointer
 	static Camera camera(framebufferWidth, framebufferHeight);
@@ -135,7 +140,7 @@ int main() {
 	Maze maze;
 	//construct array of scoreboard classes
 	std::vector<Score*> scoreboard(4, nullptr);
-	for(int i = 0; i < scoreboard.size(); i++) {
+	for (int i = 0; i < scoreboard.size(); i++) {
 		scoreboard[i] = new Score(0, (g_level->gridWidth - 2) - i);
 	}
 	//construct pacman class
@@ -143,22 +148,22 @@ int main() {
 	//create an array filled with all possible starting positions for ghosts
 	int ghostStartRow, ghostStartCol;
 	std::vector<std::vector<int>> possibleStartingPos;
-	for(int i = 0; i < g_level->gridHeight; i++) {
-		for(int j = 0; j < g_level->gridWidth; j++) {
+	for (int i = 0; i < g_level->gridHeight; i++) {
+		for (int j = 0; j < g_level->gridWidth; j++) {
 			//branch if ghost can spawn
-			if(g_level->grid[i][j] == PELLET) {
+			if (g_level->grid[i][j] == PELLET) {
 				//branch if position is more than 3 rows away from pacman
-				if(g_level->pacmanCol - i > 3 || i - g_level->pacmanCol > 3) {
-					possibleStartingPos.push_back({i, j});
+				if (g_level->pacmanCol - i > 3 || i - g_level->pacmanCol > 3) {
+					possibleStartingPos.push_back({ i, j });
 				}
 			}
 		}
 	}
 	//construct array of ghost classes
 	std::vector<Ghost*> ghostArr(4, nullptr);
-	for(int i = 0; i < ghostArr.size(); i++) {
+	for (int i = 0; i < ghostArr.size(); i++) {
 		//branch if there are too many ghosts compared to the level and kill the application
-		if(ghostArr.size() > possibleStartingPos.size()) {
+		if (ghostArr.size() > possibleStartingPos.size()) {
 			std::cerr << "Get ghost position failed.\n";
 			glfwTerminate();
 			std::cin.get();
@@ -172,21 +177,22 @@ int main() {
 	Pellet pellet;
 	//setup timer
 	static double limitFPS = 1.0 / 60.0;
-    double lastTime = glfwGetTime(), nowTime = 0, timer = lastTime, deltaTime = 0;
+	double lastTime = glfwGetTime(), nowTime = 0, timer = lastTime, deltaTime = 0;
 	int counter = 0;
 	//loop until user closes window
-	while(!glfwWindowShouldClose(window)) {
+	while (!glfwWindowShouldClose(window)) {
 		//delta time managment
 		nowTime = glfwGetTime();
-        deltaTime += (nowTime - lastTime) / limitFPS;
-        lastTime = nowTime;
+		deltaTime += (nowTime - lastTime) / limitFPS;
+		lastTime = nowTime;
 		//check if user wants to change gamemode
-		if(!g_level->gameover) changeDimension(window);
+		if (!g_level->gameover) changeDimension(window);
 		//branch if world is in 3D space
-		if(g_level->gamemode != TWO_DIMENSIONAL) {
+		if (g_level->gamemode != TWO_DIMENSIONAL) {
 			//enable depth to display 3D space
 			glEnable(GL_DEPTH_TEST);
-		} else {
+		}
+		else {
 			//disable depth so textures in 2D map are transparent
 			glDisable(GL_DEPTH_TEST);
 		}
@@ -197,19 +203,19 @@ int main() {
 		//draw maze
 		maze.draw();
 		//draw scoreboard
-		for(int i = 0; i < scoreboard.size(); i++) {
+		for (int i = 0; i < scoreboard.size(); i++) {
 			scoreboard[i]->draw();
 			//branch if score has changed and update the scoreboard
 			if (g_level->scoreChanged) scoreboard[i]->update(g_level->getScore(i));
 		}
 		//branch if scoreboard has been updated and reset it
-		if(g_level->scoreChanged) g_level->scoreChanged = false;
+		if (g_level->scoreChanged) g_level->scoreChanged = false;
 		//draw pellets
 		pellet.draw();
 		//draw pacman
 		pacman.draw();
 		//branch if game isn't over
-		if (!g_level->gameover && deltaTime >= 1.0){
+		if (!g_level->gameover && deltaTime >= 1.0) {
 			//translate pacman
 			pacman.mov(pellet);
 			//check for user input and change direction accordingly
@@ -217,48 +223,48 @@ int main() {
 		}
 		//draw ghosts
 		bool noActiveGhosts = true;
-		for(int i = 0; i < ghostArr.size(); i++) {
+		for (int i = 0; i < ghostArr.size(); i++) {
 			//branch if ghost isn't dead
-			if(!ghostArr[i]->dead) {
+			if (!ghostArr[i]->dead) {
 				noActiveGhosts = false;
 				ghostArr[i]->draw();
 				//branch if game isn't over and translate the ghost
-				if(!g_level->gameover && deltaTime >= 1.0) ghostArr[i]->mov();
+				if (!g_level->gameover && deltaTime >= 1.0) ghostArr[i]->mov();
 			}
 		}
 		//branch if there are no more ghosts on the level and end the game
-		if(noActiveGhosts) g_level->gameover = true;
+		if (noActiveGhosts) g_level->gameover = true;
 		//branch if the magic effect just started
-		if(counter == 0 && g_level->magicEffect) {
-			for(int i = 0; i < ghostArr.size(); i++) {
+		if (counter == 0 && g_level->magicEffect) {
+			for (int i = 0; i < ghostArr.size(); i++) {
 				//branch if ghost isn't dead and change the color
-				if(!ghostArr[i]->dead) ghostArr[i]->changeColor(1);
+				if (!ghostArr[i]->dead) ghostArr[i]->changeColor(1);
 			}
 		}
 		//branch if game is over and 1 second has gone since game is over and display "GAME OVER" to the screen
-		if(g_level->gameover && counter > 0) gameState.draw(GAMEOVER_TEXTURE);
+		if (g_level->gameover && counter > 0) gameState.draw(GAMEOVER_TEXTURE);
 		//branch if there has been one second since game loop started
-		if(glfwGetTime() - timer > 1.0f) {
+		if (glfwGetTime() - timer > 1.0f) {
 			timer++;
 			//branch if game isn't over and pacman has eaten a magic pellet
-			if(!g_level->gameover && g_level->magicEffect) {
+			if (!g_level->gameover && g_level->magicEffect) {
 				counter++;
 				//branch if 5 seconds have gone since magic pellet was eaten
-				if(counter >= 5) {
+				if (counter >= 5) {
 					//reset data
 					counter = 0;
 					g_level->magicEffect = false;
-					for(int i = 0; i < ghostArr.size(); i++) {
+					for (int i = 0; i < ghostArr.size(); i++) {
 						//branch if ghost isn't dead and change the color
-						if(!ghostArr[i]->dead) ghostArr[i]->changeColor(0);
+						if (!ghostArr[i]->dead) ghostArr[i]->changeColor(0);
 					}
 				}
 			}
 			//branch if the game is over
-			if(g_level->gameover) {
+			if (g_level->gameover) {
 				counter++;
 				//branch if 2 seconds have gone since game was over
-				if(counter >= 2) {
+				if (counter >= 2) {
 					//reset data
 					counter = 0;
 				}
@@ -272,18 +278,18 @@ int main() {
 		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) break;
 	}
 	//clear memory before ending program
-	for(int i = 0; i < scoreboard.size(); i++) {
+	for (int i = 0; i < scoreboard.size(); i++) {
 		delete scoreboard[i];
 	}
 	scoreboard.clear();
-	for(int i = 0; i < ghostArr.size(); i++) {
+	for (int i = 0; i < ghostArr.size(); i++) {
 		delete ghostArr[i];
 	}
 	ghostArr.clear();
 	glUseProgram(0);
-    glDeleteTextures(1, &characterTex);
-    glDeleteTextures(1, &numberTex);
-    glDeleteTextures(1, &gameoverTex);
+	glDeleteTextures(1, &characterTex);
+	glDeleteTextures(1, &numberTex);
+	glDeleteTextures(1, &gameoverTex);
 	glDeleteTextures(1, &wallTex);
 	glfwTerminate();
 	return EXIT_SUCCESS;

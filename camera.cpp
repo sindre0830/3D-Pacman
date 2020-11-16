@@ -1,5 +1,5 @@
 /* library */
-#include "header/Camera.h"
+#include "header/camera.h"
 #include "header/dictionary.h"
 #include "header/levelData.h"
 #include <iostream>

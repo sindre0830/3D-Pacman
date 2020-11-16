@@ -4,7 +4,7 @@
 #include "../../../header/dictionary.h"
 #include "../../../header/levelData.h"
 #include "../../../header/functionality.h"
-#include "../../../header/Camera.h"
+#include "../../../header/camera.h"
 /* global data */
 extern LevelData *g_level;
 extern Camera *g_camera;

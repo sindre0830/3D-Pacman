@@ -3,7 +3,7 @@
 #include "PelletShader.h"
 #include "../../header/dictionary.h"
 #include "../../header/levelData.h"
-#include "../../header/Camera.h"
+#include "../../header/camera.h"
 #include "../../header/functionality.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>

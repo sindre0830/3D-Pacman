@@ -3,7 +3,7 @@
 #include "external/tiny_obj_loader.h"
 #include "header/functionality.h"
 #include "header/levelData.h"
-#include "header/Camera.h"
+#include "header/camera.h"
 #include <set>
 #include <stb_image.h>
 #include <iostream>

@@ -1,6 +1,6 @@
 /* library */
 #include "header/functionality.h"
-#include "header/levelData.h"
+#include "header/level.h"
 #include "header/camera.h"
 #include <stb_image.h>
 #include <tiny_obj_loader.h>

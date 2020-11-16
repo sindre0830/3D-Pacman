@@ -1,7 +1,7 @@
 /* library */
 #include "header/camera.h"
 #include "header/dictionary.h"
-#include "header/levelData.h"
+#include "header/level.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 extern LevelData *g_level;

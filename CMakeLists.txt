@@ -18,8 +18,8 @@ add_executable(${PROJECT_NAME}
 
 	header/dictionary.h
 
-	header/levelData.h
-	levelData.cpp
+	header/level.h
+	level.cpp
 
 	header/camera.h
 	camera.cpp

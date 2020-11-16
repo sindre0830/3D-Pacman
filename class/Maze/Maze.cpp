@@ -2,7 +2,7 @@
 #include "Maze.h"
 #include "MazeShader.h"
 #include "../../header/dictionary.h"
-#include "../../header/levelData.h"
+#include "../../header/level.h"
 #include "../../header/camera.h"
 #include "../../header/functionality.h"
 #include <glm/glm.hpp>

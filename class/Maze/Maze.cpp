@@ -81,7 +81,7 @@ void Maze::draw() {
 		glUseProgram(shaderProgram3D);
 		glBindVertexArray(modelVAO);
 		//set texture
-		glUniform1i(glGetUniformLocation(shaderProgram3D, "u_texture"), GAMEOVER_TEXTURE);
+		glUniform1i(glGetUniformLocation(shaderProgram3D, "u_texture"), WALL_TEXTURE);
 		//set collection matrix
 		glm::mat4 collectionMatrix = g_camera->projectionMatrix * g_camera->viewMatrix;
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(collectionMatrix));

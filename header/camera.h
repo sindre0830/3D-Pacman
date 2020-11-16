@@ -9,7 +9,7 @@
 class Camera {
     private:
         /* private data */
-        float yaw, pitch, xOffset = 0, yOffset = 0;
+        float xOffset = 0, yOffset = 0;
         glm::vec3 camFront, camPos, camUp;
     public:
         /* public data */

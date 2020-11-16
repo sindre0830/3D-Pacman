@@ -16,8 +16,6 @@ add_executable(${PROJECT_NAME}
 
 	main.cpp
 
-	external/tiny_obj_loader.h
-
 	header/dictionary.h
 
 	header/levelData.h
@@ -58,12 +56,14 @@ add_executable(${PROJECT_NAME}
 
 target_include_directories(${PROJECT_NAME}
 	PRIVATE
-	${CMAKE_SOURCE_DIR}/external/stb/include)
+	${CMAKE_SOURCE_DIR}/external/stb/include
+	${CMAKE_SOURCE_DIR}/external/tiny_obj_loader/include)
 
 target_compile_definitions(${PROJECT_NAME}
 	PRIVATE
 	GLEW_STATIC
-	STB_IMAGE_IMPLEMENTATION)
+	STB_IMAGE_IMPLEMENTATION
+	TINYOBJLOADER_IMPLEMENTATION)
 
 target_link_libraries(${PROJECT_NAME}
 	libglew_static

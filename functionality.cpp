@@ -1,14 +1,13 @@
 /* library */
-#define TINYOBJLOADER_IMPLEMENTATION
-#include "external/tiny_obj_loader.h"
 #include "header/functionality.h"
 #include "header/levelData.h"
 #include "header/camera.h"
-#include <set>
 #include <stb_image.h>
+#include <tiny_obj_loader.h>
+#include <set>
+#include <random>
 #include <iostream>
 #include <algorithm>
-#include <random>
 /* global data */
 extern LevelData *g_level;
 extern Camera *g_camera;

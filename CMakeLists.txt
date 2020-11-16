@@ -23,8 +23,8 @@ add_executable(${PROJECT_NAME}
 	header/levelData.h
 	levelData.cpp
 
-	header/Camera.h
-	Camera.cpp
+	header/camera.h
+	camera.cpp
 
 	header/functionality.h
 	functionality.cpp

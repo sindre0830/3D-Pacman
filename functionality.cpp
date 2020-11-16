@@ -3,7 +3,7 @@
 #include "external/tiny_obj_loader.h"
 #include "header/functionality.h"
 #include "header/levelData.h"
-#include "header/Camera.h"
+#include "header/camera.h"
 #include <set>
 #include <stb_image.h>
 #include <iostream>
@@ -257,7 +257,7 @@ GLuint loadModel(const std::string path, const std::string file, int &size) {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (const void*)0);
 
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (const void*)3);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)(sizeof(float)*3));
     
     glEnableVertexAttribArray(2);
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)(sizeof(float) * 6));

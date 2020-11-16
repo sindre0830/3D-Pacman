@@ -100,7 +100,8 @@ static const std::string characterModelFragmentShader = R"(
 		float ambientStrength = 0.1f;
 		vec3 ambient = ambientStrength * color;
 
-		vec3 lightDir = normalize(-direction);
+		//vec3 lightDir = normalize(u_lightPos - vs_fragPos.xyz);
+        vec3 lightDir = normalize(direction);
 
 		vec3 diffuse = color * max(0.f, dot(vs_normal, lightDir));
 

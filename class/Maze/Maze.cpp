@@ -33,14 +33,14 @@ Maze::Maze() {
     wallVAO = genObject(arr, wallSize);
 	//set the vertex attribute
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (const void*)0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (const void*)(0));
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (const void*)(2 * sizeof(GLfloat)));
 	//generate corner VAO
 	cornerVAO = genCornerVAO();
 	//set the vertex attribute
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (const void*)0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (const void*)(0));
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (const void*)(2 * sizeof(GLfloat)));
 	//create 3D shader program
@@ -50,7 +50,7 @@ Maze::Maze() {
 	modelVAO = genObject(arr, wallSize3D);
     //specify the layout of the vertex data
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (const void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (const void*)(0));
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (const void*)(3 * sizeof(GLfloat)));
 }
@@ -105,10 +105,10 @@ std::vector<GLfloat> Maze::genWallCoordinates() {
 	//buffer array
 	std::vector<GLfloat> arr;
 	//fills in array with coordinates
-	for (int i = 0; i < g_level->gridHeight; i++) {
-		for (int j = 0; j < g_level->gridWidth; j++) {
+	for(int i = 0; i < g_level->gridHeight; i++) {
+		for(int j = 0; j < g_level->gridWidth; j++) {
 			//branch if target is a wall
-			if (g_level->grid[i][j] == WALL) {
+			if(g_level->grid[i][j] == WALL) {
 				//branch if there can be a wall above the target
 				if(i + 1 < g_level->gridHeight && g_level->grid[i + 1][j] != WALL && g_level->grid[i + 1][j] != VOID) {
 					wallSize++;
@@ -198,10 +198,10 @@ GLuint Maze::genCornerVAO() {
 	//buffer array
 	std::vector<GLfloat> arr;
 	//fills in array with coordinates
-	for (int i = 0; i < g_level->gridHeight; i++) {
-		for (int j = 0; j < g_level->gridWidth; j++) {
+	for(int i = 0; i < g_level->gridHeight; i++) {
+		for(int j = 0; j < g_level->gridWidth; j++) {
 			//branch if target is a wall
-			if (g_level->grid[i][j] == WALL) {
+			if(g_level->grid[i][j] == WALL) {
 				//branch if there can be a corner top left of the target
 				if(i + 1 < g_level->gridHeight && g_level->grid[i + 1][j] != WALL && j - 1 >= 0 && g_level->grid[i + 1][j - 1] == WALL) {
 					cornerSize++;
@@ -288,10 +288,10 @@ std::vector<GLfloat> Maze::genWallCoordinates3D() {
 	//buffer array
 	std::vector<GLfloat> arr;
 	//fills in array with coordinates
-	for (int i = 0; i < g_level->gridHeight; i++) {
-		for (int j = 0; j < g_level->gridWidth; j++) {
+	for(int i = 0; i < g_level->gridHeight; i++) {
+		for(int j = 0; j < g_level->gridWidth; j++) {
 			//branch if target isn't a wall or void
-			if (g_level->grid[i][j] != WALL && g_level->grid[i][j] != VOID) {
+			if(g_level->grid[i][j] != WALL && g_level->grid[i][j] != VOID) {
 				//branch if there can be a wall above the target
 				if(i + 1 < g_level->gridHeight && g_level->grid[i + 1][j] == WALL) {
 					wallSize3D++;

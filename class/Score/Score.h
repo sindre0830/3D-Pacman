@@ -11,8 +11,8 @@
 class Score {
     private:
         /* private data */
-        GLuint shaderProgram;
-        GLuint VAO;
+        GLuint shaderProgram = 0;
+        GLuint VAO = 0;
         int lastNumber = 0;
         /* private functionality */
         std::vector<GLfloat> genCoordinates(const int col, const int row);

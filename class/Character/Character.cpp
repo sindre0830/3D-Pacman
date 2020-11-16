@@ -39,14 +39,14 @@ void Character::draw() {
         glUniform1i(glGetUniformLocation(shaderProgram2D, "u_texture"), CHARACTER_TEXTURE);
         modelMatrix = glm::translate(glm::mat4(1.f), translation);
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram2D, "u_transformationPos"), 1, false, glm::value_ptr(modelMatrix));
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)(0));
     } else {
         //draw minimap
         glUniform1i(glGetUniformLocation(shaderProgram2D, "u_texture"), CHARACTER_TEXTURE);
         modelMatrix = getMinimapModelMatrix();
         modelMatrix = glm::translate(modelMatrix, translation);
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram2D, "u_transformationPos"), 1, false, glm::value_ptr(modelMatrix));
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)(0));
         //draw in 3D space
         glUseProgram(shaderProgram3D);
         glBindVertexArray(modelVAO);

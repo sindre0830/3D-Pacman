@@ -31,7 +31,7 @@ Pellet::Pellet() {
     VAO = genObject(arr, g_level->pelletSize * 5);
 	//set the vertex attribute
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (const void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (const void*)(0));
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (const void*)(3 * sizeof(GLfloat)));
 	//set buffer position in refrence to position in level
@@ -52,11 +52,12 @@ Pellet::Pellet() {
 void Pellet::draw() {
 	glUseProgram(shaderProgram);
 	glBindVertexArray(VAO);
-	//
+	//branch if world is in 2D space
 	if(g_level->gamemode == TWO_DIMENSIONAL) {
 		//draw in 2D space
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(glm::mat4(1.f)));
 		glDrawElements(GL_TRIANGLES, (6 * g_level->pelletSize * 5), GL_UNSIGNED_INT, (const void*)0);
+	//branch if world is in 3D space
 	} else {
 		//draw minimap
 		glm::mat4 modelMatrix = getMinimapModelMatrix();

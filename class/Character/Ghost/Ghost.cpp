@@ -28,7 +28,7 @@ Ghost::Ghost(const int row, const int col) {
     spriteVAO = genObject(arr, 1);
 	//specify the layout of the vertex data
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (const void*)0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (const void*)(0));
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (const void*)(2 * sizeof(GLfloat)));
 	//translate texture to show ghost
@@ -87,7 +87,7 @@ void Ghost::getRandomPath() {
 void Ghost::mov() {
 	//check if ghost has collided with pacman
 	checkCoalition(rowPos, colPos);
-	switch (direction) {
+	switch(direction) {
 		case UP:
 			//face up
 			yTex = 0.5f;
@@ -165,13 +165,13 @@ void Ghost::checkCoalition(const int row, const int col) {
  */
 void Ghost::animate() {
 	//animate ghost according to the percentage of movement left till it has reached the next location
-	if (counter == speed * 0.25f) {
+	if(counter == speed * 0.25f) {
 		translateTex(4.f / 6.f, yTex);
-	} else if (counter == speed * 0.5f) {
+	} else if(counter == speed * 0.5f) {
 		translateTex(5.f / 6.f, yTex);
-	} else if (counter == speed * 0.75f) {
+	} else if(counter == speed * 0.75f) {
 		translateTex(4.f / 6.f, yTex);
-	} else if (counter >= speed) {
+	} else if(counter >= speed) {
 		counter = 0;
 		translateTex(5.f / 6.f, yTex);
 	}

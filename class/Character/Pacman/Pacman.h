@@ -9,7 +9,7 @@
 class Pacman : public Character {
     private:
         /* private data */
-        bool changeDirection;
+        bool changeDirection = false;
         /* private functionality */
         void getPosition();
         void animate();

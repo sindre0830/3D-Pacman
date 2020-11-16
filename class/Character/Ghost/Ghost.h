@@ -9,7 +9,7 @@
 class Ghost : public Character {
     private:
         /* private data */
-        int rowPos, colPos;
+        int rowPos = 0, colPos = 0;
         /* private functionality */
         void pathfinding();
         void getRandomPath();

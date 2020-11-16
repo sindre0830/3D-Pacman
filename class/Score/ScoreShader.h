@@ -17,9 +17,9 @@ static const std::string numberVertexShader = R"(
      */
 	void main() {
 		//transform texture coordinates
-		vec3 newTexPos = u_transformationTex * vec3(a_texPos, 1.0f);
+		vec3 newTexPos = u_transformationTex * vec3(a_texPos, 1.f);
 		vs_texPos = vec2(newTexPos);
-		gl_Position = vec4(a_gridPos, 0.0f, 1.0f);
+		gl_Position = vec4(a_gridPos, 0.f, 1.f);
 	}
 )";
 //fragment shader

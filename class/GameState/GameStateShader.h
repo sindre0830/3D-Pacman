@@ -15,7 +15,7 @@ static const std::string gameoverVertexShader = R"(
      */
 	void main() {
 		vs_texPos = a_texPos;
-		gl_Position = vec4(a_gridPos, -1.0f, 1.0f);
+		gl_Position = vec4(a_gridPos, -1.f, 1.f);
 	}
 )";
 //fragment shader

@@ -11,8 +11,8 @@
 class GameState {
     private:
         /* private data */
-        GLuint shaderProgram;
-        GLuint VAO;
+        GLuint shaderProgram = 0;
+        GLuint VAO = 0;
         /* private functionality */
         std::vector<GLfloat> genCoordinates();
     public:

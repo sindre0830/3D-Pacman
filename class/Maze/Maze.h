@@ -11,8 +11,8 @@
 class Maze {
     private:
         /* private data */
-        GLuint shaderProgram2D, shaderProgram3D;
-        GLuint wallVAO, cornerVAO, modelVAO;
+        GLuint shaderProgram2D = 0, shaderProgram3D = 0;
+        GLuint wallVAO = 0, cornerVAO = 0, modelVAO = 0;
         int wallSize = 0, cornerSize = 0, wallSize3D = 0;
         /* private functionality */
         std::vector<GLfloat> genWallCoordinates();

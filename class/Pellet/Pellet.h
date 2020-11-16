@@ -12,8 +12,8 @@
 class Pellet {
     private:
         /* private data */
-        GLuint shaderProgram;
-        GLuint VAO;
+        GLuint shaderProgram = 0;
+        GLuint VAO = 0;
         std::map<std::pair<int, int>, int> bufferPos;
         const int pelletByteSize = ((6 * 4) * 5) * sizeof(GLfloat);
         /* private functionality */

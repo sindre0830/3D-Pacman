@@ -12,8 +12,8 @@
 class Character {
     protected:
         /* protected data */
-        GLuint shaderProgram2D, shaderProgram3D;
-        GLuint spriteVAO, modelVAO;
+        GLuint shaderProgram2D = 0, shaderProgram3D = 0;
+        GLuint spriteVAO = 0, modelVAO = 0;
         int counter = 0, speed = 20, modelSize = 0;
         float xPos = 0.f, yPos = 0.f, yTex = 0.f;
         float camX = 0.f, camY = 0.f, modelDirection = 0.f;

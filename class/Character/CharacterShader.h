@@ -18,10 +18,10 @@ static const std::string characterVertexShader = R"(
      */
 	void main() {
 		//transform texture coordinates
-		vec3 newTexPos = u_transformationTex * vec3(a_texPos, 1.0f);
+		vec3 newTexPos = u_transformationTex * vec3(a_texPos, 1.f);
 		vs_texPos = vec2(newTexPos);
 		//transform grid coordinates
-		gl_Position = u_transformationPos * vec4(a_gridPos, -0.5f, 1.0f);
+		gl_Position = u_transformationPos * vec4(a_gridPos, -0.5f, 1.f);
 	}
 )";
 //2D fragment shader

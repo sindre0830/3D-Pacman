@@ -33,7 +33,7 @@ Ghost::Ghost(const int row, const int col) {
 	//translate texture to show ghost
 	translateTex(4.f / 6.f, yTex);
 	//create model VAO
-	modelVAO = loadModel("models/ghost/ghost/", "ghost.obj", modelSize);
+	modelVAO = loadModel("model/ghost/", "ghost.obj", modelSize);
 	//set initial translation
 	initialTranslation = glm::vec3(
 		g_level->gridElement[std::make_pair(col, row)][TOP_LEFT][X] + g_level->gridElementWidth * 0.5f, 

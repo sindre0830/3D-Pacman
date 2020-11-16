@@ -86,5 +86,5 @@ add_custom_command(
 add_custom_command(
 	TARGET ${PROJECT_NAME} PRE_BUILD
 	COMMAND ${CMAKE_COMMAND} -E copy_directory
-	${CMAKE_SOURCE_DIR}/models
-	${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/models)
+	${CMAKE_SOURCE_DIR}/model
+	${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/model)

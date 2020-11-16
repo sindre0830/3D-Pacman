@@ -45,7 +45,7 @@ Pacman::Pacman() {
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (const void*)(2 * sizeof(GLfloat)));
 	//create model VAO
-	modelVAO = loadModel("models/pacman/", "pacman.obj", modelSize);
+	modelVAO = loadModel("model/pacman/", "pacman.obj", modelSize);
 	//change color to yellow;
 	glUseProgram(shaderProgram3D);
 	glUniform3fv(glGetUniformLocation(shaderProgram3D, "u_objectColor"), 1, glm::value_ptr(glm::vec3(1.f, 1.f, 0.f)));

@@ -75,25 +75,27 @@ int main() {
 	//enable transparency on texture
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	//
+	//load menu texture
 	GLuint menuTex = loadTexture("sprite/menu.png", MENU_TEXTURE);
 	//set background color black
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	//construct gameState class
 	GameState gameState;
 	int levelIndex;
-	//
+	//menu screen loop
 	while(true) {
 		//processes all pending events
 		glfwPollEvents();
-		//
+		//for every frame reset background color buffer
 		glClear(GL_COLOR_BUFFER_BIT);
-		//
+		//draw menu screen
 		gameState.draw(MENU_TEXTURE);
+		//branch if user decide to end program
 		if(glfwWindowShouldClose(window) || glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 			glDeleteTextures(1, &menuTex);
 			//end program if 'ESC' key is pressed or the user has closed the window
 			return EXIT_SUCCESS;
+		//branch if user enters a relevant level index
 		} else if(glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS) {
 			levelIndex = 0;
 			break;
@@ -104,11 +106,11 @@ int main() {
 		//go to next buffer
 		glfwSwapBuffers(window);
 	}
-	//
+	//reset background color buffer
 	glClear(GL_COLOR_BUFFER_BIT);
-	//
+	//load loading texture
 	GLuint loadingTex = loadTexture("sprite/loading.png", LOADING_TEXTURE);
-	//
+	//draw loading screen
 	gameState.draw(LOADING_TEXTURE);
 	//go to next buffer
 	glfwSwapBuffers(window);
@@ -121,7 +123,7 @@ int main() {
 		std::cin.get();
 		return EXIT_FAILURE;
 	}
-    //load the texture, create OpenGL texture, and bind it to the current context
+    //load all relevant textures for the game loop
 	GLuint characterTex = loadTexture("sprite/pacman.png", CHARACTER_TEXTURE);
     GLuint numberTex = loadTexture("sprite/number.png", NUMBER_TEXTURE);
     GLuint gameoverTex = loadTexture("sprite/gameover.png", GAMEOVER_TEXTURE);
@@ -145,6 +147,7 @@ int main() {
 		for(int j = 0; j < g_level->gridWidth; j++) {
 			//branch if ghost can spawn
 			if(g_level->grid[i][j] == PELLET) {
+				//branch if position is more than 3 rows away from pacman
 				if(g_level->pacmanCol - i > 3 || i - g_level->pacmanCol > 3) {
 					possibleStartingPos.push_back({i, j});
 				}
@@ -169,8 +172,7 @@ int main() {
 	Pellet pellet;
 	//setup timer
 	static double limitFPS = 1.0 / 60.0;
-    double lastTime = glfwGetTime(), nowTime = 0, timer = lastTime;
-    double deltaTime = 0;
+    double lastTime = glfwGetTime(), nowTime = 0, timer = lastTime, deltaTime = 0;
 	int counter = 0;
 	//loop until user closes window
 	while(!glfwWindowShouldClose(window)) {
@@ -178,13 +180,9 @@ int main() {
 		nowTime = glfwGetTime();
         deltaTime += (nowTime - lastTime) / limitFPS;
         lastTime = nowTime;
-		//processes all pending events
-		glfwPollEvents();
-		//for every frame reset background color buffer and depth buffer
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//check if user wants to change gamemode
 		if(!g_level->gameover) changeDimension(window);
-		//create minimap
+		//branch if world is in 3D space
 		if(g_level->gamemode != TWO_DIMENSIONAL) {
 			//enable depth to display 3D space
 			glEnable(GL_DEPTH_TEST);
@@ -192,6 +190,10 @@ int main() {
 			//disable depth so textures in 2D map are transparent
 			glDisable(GL_DEPTH_TEST);
 		}
+		//processes all pending events
+		glfwPollEvents();
+		//for every frame reset background color buffer and depth buffer
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//draw maze
 		maze.draw();
 		//draw scoreboard

@@ -9,7 +9,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 /* global data */
-extern LevelData *g_level;
+extern Level *g_level;
 extern Camera *g_camera;
 /**
  * @brief Destroy the Pellet:: Pellet object

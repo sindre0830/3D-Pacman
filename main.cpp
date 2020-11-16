@@ -23,14 +23,14 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 /* global data */
-LevelData *g_level;
+Level *g_level;
 Camera *g_camera;
 /**
  * Main program.
  */
 int main() {
 	//construct level class and point adress to global pointer
-	static LevelData level;
+	static Level level;
 	g_level = &level;
 	//branch if GLFW isn't initialized and kill the application
 	if(!glfwInit()) {

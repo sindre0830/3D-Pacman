@@ -4,7 +4,7 @@
 #include "header/level.h"
 #include <glm/gtc/matrix_transform.hpp>
 
-extern LevelData *g_level;
+extern Level *g_level;
 
 Camera::~Camera() {}
 

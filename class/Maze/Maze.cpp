@@ -8,7 +8,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 /* global data */
-extern LevelData *g_level;
+extern Level *g_level;
 extern Camera *g_camera;
 /**
  * @brief Destroy the Wall:: Wall object

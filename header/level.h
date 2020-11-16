@@ -1,5 +1,5 @@
-#ifndef __LEVELDATA_H
-#define __LEVELDATA_H
+#ifndef __LEVEL_H
+#define __LEVEL_H
 /* library */
 #include "dictionary.h"
 #include <vector>
@@ -9,7 +9,7 @@
  * @brief Global structure with all level related data
  * 
  */
-struct LevelData {
+struct Level {
     /* data */
     int rowOffset = 0, colOffset = 0;
     int gridWidth, gridHeight, pelletSize, score, pacmanCol, pacmanRow, gamemode = TWO_DIMENSIONAL, windowWidth, windowHeight;
@@ -18,7 +18,7 @@ struct LevelData {
     float gridElementWidth, gridElementHeight;
     bool magicEffect = false, scoreChanged = false, gameover = false;
     /* functionality */
-    LevelData();
+    Level();
     int getScore(const int index);
     bool inputData(const int index);
 };

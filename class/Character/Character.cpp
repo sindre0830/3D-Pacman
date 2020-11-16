@@ -9,7 +9,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/matrix_transform_2d.hpp>
 /* global data */
-extern LevelData *g_level;
+extern Level *g_level;
 extern Camera *g_camera;
 /**
  * @brief Destroy the Character:: Character object

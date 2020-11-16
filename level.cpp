@@ -8,7 +8,7 @@
  * @brief Construct a new Level Data:: Level Data object
  * 
  */
-LevelData::LevelData() {
+Level::Level() {
 	//set window size
 	windowHeight = 1024;
 	windowWidth = 1024;
@@ -19,7 +19,7 @@ LevelData::LevelData() {
  * @param index 
  * @return int 
  */
-int LevelData::getScore(const int index) {
+int Level::getScore(const int index) {
     std::string str = "0000";
     std::string buffer = std::to_string(score);
     //branch if buffer has less integers then 1000
@@ -42,7 +42,7 @@ int LevelData::getScore(const int index) {
  * @brief inputs data from level file.
  * 
  */
-bool LevelData::inputData(const int index) {
+bool Level::inputData(const int index) {
 	//set file pathing values
     std::string filePath = "level/";
     std::vector<std::string> possibleLevelsArr = {"level0", "level1"};

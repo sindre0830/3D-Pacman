@@ -8,7 +8,7 @@
 #include <glm/gtx/matrix_transform_2d.hpp>
 #include <glm/gtc/type_ptr.hpp>
 /* global data */
-extern LevelData *g_level;
+extern Level *g_level;
 /**
  * @brief Destroy the Scoreboard:: Scoreboard object
  * 

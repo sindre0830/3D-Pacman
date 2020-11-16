@@ -4,7 +4,7 @@
 #include "../../header/level.h"
 #include "../../header/functionality.h"
 /* global data */
-extern LevelData *g_level;
+extern Level *g_level;
 /**
  * @brief Destroy the Gameover:: Gameover object
  * 

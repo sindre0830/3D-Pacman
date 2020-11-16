@@ -6,7 +6,7 @@
 #include "../../../header/functionality.h"
 #include "../../../header/camera.h"
 /* global data */
-extern LevelData *g_level;
+extern Level *g_level;
 extern Camera *g_camera;
 /**
  * @brief Destroy the Pacman:: Pacman object

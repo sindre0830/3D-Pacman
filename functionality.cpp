@@ -9,7 +9,7 @@
 #include <iostream>
 #include <algorithm>
 /* global data */
-extern LevelData *g_level;
+extern Level *g_level;
 extern Camera *g_camera;
 /**
  * @brief Compile the vertex and fragment shader.

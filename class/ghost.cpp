@@ -1,8 +1,8 @@
 /* library */
-#include "Ghost.h"
-#include "../../../header/dictionary.h"
-#include "../../../header/level.h"
-#include "../../../header/functionality.h"
+#include "header/ghost.h"
+#include "../header/dictionary.h"
+#include "../header/level.h"
+#include "../header/functionality.h"
 #include <glm/gtc/type_ptr.hpp>
 /* global data */
 extern Level *g_level;

@@ -1,10 +1,10 @@
 /* library */
-#include "Pellet.h"
-#include "PelletShader.h"
-#include "../../header/dictionary.h"
-#include "../../header/level.h"
-#include "../../header/camera.h"
-#include "../../header/functionality.h"
+#include "header/pellet.h"
+#include "shader/pellet.h"
+#include "../header/dictionary.h"
+#include "../header/level.h"
+#include "../header/camera.h"
+#include "../header/functionality.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>

@@ -1,8 +1,8 @@
 #ifndef __PACMAN_H
 #define __PACMAN_H
 /* library */
-#include "../Character.h"
-#include "../../Pellet/Pellet.h"
+#include "character.h"
+#include "pellet.h"
 /**
  * Leaf class
  */

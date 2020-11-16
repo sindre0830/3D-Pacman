@@ -27,31 +27,31 @@ add_executable(${PROJECT_NAME}
 	header/functionality.h
 	functionality.cpp
 
-	class/Maze/Maze.h
-	class/Maze/MazeShader.h
-	class/Maze/Maze.cpp
+	class/header/score.h
+	class/shader/score.h
+	class/score.cpp
 
-	class/Pellet/Pellet.h
-	class/Pellet/PelletShader.h
-	class/Pellet/Pellet.cpp
+	class/header/maze.h
+	class/shader/maze.h
+	class/maze.cpp
 
-	class/GameState/GameState.h
-	class/GameState/GameStateShader.h
-	class/GameState/GameState.cpp
+	class/header/pellet.h
+	class/shader/pellet.h
+	class/pellet.cpp
 
-	class/Score/Score.h
-	class/Score/ScoreShader.h
-	class/Score/Score.cpp
+	class/header/gameState.h
+	class/shader/gameState.h
+	class/gameState.cpp
 
-	class/Character/Character.h
-	class/Character/CharacterShader.h
-	class/Character/Character.cpp
+	class/header/character.h
+	class/shader/character.h
+	class/character.cpp
 
-		class/Character/Ghost/Ghost.h
-		class/Character/Ghost/Ghost.cpp
+	class/header/ghost.h
+	class/ghost.cpp
 
-		class/Character/Pacman/Pacman.h
-		class/Character/Pacman/Pacman.cpp
+	class/header/pacman.h
+	class/pacman.cpp
 	)
 
 target_include_directories(${PROJECT_NAME}

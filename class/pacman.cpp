@@ -1,10 +1,10 @@
 /* library */
-#include "Pacman.h"
-#include "../CharacterShader.h"
-#include "../../../header/dictionary.h"
-#include "../../../header/level.h"
-#include "../../../header/functionality.h"
-#include "../../../header/camera.h"
+#include "header/pacman.h"
+#include "shader/character.h"
+#include "../header/dictionary.h"
+#include "../header/level.h"
+#include "../header/functionality.h"
+#include "../header/camera.h"
 #include <glm/gtc/type_ptr.hpp>
 /* global data */
 extern Level *g_level;

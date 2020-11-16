@@ -1,8 +1,8 @@
 /* library */
-#include "GameState.h"
-#include "GameStateShader.h"
-#include "../../header/level.h"
-#include "../../header/functionality.h"
+#include "header/gameState.h"
+#include "shader/gameState.h"
+#include "../header/level.h"
+#include "../header/functionality.h"
 /* global data */
 extern Level *g_level;
 /**

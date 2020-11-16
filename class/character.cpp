@@ -1,10 +1,10 @@
 /* library */
-#include "Character.h"
-#include "CharacterShader.h"
-#include "../../header/dictionary.h"
-#include "../../header/level.h"
-#include "../../header/camera.h"
-#include "../../header/functionality.h"
+#include "header/character.h"
+#include "shader/character.h"
+#include "../header/dictionary.h"
+#include "../header/level.h"
+#include "../header/camera.h"
+#include "../header/functionality.h"
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/matrix_transform_2d.hpp>

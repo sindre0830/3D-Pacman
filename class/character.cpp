@@ -60,9 +60,8 @@ void Character::draw() {
         } else if(direction == RIGHT) {
             modelDirection = 0.f;
         }
-        modelMatrix = glm::mat4(1.f);
         //set the initial position
-        modelMatrix = glm::translate(modelMatrix, initialTranslation);
+        modelMatrix = glm::translate(glm::mat4(1.f), initialTranslation);
         //move model
         modelMatrix = glm::translate(modelMatrix, glm::vec3(xPos, yPos, 0.f));
         //rotate the model to stand up
@@ -78,6 +77,66 @@ void Character::draw() {
         glm::vec3 lightDirection(sin(glfwGetTime()), -0.5f, cos(glfwGetTime()));
 		glUniform3fv(glGetUniformLocation(shaderProgram3D, "u_lightDirection"), 1, glm::value_ptr(lightDirection));
         glDrawArrays(GL_TRIANGLES, 6, modelSize);
+
+		//mirror scene top
+        modelMatrix = glm::translate(glm::mat4(1.f), initialTranslation);
+        //mirror
+		modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, 2.f + (g_level->colOffset * g_level->gridElementHeight), 0.f));
+        //move model
+        modelMatrix = glm::translate(modelMatrix, glm::vec3(xPos, yPos, 0.f));
+        //rotate the model to stand up
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(90.f), glm::vec3(1.f, 0.f, 0.f));
+        //rotate the character to face the correct direction
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(modelDirection), glm::vec3(0.f, 1.f, 0.f));
+        //scale down the model
+        modelMatrix = glm::scale(modelMatrix, glm::vec3(0.02f));
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+		glDrawArrays(GL_TRIANGLES, 6, modelSize);
+
+		//mirror scene left
+        modelMatrix = glm::translate(glm::mat4(1.f), initialTranslation);
+        //mirror
+		modelMatrix = glm::translate(modelMatrix, glm::vec3(-2.f + (g_level->rowOffset * g_level->gridElementWidth), 0.f, 0.f));
+        //move model
+        modelMatrix = glm::translate(modelMatrix, glm::vec3(xPos, yPos, 0.f));
+        //rotate the model to stand up
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(90.f), glm::vec3(1.f, 0.f, 0.f));
+        //rotate the character to face the correct direction
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(modelDirection), glm::vec3(0.f, 1.f, 0.f));
+        //scale down the model
+        modelMatrix = glm::scale(modelMatrix, glm::vec3(0.02f));
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+		glDrawArrays(GL_TRIANGLES, 6, modelSize);
+
+		//mirror scene bottom
+        modelMatrix = glm::translate(glm::mat4(1.f), initialTranslation);
+        //mirror
+		modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, -2.f - (g_level->colOffset * g_level->gridElementHeight), 0.f));
+        //move model
+        modelMatrix = glm::translate(modelMatrix, glm::vec3(xPos, yPos, 0.f));
+        //rotate the model to stand up
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(90.f), glm::vec3(1.f, 0.f, 0.f));
+        //rotate the character to face the correct direction
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(modelDirection), glm::vec3(0.f, 1.f, 0.f));
+        //scale down the model
+        modelMatrix = glm::scale(modelMatrix, glm::vec3(0.02f));
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+		glDrawArrays(GL_TRIANGLES, 6, modelSize);
+
+		//mirror scene right
+        modelMatrix = glm::translate(glm::mat4(1.f), initialTranslation);
+        //mirror
+		modelMatrix = glm::translate(modelMatrix, glm::vec3(2.f - (g_level->rowOffset * g_level->gridElementWidth), 0.f, 0.f));
+        //move model
+        modelMatrix = glm::translate(modelMatrix, glm::vec3(xPos, yPos, 0.f));
+        //rotate the model to stand up
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(90.f), glm::vec3(1.f, 0.f, 0.f));
+        //rotate the character to face the correct direction
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(modelDirection), glm::vec3(0.f, 1.f, 0.f));
+        //scale down the model
+        modelMatrix = glm::scale(modelMatrix, glm::vec3(0.02f));
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+		glDrawArrays(GL_TRIANGLES, 6, modelSize);
     }
 }
 /**

@@ -158,7 +158,7 @@ int main() {
 		}
 	}
 	//construct array of ghost classes
-	std::vector<Ghost*> ghostArr(4, nullptr);
+	std::vector<Ghost*> ghostArr(1, nullptr);
 	for(int i = 0; i < ghostArr.size(); i++) {
 		//branch if there are too many ghosts compared to the level and kill the application
 		if(ghostArr.size() > possibleStartingPos.size()) {

@@ -64,7 +64,7 @@ void Maze::draw() {
 	if(g_level->gamemode == TWO_DIMENSIONAL) {
 		//draw walls
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram2D, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(glm::mat4(1.f)));
-		glDrawElements(GL_TRIANGLES, (6 * wallSize), GL_UNSIGNED_INT, (const void*)0);
+		glDrawElements(GL_TRIANGLES, (6 * wallSize), GL_UNSIGNED_INT, (const void*)(0));
 		//draw corners
 		glBindVertexArray(cornerVAO);
 		glDrawArrays(GL_TRIANGLES, 0, (3 * cornerSize));
@@ -73,7 +73,7 @@ void Maze::draw() {
 		glm::mat4 modelMatrix = getMinimapModelMatrix();
 		//draw walls
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram2D, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
-		glDrawElements(GL_TRIANGLES, (6 * wallSize), GL_UNSIGNED_INT, (const void*)0);
+		glDrawElements(GL_TRIANGLES, (6 * wallSize), GL_UNSIGNED_INT, (const void*)(0));
 		//draw corners
 		glBindVertexArray(cornerVAO);
 		glDrawArrays(GL_TRIANGLES, 0, (3 * cornerSize));
@@ -82,10 +82,30 @@ void Maze::draw() {
 		glBindVertexArray(modelVAO);
 		//set texture
 		glUniform1i(glGetUniformLocation(shaderProgram3D, "u_texture"), WALL_TEXTURE);
-		//set collection matrix
+		//draw main scene
 		glm::mat4 collectionMatrix = g_camera->projectionMatrix * g_camera->viewMatrix;
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(collectionMatrix));
-		glDrawElements(GL_TRIANGLES, (6 * wallSize3D), GL_UNSIGNED_INT, (const void*)0);
+		glDrawElements(GL_TRIANGLES, (6 * wallSize3D), GL_UNSIGNED_INT, (const void*)(0));
+		//mirror scene top
+		modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(0.f, 2.f + (g_level->colOffset * g_level->gridElementHeight), 0.f));
+		collectionMatrix = g_camera->projectionMatrix * g_camera->viewMatrix * modelMatrix;
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(collectionMatrix));
+		glDrawElements(GL_TRIANGLES, (6 * wallSize3D), GL_UNSIGNED_INT, (const void*)(0));
+		//mirror scene left
+		modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(-2.f + (g_level->rowOffset * g_level->gridElementWidth), 0.f, 0.f));
+		collectionMatrix = g_camera->projectionMatrix * g_camera->viewMatrix * modelMatrix;
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(collectionMatrix));
+		glDrawElements(GL_TRIANGLES, (6 * wallSize3D), GL_UNSIGNED_INT, (const void*)(0));
+		//mirror scene bottom
+		modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(0.f, -2.f - (g_level->colOffset * g_level->gridElementHeight), 0.f));
+		collectionMatrix = g_camera->projectionMatrix * g_camera->viewMatrix * modelMatrix;
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(collectionMatrix));
+		glDrawElements(GL_TRIANGLES, (6 * wallSize3D), GL_UNSIGNED_INT, (const void*)(0));
+		//mirror scene right
+		modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(2.f - (g_level->rowOffset * g_level->gridElementWidth), 0.f, 0.f));
+		collectionMatrix = g_camera->projectionMatrix * g_camera->viewMatrix * modelMatrix;
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(collectionMatrix));
+		glDrawElements(GL_TRIANGLES, (6 * wallSize3D), GL_UNSIGNED_INT, (const void*)(0));
 	}
 }
 /**

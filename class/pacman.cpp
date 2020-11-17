@@ -108,6 +108,7 @@ void Pacman::mov(Pellet* pellet) {
 				} else if(g_level->grid[g_level->pacmanCol][g_level->pacmanRow] == PELLET) eat(pellet);
 			} else if(!pathUP) {
 				changeDirection = true;
+				g_camera->changePosition(camX, camY);
 			} else g_camera->changePosition(camX, camY + g_level->gridElementHeight / (float)(speed) * (counter));
 			break;
 		case LEFT:
@@ -125,6 +126,7 @@ void Pacman::mov(Pellet* pellet) {
 				} else if(g_level->grid[g_level->pacmanCol][g_level->pacmanRow] == PELLET) eat(pellet);
 			} else if(!pathLeft) {
 				changeDirection = true;
+				g_camera->changePosition(camX, camY);
 			} else g_camera->changePosition(camX - g_level->gridElementWidth / (float)(speed) * counter, camY);	
 			break;
 		case DOWN:
@@ -142,6 +144,7 @@ void Pacman::mov(Pellet* pellet) {
 				} else if(g_level->grid[g_level->pacmanCol][g_level->pacmanRow] == PELLET) eat(pellet);
 			} else if(!pathDown) {
 				changeDirection = true;
+				g_camera->changePosition(camX, camY);
 			} else g_camera->changePosition(camX, camY - g_level->gridElementHeight / (float)(speed) * counter);
 			break;
 		case RIGHT:
@@ -159,6 +162,7 @@ void Pacman::mov(Pellet* pellet) {
 				} else if(g_level->grid[g_level->pacmanCol][g_level->pacmanRow] == PELLET) eat(pellet);
 			} else if(!pathRight) {
 				changeDirection = true;
+				g_camera->changePosition(camX, camY);
 			} else g_camera->changePosition(camX + g_level->gridElementWidth / (float)(speed) * counter, camY);
 			break;
 	}

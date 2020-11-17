@@ -17,9 +17,9 @@ class Character {
         int counter = 0, speed = 20, modelSize = 0;
         float xPos = 0.f, yPos = 0.f, yTex = 0.f;
         float camX = 0.f, camY = 0.f, modelDirection = 0.f;
-        glm::mat4 modelMatrix;
         glm::vec3 translation, initialTranslation;
         /* protected functionality */
+        glm::mat4 getModelMatrix(const float xMirror, const float yMirror);
         std::vector<GLfloat> genCoordinates(const int row, const int col);
         void translatePos(const float xPos, const float yPos);
         void translateTex(const float xPos, const float yPos);

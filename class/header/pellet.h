@@ -17,6 +17,7 @@ class Pellet {
         std::map<std::pair<int, int>, int> bufferPos;
         const int pelletByteSize = ((6 * 4) * 5) * sizeof(GLfloat);
         /* private functionality */
+        void drawMirror(const float xMirror, const float yMirror);
         std::vector<GLfloat> genCoordinates();
     public:
         /* public functionality */

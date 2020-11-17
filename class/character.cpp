@@ -74,38 +74,33 @@ void Character::draw() {
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_projectionMatrix"), 1, GL_FALSE, glm::value_ptr(g_camera->projectionMatrix));
         glDrawArrays(GL_TRIANGLES, 6, modelSize);
 		//mirror scene top
-        modelMatrix = getModelMatrix(0.f, 2.f + (g_level->colOffset * g_level->gridElementHeight));
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
-		glDrawArrays(GL_TRIANGLES, 6, modelSize);
+		drawMirror(0.f, 2.f + (g_level->colOffset * g_level->gridElementHeight));
 		//mirror scene left
-        modelMatrix = getModelMatrix(-2.f + (g_level->rowOffset * g_level->gridElementWidth), 0.f);
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
-		glDrawArrays(GL_TRIANGLES, 6, modelSize);
+		drawMirror(-2.f + (g_level->rowOffset * g_level->gridElementWidth), 0.f);
 		//mirror scene bottom
-        modelMatrix = getModelMatrix(0.f, -2.f - (g_level->colOffset * g_level->gridElementHeight));
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
-		glDrawArrays(GL_TRIANGLES, 6, modelSize);
+		drawMirror(0.f, -2.f - (g_level->colOffset * g_level->gridElementHeight));
 		//mirror scene right
-        modelMatrix = getModelMatrix(2.f - (g_level->rowOffset * g_level->gridElementWidth), 0.f);
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
-		glDrawArrays(GL_TRIANGLES, 6, modelSize);
+		drawMirror(2.f - (g_level->rowOffset * g_level->gridElementWidth), 0.f);
 		//mirror scene top left
-		modelMatrix = getModelMatrix(-2.f + (g_level->rowOffset * g_level->gridElementWidth), 2.f + (g_level->colOffset * g_level->gridElementHeight));
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
-		glDrawArrays(GL_TRIANGLES, 6, modelSize);
+		drawMirror(-2.f + (g_level->rowOffset * g_level->gridElementWidth), 2.f + (g_level->colOffset * g_level->gridElementHeight));
 		//mirror scene bottom left
-		modelMatrix = getModelMatrix(-2.f + (g_level->rowOffset * g_level->gridElementWidth), -2.f - (g_level->colOffset * g_level->gridElementHeight));
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
-		glDrawArrays(GL_TRIANGLES, 6, modelSize);
+		drawMirror(-2.f + (g_level->rowOffset * g_level->gridElementWidth), -2.f - (g_level->colOffset * g_level->gridElementHeight));
 		//mirror scene bottom right
-		modelMatrix = getModelMatrix(2.f - (g_level->rowOffset * g_level->gridElementWidth), -2.f - (g_level->colOffset * g_level->gridElementHeight));
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
-		glDrawArrays(GL_TRIANGLES, 6, modelSize);
+		drawMirror(2.f - (g_level->rowOffset * g_level->gridElementWidth), -2.f - (g_level->colOffset * g_level->gridElementHeight));
 		//mirror scene top right
-		modelMatrix = getModelMatrix(2.f - (g_level->rowOffset * g_level->gridElementWidth), 2.f + (g_level->colOffset * g_level->gridElementHeight));
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
-		glDrawArrays(GL_TRIANGLES, 6, modelSize);
+		drawMirror(2.f - (g_level->rowOffset * g_level->gridElementWidth), 2.f + (g_level->colOffset * g_level->gridElementHeight));
     }
+}
+/**
+ * @brief Draw scene translated to give an infinite map effect.
+ * 
+ * @param xMirror 
+ * @param yMirror 
+ */
+void Character::drawMirror(const float xMirror, const float yMirror) {
+	glm::mat4 modelMatrix = getModelMatrix(xMirror, yMirror);
+    glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+    glDrawArrays(GL_TRIANGLES, 6, modelSize);
 }
 /**
  * @brief Create a model matrix for 3D space.

@@ -19,6 +19,7 @@ class Character {
         float camX = 0.f, camY = 0.f, modelDirection = 0.f;
         glm::vec3 translation, initialTranslation;
         /* protected functionality */
+        void drawMirror(const float xMirror, const float yMirror);
         glm::mat4 getModelMatrix(const float xMirror, const float yMirror);
         std::vector<GLfloat> genCoordinates(const int row, const int col);
         void translatePos(const float xPos, const float yPos);

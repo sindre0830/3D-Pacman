@@ -35,7 +35,6 @@ target_include_directories(
 target_include_directories(
 	${PROJECT_NAME} PRIVATE
 	${CMAKE_SOURCE_DIR}/header
-	${CMAKE_SOURCE_DIR}/header
 )
 
 target_compile_definitions(

@@ -155,7 +155,7 @@ int main() {
 		}
 	}
 	//construct array of ghost classes
-	std::vector<Ghost*> ghostArr(1, nullptr);
+	std::vector<Ghost*> ghostArr(4, nullptr);
 	for(int i = 0; i < ghostArr.size(); i++) {
 		//branch if there are too many ghosts compared to the level and kill the application
 		if(ghostArr.size() > possibleStartingPos.size()) {
@@ -180,8 +180,6 @@ int main() {
 		nowTime = glfwGetTime();
 		deltaTime += (nowTime - lastTime) / limitFPS;
 		lastTime = nowTime;
-		//check if user wants to change gamemode
-		if(!g_level->gameover) changeDimension(window);
 		//branch if world is in 3D space
 		if(g_level->gamemode != TWO_DIMENSIONAL) {
 			//enable depth to display 3D space
@@ -193,6 +191,8 @@ int main() {
 		}
 		//processes all pending events
 		glfwPollEvents();
+		//check if user wants to change gamemode
+		if(!g_level->gameover) changeDimension(window);
 		//for every frame reset background color buffer and depth buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//draw maze

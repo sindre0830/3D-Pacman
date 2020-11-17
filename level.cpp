@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <string>
 /**
- * @brief Converts score to string and makes sure it has as many characters as there are numbers in scoreboard
+ * @brief Converts score to string and makes sure it has as many characters as there are numbers in scoreboard.
  * 
  * @param index 
  * @return int 
@@ -31,7 +31,7 @@ int Level::getScore(const int index) {
     return (int)(str[index]) - '0';
 }
 /**
- * @brief inputs data from level file.
+ * @brief Inputs data from level file.
  * 
  */
 bool Level::inputData(const int index) {

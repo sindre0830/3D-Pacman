@@ -10,12 +10,12 @@
 extern Level *g_level;
 extern Camera *g_camera;
 /**
- * @brief Destroy the Pacman:: Pacman object
+ * @brief Destroy the Pacman:: Pacman object.
  * 
  */
 Pacman::~Pacman() {}
 /**
- * @brief Construct a new Pacman:: Pacman object
+ * @brief Construct a new Pacman:: Pacman object.
  * 
  */
 Pacman::Pacman() {
@@ -62,7 +62,7 @@ Pacman::Pacman() {
 	g_camera->changePosition(camX, camY);
 }
 /**
- * @brief Get starting position in the grid
+ * @brief Get starting position in the grid.
  * 
  */
 void Pacman::getPosition() {
@@ -77,7 +77,7 @@ void Pacman::getPosition() {
 	}
 }
 /**
- * @brief Move Pacman to the current direction if possible
+ * @brief Move Pacman according to the current direction if possible.
  * 
  * @param shader
  */
@@ -166,7 +166,7 @@ void Pacman::mov(Pellet* pellet) {
 	animate();
 }
 /**
- * @brief Animate pacman
+ * @brief Animate pacman.
  * 
  */
 void Pacman::animate() {
@@ -184,7 +184,7 @@ void Pacman::animate() {
 	}
 }
 /**
- * @brief Update score and hide the pellet
+ * @brief Update score and hide the pellet.
  * 
  * @param pellet 
  */
@@ -200,7 +200,7 @@ void Pacman::eat(Pellet* pellet) {
 	if(g_level->score == g_level->pelletSize) g_level->gameover = true;
 }
 /**
- * @brief Change direction according to user input
+ * @brief Change direction according to user input.
  * 
  * @param window 
  */
@@ -242,7 +242,7 @@ void Pacman::inputDirection(GLFWwindow *window) {
 				yTex = 0.25f;
 				translateTex(0.f, yTex);
 			}
-		} else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+		} else if(glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
 			if(g_level->gamemode == FIRST_PERSON) {
 				if(direction == UP && pathDown) {
 					direction = DOWN;
@@ -266,7 +266,7 @@ void Pacman::inputDirection(GLFWwindow *window) {
 				yTex = 0.75f;
 				translateTex(0.f, yTex);
 			}
-		} else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+		} else if(glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
 			if(g_level->gamemode == FIRST_PERSON) {
 				if(direction == UP && pathRight) {
 					direction = RIGHT;
@@ -295,7 +295,7 @@ void Pacman::inputDirection(GLFWwindow *window) {
 	g_camera->changeDirection(direction);
 }
 /**
- * @brief update camera position values
+ * @brief Update camera position values.
  * 
  */
 void Pacman::updateCameraPosition() {

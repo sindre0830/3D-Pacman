@@ -10,7 +10,7 @@
 /* global data */
 extern Level *g_level;
 /**
- * @brief Destroy the Scoreboard:: Scoreboard object
+ * @brief Destroy the Score:: Score object.
  * 
  */
 Score::~Score() {
@@ -18,7 +18,7 @@ Score::~Score() {
     destroyVAO(VAO);
 }
 /**
- * @brief Construct a new Scoreboard:: Scoreboard object
+ * @brief Construct a new Score:: Score object.
  * 
  * @param col 
  * @param row 
@@ -36,7 +36,7 @@ Score::Score(const int col, const int row) {
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (const void*)(2 * sizeof(GLfloat)));
 }
 /**
- * @brief Draw object by installing the shader program and binding the VAO and texture to the current rendering state
+ * @brief Draw object by activating the shader program and binding the VAO and uniforms to the current rendering state.
  * 
  */
 void Score::draw() {
@@ -46,7 +46,7 @@ void Score::draw() {
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
 }
 /**
- * @brief Generate array of grid positions and texture coordinates
+ * @brief Generate array of grid positions and texture coordinates.
  * 
  * @param col 
  * @param row 
@@ -75,7 +75,7 @@ std::vector<GLfloat> Score::genCoordinates(const int col, const int row) {
     return arr;
 }
 /**
- * @brief Update number if it is different
+ * @brief Update number if it is different.
  * 
  * @param num 
  */
@@ -86,7 +86,7 @@ void Score::update(const int num) {
     lastNumber = num;
 }
 /**
- * @brief Translate the texture on the x-axis
+ * @brief Translate the texture on the x-axis.
  * 
  * @param xPos 
  */

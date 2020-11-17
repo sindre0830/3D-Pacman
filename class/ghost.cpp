@@ -7,12 +7,12 @@
 /* global data */
 extern Level *g_level;
 /**
- * @brief Destroy the Ghost:: Ghost object
+ * @brief Destroy the Ghost:: Ghost object.
  * 
  */
 Ghost::~Ghost() {}
 /**
- * @brief Construct a new Ghost:: Ghost object
+ * @brief Construct a new Ghost:: Ghost object.
  * 
  * @param row 
  * @param col 
@@ -43,7 +43,7 @@ Ghost::Ghost(const int row, const int col) {
 	);
 }
 /**
- * @brief Finds aggresive path to Pacman unless magic effect is active
+ * @brief Finds aggresive path to Pacman unless magic effect is active.
  * 
  */
 void Ghost::pathfinding() {
@@ -62,7 +62,7 @@ void Ghost::pathfinding() {
 	} else getRandomPath();
 }
 /**
- * @brief Finds random path
+ * @brief Finds random path.
  * 
  */
 void Ghost::getRandomPath() {
@@ -80,7 +80,7 @@ void Ghost::getRandomPath() {
 	direction = possiblePaths[index];
 }
 /**
- * @brief Move ghost to the current direction until collision
+ * @brief Move ghost according to the current direction if possible.
  * 
  * @param shader
  */
@@ -145,7 +145,7 @@ void Ghost::mov() {
 	animate();
 }
 /**
- * @brief Check if ghost has collided with pacman and end the game
+ * @brief Check if ghost has collided with pacman and end the game.
  * 
  * @param row 
  * @param col 
@@ -160,7 +160,7 @@ void Ghost::checkCoalition(const int row, const int col) {
 	}
 }
 /**
- * @brief Animate ghost
+ * @brief Animate ghost.
  * 
  */
 void Ghost::animate() {
@@ -177,7 +177,7 @@ void Ghost::animate() {
 	}
 }
 /**
- * @brief Change color if magic effect is active
+ * @brief Change color if magic effect is active.
  * 
  * @param flag 
  */

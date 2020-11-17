@@ -15,7 +15,7 @@
 extern Level *g_level;
 extern Camera *g_camera;
 /**
- * @brief Create the minimap model matrix
+ * @brief Create the minimap model matrix.
  * 
  * @return glm::mat4 
  */
@@ -27,7 +27,7 @@ glm::mat4 getMinimapModelMatrix() {
     return modelMatrix;
 }
 /**
- * @brief Change gamemode according to user input
+ * @brief Change gamemode according to user input.
  * 
  * @param window 
  */
@@ -41,7 +41,7 @@ void changeDimension(GLFWwindow* window) {
 	}
 }
 /**
- * @brief Generate random index and set position
+ * @brief Generate random index and set position.
  * 
  * @param arr 
  * @param row 
@@ -57,7 +57,7 @@ void getGhostPos(std::vector<std::vector<int>> &arr, int &row, int &col) {
 	arr.erase(arr.begin() + index);
 }
 /**
- * @brief Generate random integer
+ * @brief Generate random integer between two numbers.
  * 
  * @param min 
  * @param max 
@@ -73,7 +73,7 @@ int randomIndex(const int min, const int max) {
 	return uni(rng);
 }
 /**
- * @brief Generate VAO (rectangle shape)
+ * @brief Generate VAO for rectangles.
  * 
  * @return GLuint 
  */
@@ -84,7 +84,7 @@ GLuint genObject(const std::vector<GLfloat> &arr, const int size) {
     return createVAO(arr, arrIndices);
 }
 /**
- * @brief Generate indices for rectangle shape
+ * @brief Generate indices for rectangles.
  * 
  * @param size 
  * @return std::vector<GLuint> 

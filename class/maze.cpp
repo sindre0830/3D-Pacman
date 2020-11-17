@@ -11,7 +11,7 @@
 extern Level *g_level;
 extern Camera *g_camera;
 /**
- * @brief Destroy the Wall:: Wall object
+ * @brief Destroy the Maze:: Maze object.
  * 
  */
 Maze::~Maze() {
@@ -22,7 +22,7 @@ Maze::~Maze() {
 	destroyVAO(modelVAO);
 }
 /**
- * @brief Construct a new Wall:: Wall object
+ * @brief Construct a new Maze:: Maze object.
  * 
  */
 Maze::Maze() {
@@ -55,7 +55,7 @@ Maze::Maze() {
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (const void*)(3 * sizeof(GLfloat)));
 }
 /**
- * @brief Draw object by installing the shader program and binding the VAO to the current rendering state
+ * @brief Draw object by activating the shader program and binding the VAO and uniforms to the current rendering state.
  * 
  */
 void Maze::draw() {
@@ -109,7 +109,7 @@ void Maze::draw() {
 	}
 }
 /**
- * @brief Generate buffer array (x, y) * 4
+ * @brief Generate buffer array (x, y, z, r, g, b) * 4.
  * 
  * @param target 
  * @return std::vector<GLfloat> 
@@ -203,7 +203,7 @@ std::vector<GLfloat> Maze::genWallCoordinates() {
 	return arr;
 }
 /**
- * @brief Generate buffer array (x, y) * 3
+ * @brief Generate buffer array (x, y, z, r, g, b) * 3.
  * 
  * @param target 
  * @return std::vector<GLfloat> 
@@ -298,7 +298,7 @@ GLuint Maze::genCornerVAO() {
 	return vao;
 }
 /**
- * @brief Generate buffer array (x, y) * 4
+ * @brief Generate buffer array (x, y, z, xTex, yTex) * 4.
  * 
  * @param target 
  * @return std::vector<GLfloat> 

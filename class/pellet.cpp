@@ -12,7 +12,7 @@
 extern Level *g_level;
 extern Camera *g_camera;
 /**
- * @brief Destroy the Pellet:: Pellet object
+ * @brief Destroy the Pellet:: Pellet object.
  * 
  */
 Pellet::~Pellet() {
@@ -20,7 +20,7 @@ Pellet::~Pellet() {
     destroyVAO(VAO);
 }
 /**
- * @brief Construct a new Pellet:: Pellet object
+ * @brief Construct a new Pellet:: Pellet object.
  * 
  */
 Pellet::Pellet() {
@@ -46,7 +46,7 @@ Pellet::Pellet() {
 	}
 }
 /**
- * @brief Draw object by installing the shader program and binding the VAO to the current rendering state
+ * @brief Draw object by activating the shader program and binding the VAO and uniforms to the current rendering state.
  * 
  */
 void Pellet::draw() {
@@ -91,7 +91,7 @@ void Pellet::draw() {
 	}
 }
 /**
- * @brief Hide pellet by modifying the Z value in the buffer array
+ * @brief Hide pellet by modifying the Z value in the buffer array.
  * 
  * @param y 
  * @param x 
@@ -103,7 +103,7 @@ void Pellet::hidePellet(const int col, const int row) {
 	}
 }
 /**
- * @brief Generate buffer array ((x, y, z, r, g, b) * 4) * 5
+ * @brief Generate buffer array ((x, y, z, r, g, b) * 4) * 5.
  * 
  * @param target 
  * @return std::vector<GLfloat> 

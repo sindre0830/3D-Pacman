@@ -6,7 +6,7 @@
 /* global data */
 extern Level *g_level;
 /**
- * @brief Destroy the Gameover:: Gameover object
+ * @brief Destroy the Game State:: Game State object.
  * 
  */
 GameState::~GameState() {
@@ -14,7 +14,7 @@ GameState::~GameState() {
     destroyVAO(VAO);
 }
 /**
- * @brief Construct a new Gameover:: Gameover object
+ * @brief Construct a new Game State:: Game State object.
  * 
  */
 GameState::GameState() {
@@ -30,7 +30,7 @@ GameState::GameState() {
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (const void*)(2 * sizeof(GLfloat)));
 }
 /**
- * @brief Draw object by installing the shader program and binding the VAO and texture to the current rendering state
+ * @brief Draw object by activating the shader program and binding the VAO and uniforms to the current rendering state.
  * 
  */
 void GameState::draw(const int texIndex) {
@@ -40,7 +40,7 @@ void GameState::draw(const int texIndex) {
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
 }
 /**
- * @brief Generate array of grid positions and texture coordinates
+ * @brief Generate array of grid positions and texture coordinates.
  * 
  * @return std::vector<GLfloat> 
  */

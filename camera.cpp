@@ -3,11 +3,19 @@
 #include "dictionary.h"
 #include "level.h"
 #include <glm/gtc/matrix_transform.hpp>
-
+/* global data */
 extern Level *g_level;
-
+/**
+ * @brief Destroy the Camera:: Camera object.
+ * 
+ */
 Camera::~Camera() {}
-
+/**
+ * @brief Construct a new Camera:: Camera object.
+ * 
+ * @param width 
+ * @param height 
+ */
 Camera::Camera(const int width, const int height) {
 	//set projection matrix
 	projectionMatrix = glm::perspective(glm::radians(60.f), static_cast<float>(width) / height, 0.01f, 100.f);
@@ -20,7 +28,12 @@ Camera::Camera(const int width, const int height) {
 	//set view matrix
 	viewMatrix = glm::lookAt(camPos, camPos + camFront, camUp);
 }
-
+/**
+ * @brief Change camera position according to the main character.
+ * 
+ * @param x 
+ * @param y 
+ */
 void Camera::changePosition(const float x, const float y) {
 	//set z value
 	float z = 0.02f;
@@ -31,7 +44,11 @@ void Camera::changePosition(const float x, const float y) {
 	//update view matrix
 	viewMatrix = glm::lookAt(camPos, camPos + camFront, camUp);
 }
-
+/**
+ * @brief Change direction accroding to the main character.
+ * 
+ * @param pacmanDirection 
+ */
 void Camera::changeDirection(const int pacmanDirection) {
 	//set direction value
 	const int direction = pacmanDirection;

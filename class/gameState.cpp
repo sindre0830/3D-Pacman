@@ -47,17 +47,13 @@ void GameState::draw(const int texIndex) {
 std::vector<GLfloat> GameState::genCoordinates() {
     std::vector<GLfloat> arr = {
         //top left grid and texture coordinate
-        -0.5f, 0.5f,
-        0.f, 1.f,
+        -0.5f, 0.5f, 0.f, 1.f,
         //bottom left grid and texture coordinate
-        -0.5f, -0.5f,
-        0.f, 0.f,
+        -0.5f, -0.5f, 0.f, 0.f,
         //bottom right grid and texture coordinate
-        0.5f, -0.5f,
-        1.f, 0.f,
+        0.5f, -0.5f, 1.f, 0.f,
         //top right grid and texture coordinate
-        0.5f, 0.5f,
-        1.f, 1.f
+        0.5f, 0.5f, 1.f, 1.f
     };
     return arr;
 }

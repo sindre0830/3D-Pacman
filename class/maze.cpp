@@ -103,6 +103,7 @@ void Maze::draw() {
 		//mirror scene top right
 		drawMirror(2.f - (g_level->rowOffset * g_level->gridElementWidth), 2.f + (g_level->colOffset * g_level->gridElementHeight));
 	}
+    glUseProgram(0);
 }
 /**
  * @brief Draw scene translated to give an infinite map effect.

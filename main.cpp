@@ -8,7 +8,7 @@
  *
  * @date 2020/11/17
  */
- /* library */
+/* library */
 #include "dictionary.h"
 #include "level.h"
 #include "camera.h"
@@ -95,7 +95,7 @@ int main() {
 			glDeleteTextures(1, &menuTex);
 			//end program if 'ESC' key is pressed or the user has closed the window
 			return EXIT_SUCCESS;
-			//branch if user enters a relevant level index
+		//branch if user enters a relevant level index
 		} else if(glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS) {
 			levelIndex = 0;
 			break;
@@ -184,14 +184,11 @@ int main() {
 		if(g_level->gamemode != TWO_DIMENSIONAL) {
 			//enable depth to display 3D space
 			glEnable(GL_DEPTH_TEST);
-		//branch if world is in 2D space
-		} else {
-			//disable depth so textures in 2D map are transparent
-			glDisable(GL_DEPTH_TEST);
-		}
+		//branch if world is in 2D space and disable depth so textures in 2D map are transparent
+		} else glDisable(GL_DEPTH_TEST);
 		//processes all pending events
 		glfwPollEvents();
-		//check if user wants to change gamemode
+		//branch if the game isn't over and check if the user wants to change gamemode
 		if(!g_level->gameover) changeDimension(window);
 		//for every frame reset background color buffer and depth buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -211,16 +208,17 @@ int main() {
 		pacman.draw();
 		//branch if game isn't over
 		if(!g_level->gameover && deltaTime >= 1.0) {
-			//translate pacman
-			pacman.mov(&pellet);
 			//check for user input and change direction accordingly
 			pacman.inputDirection(window);
+			//translate pacman
+			pacman.mov(&pellet);
 		}
 		//draw ghosts
 		bool noActiveGhosts = true;
 		for(int i = 0; i < ghostArr.size(); i++) {
 			//branch if ghost isn't dead
 			if(!ghostArr[i]->dead) {
+				//set flag to false so program knows there are active ghosts in game
 				noActiveGhosts = false;
 				ghostArr[i]->draw();
 				//branch if game isn't over and translate the ghost

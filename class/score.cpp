@@ -44,6 +44,7 @@ void Score::draw() {
     glBindVertexArray(VAO);
     glUniform1i(glGetUniformLocation(shaderProgram, "u_texture"), NUMBER_TEXTURE);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const void*)0);
+    glUseProgram(0);
 }
 /**
  * @brief Generate array of grid positions and texture coordinates.

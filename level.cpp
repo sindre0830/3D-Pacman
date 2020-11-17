@@ -1,10 +1,8 @@
 /* library */
 #include "level.h"
 #include "dictionary.h"
-#include <iostream>
-#include <fstream>
-#include <algorithm>
 #include <string>
+#include <fstream>
 /**
  * @brief Converts score to string and makes sure it has as many characters as there are numbers in scoreboard.
  * 
@@ -43,7 +41,7 @@ bool Level::inputData(const int index) {
 	//read from file
     std::ifstream file;
 	file.open(filePath);
-    //branch if file is open else end program
+    //branch if program was able to open the file
 	if(file) {
 		int buffer;
         //input grid width from file
@@ -72,7 +70,7 @@ bool Level::inputData(const int index) {
 				file >> buffer;
                 //branch if element is a pellet
 				if(buffer == PELLET) {
-					//branch if position is a teleportation entrence else increase pellet size
+					//branch if position is a teleportation entrence
 					if(i == 0 || i == gridHeight - 1 || j == 0 || j == gridWidth - 1) {
                         //set element to empty
 						buffer = EMPTY;

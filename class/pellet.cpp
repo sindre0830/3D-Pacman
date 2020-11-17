@@ -85,6 +85,7 @@ void Pellet::draw() {
 		//mirror scene top right
 		drawMirror(2.f - (g_level->rowOffset * g_level->gridElementWidth), 2.f + (g_level->colOffset * g_level->gridElementHeight));
 	}
+    glUseProgram(0);
 }
 /**
  * @brief Draw scene translated to give an infinite map effect.
@@ -133,10 +134,10 @@ std::vector<GLfloat> Pellet::genCoordinates() {
 	//buffer array
 	std::vector<GLfloat> arr;
 	//fills in array with coordinates
-	for (int i = 0; i < g_level->gridHeight; i++) {
-		for (int j = 0; j < g_level->gridWidth; j++) {
+	for(int i = 0; i < g_level->gridHeight; i++) {
+		for(int j = 0; j < g_level->gridWidth; j++) {
 			//branch if target is pellet and insert data or if target is a magic pellet and make it twice as big
-			if (g_level->grid[i][j] == PELLET) {
+			if(g_level->grid[i][j] == PELLET) {
 				arr.insert(arr.end(), {
 					g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][X] + xResize, g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][Y] - yRotate, -z,
 					pelletColor.x, pelletColor.y, pelletColor.z,
@@ -187,7 +188,7 @@ std::vector<GLfloat> Pellet::genCoordinates() {
 					g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][X] - xRotate, g_level->gridElement[std::make_pair(i, j)][TOP_RIGHT][Y] - yResize, z,
 					pelletColor.x, pelletColor.y, pelletColor.z
 				});
-			} else if (g_level->grid[i][j] == MAGICPELLET) {
+			} else if(g_level->grid[i][j] == MAGICPELLET) {
 				arr.insert(arr.end(), {
 					g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][X] + (xResize * 2.f), g_level->gridElement[std::make_pair(i, j)][TOP_LEFT][Y] - (yResize * 2.f), -z * 2.f,
 					magicPelletColor.x, magicPelletColor.y, magicPelletColor.z,

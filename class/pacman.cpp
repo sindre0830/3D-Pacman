@@ -22,13 +22,13 @@ Pacman::Pacman() {
 	//set starting postions
     getPosition();
 	//set starting direction
-	if (g_level->pacmanCol == g_level->colOffset / 2) {
+	if(g_level->pacmanCol == g_level->colOffset / 2) {
 		yTex = 0.5f;
 		direction = UP;
-	} else if (g_level->pacmanRow == g_level->gridWidth - (g_level->rowOffset / 2) - 1) {
+	} else if(g_level->pacmanRow == g_level->gridWidth - (g_level->rowOffset / 2) - 1) {
 		yTex = 0.25f;
 		direction = LEFT;
-	} else if (g_level->pacmanCol == g_level->gridHeight - (g_level->colOffset / 2) - 1) {
+	} else if(g_level->pacmanCol == g_level->gridHeight - (g_level->colOffset / 2) - 1) {
 		yTex = 0.75f;
 		direction = DOWN;
 	} else if(g_level->pacmanRow == g_level->rowOffset / 2) {
@@ -66,9 +66,9 @@ Pacman::Pacman() {
  * 
  */
 void Pacman::getPosition() {
-	for (int i = 0; i < g_level->gridHeight; i++) {
-		for (int j = 0; j < g_level->gridWidth; j++) {
-			if (g_level->grid[i][j] == PACMAN) {
+	for(int i = 0; i < g_level->gridHeight; i++) {
+		for(int j = 0; j < g_level->gridWidth; j++) {
+			if(g_level->grid[i][j] == PACMAN) {
 				g_level->pacmanCol = i;
 				g_level->pacmanRow = j;
 				return;
@@ -92,7 +92,7 @@ void Pacman::mov(Pellet* pellet) {
 	} else initialTranslation.z = 10.f;
 	//branch if pacman can change direction and pacman is moving set change direction to false
 	if(changeDirection && counter < speed) changeDirection = false;
-	switch (direction) {
+	switch(direction) {
 		case UP:
 			//branch if pacman has reached the next location or if the next location will be a wall
 			if(movUp(g_level->pacmanRow, g_level->pacmanCol)) {
@@ -175,13 +175,13 @@ void Pacman::mov(Pellet* pellet) {
  */
 void Pacman::animate() {
 	//animate pacman according to the percentage of movement left till it has reached the next location
-	if (counter == speed * 0.25f) {
+	if(counter == speed * 0.25f) {
 		translateTex(1.f / 6.f, yTex);
-	} else if (counter == speed * 0.5f) {
+	} else if(counter == speed * 0.5f) {
 		translateTex(2.f / 6.f, yTex);
-	} else if (counter == speed * 0.75f) {
+	} else if(counter == speed * 0.75f) {
 		translateTex(3.f / 6.f, yTex);
-	} else if (counter >= speed) {
+	} else if(counter >= speed) {
 		counter = 0;
 		changeDirection = true;
 		translateTex(0.f, yTex);

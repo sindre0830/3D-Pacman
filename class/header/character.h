@@ -30,7 +30,7 @@ class Character {
         bool movRight(int &row, int &col);
     public:
         /* public data */
-        int direction;
+        int direction = 0;
         /* public functionality */
         ~Character();
         Character();

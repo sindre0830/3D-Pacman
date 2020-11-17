@@ -56,7 +56,7 @@ void Camera::changeDirection(const int pacmanDirection) {
 	xOffset = 0.f;
 	yOffset = 0.f;
 	//declare yaw and pitch
-	float yaw, pitch;
+	float yaw = 0, pitch = 0;
 	//branch if gamemode is third person and update view matrix to show a tilted top to down view
 	if(g_level->gamemode == THIRD_PERSON) {
 		//rotate camera

@@ -183,8 +183,6 @@ int main() {
 		nowTime = glfwGetTime();
 		deltaTime += (nowTime - lastTime) / limitFPS;
 		lastTime = nowTime;
-		//check if user wants to change gamemode
-		if(!g_level->gameover) changeDimension(window);
 		//branch if world is in 3D space
 		if(g_level->gamemode != TWO_DIMENSIONAL) {
 			//enable depth to display 3D space
@@ -196,6 +194,8 @@ int main() {
 		}
 		//processes all pending events
 		glfwPollEvents();
+		//check if user wants to change gamemode
+		if(!g_level->gameover) changeDimension(window);
 		//for every frame reset background color buffer and depth buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//draw maze

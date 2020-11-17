@@ -28,13 +28,9 @@ add_executable(${PROJECT_NAME}
 
 target_include_directories(
 	${PROJECT_NAME} PRIVATE
+	${CMAKE_SOURCE_DIR}/header
 	${CMAKE_SOURCE_DIR}/external/stb/include
 	${CMAKE_SOURCE_DIR}/external/tiny_obj_loader/include
-)
-
-target_include_directories(
-	${PROJECT_NAME} PRIVATE
-	${CMAKE_SOURCE_DIR}/header
 )
 
 target_compile_definitions(

@@ -106,6 +106,26 @@ void Maze::draw() {
 		collectionMatrix = g_camera->projectionMatrix * g_camera->viewMatrix * modelMatrix;
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(collectionMatrix));
 		glDrawElements(GL_TRIANGLES, (6 * wallSize3D), GL_UNSIGNED_INT, (const void*)(0));
+		//mirror scene top left
+		modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(-2.f + (g_level->rowOffset * g_level->gridElementWidth), 2.f + (g_level->colOffset * g_level->gridElementHeight), 0.f));
+		collectionMatrix = g_camera->projectionMatrix * g_camera->viewMatrix * modelMatrix;
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(collectionMatrix));
+		glDrawElements(GL_TRIANGLES, (6 * wallSize3D), GL_UNSIGNED_INT, (const void*)(0));
+		//mirror scene bottom left
+		modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(-2.f + (g_level->rowOffset * g_level->gridElementWidth), -2.f - (g_level->colOffset * g_level->gridElementHeight), 0.f));
+		collectionMatrix = g_camera->projectionMatrix * g_camera->viewMatrix * modelMatrix;
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(collectionMatrix));
+		glDrawElements(GL_TRIANGLES, (6 * wallSize3D), GL_UNSIGNED_INT, (const void*)(0));
+		//mirror scene bottom right
+		modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(2.f - (g_level->rowOffset * g_level->gridElementWidth), -2.f - (g_level->colOffset * g_level->gridElementHeight), 0.f));
+		collectionMatrix = g_camera->projectionMatrix * g_camera->viewMatrix * modelMatrix;
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(collectionMatrix));
+		glDrawElements(GL_TRIANGLES, (6 * wallSize3D), GL_UNSIGNED_INT, (const void*)(0));
+		//mirror scene top right
+		modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(2.f - (g_level->rowOffset * g_level->gridElementWidth), 2.f + (g_level->colOffset * g_level->gridElementHeight), 0.f));
+		collectionMatrix = g_camera->projectionMatrix * g_camera->viewMatrix * modelMatrix;
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_collectionMatrix"), 1, GL_FALSE, glm::value_ptr(collectionMatrix));
+		glDrawElements(GL_TRIANGLES, (6 * wallSize3D), GL_UNSIGNED_INT, (const void*)(0));
 	}
 }
 /**

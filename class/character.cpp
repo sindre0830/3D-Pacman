@@ -89,6 +89,22 @@ void Character::draw() {
         modelMatrix = getModelMatrix(2.f - (g_level->rowOffset * g_level->gridElementWidth), 0.f);
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 		glDrawArrays(GL_TRIANGLES, 6, modelSize);
+		//mirror scene top left
+		modelMatrix = getModelMatrix(-2.f + (g_level->rowOffset * g_level->gridElementWidth), 2.f + (g_level->colOffset * g_level->gridElementHeight));
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+		glDrawArrays(GL_TRIANGLES, 6, modelSize);
+		//mirror scene bottom left
+		modelMatrix = getModelMatrix(-2.f + (g_level->rowOffset * g_level->gridElementWidth), -2.f - (g_level->colOffset * g_level->gridElementHeight));
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+		glDrawArrays(GL_TRIANGLES, 6, modelSize);
+		//mirror scene bottom right
+		modelMatrix = getModelMatrix(2.f - (g_level->rowOffset * g_level->gridElementWidth), -2.f - (g_level->colOffset * g_level->gridElementHeight));
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+		glDrawArrays(GL_TRIANGLES, 6, modelSize);
+		//mirror scene top right
+		modelMatrix = getModelMatrix(2.f - (g_level->rowOffset * g_level->gridElementWidth), 2.f + (g_level->colOffset * g_level->gridElementHeight));
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram3D, "u_modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+		glDrawArrays(GL_TRIANGLES, 6, modelSize);
     }
 }
 /**
